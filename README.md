@@ -1,5 +1,5 @@
 # EmergencyWake
-Alarm clock with an emergency brake lever as a snoze button
+Alarm clock with an emergency brake lever as a snooze button
 
 ## Idea
 A bedside alarm clock built around one of the big red [emergency brakes](https://www.google.com/search?tbm=isch&q=notbremse%20zug&tbs=imgo:1) found in trains.
@@ -24,24 +24,26 @@ A toggle switch will allow the selection of two different alarms. The times are 
 - [Github project](https://github.com/AndruPol/ChibiOS-WavePlayer) for an STM32 wave player
 
 ## Components
-- Old emergency brake from eBay
+- old emergency brake from eBay
 - VFD from [pollin.de](https://www.pollin.de/p/vakuum-fluoreszenzdisplay-futaba-4-lt-46zb3-4-digit-121537) with additional parts:
-  - UDN6118 VFD driver IC
+  - UDN6118 VFD driver IC from eBay
   - L9110 H-bridge for VFD filament
   - MPSA13 darlington transistor from [reichelt.de](https://www.reichelt.de/bipolartransistor-npn-30v-0-5a-0-625w-to-92-mpsa-13-p13111.html?&trstct=pos_0&nbc=1])
-  - GL5506 light dependent resistor
+  - GL5506 light dependent resistor from eBay
 - STM32F103VET6
 - SD card holder from [conrad.de](https://www.conrad.de/de/p/attend-microsd-kartensockel-druck-druck-112i-tdar-r-1-st-1308329.html)
 - DCF77 module from [pollin.de](https://www.pollin.de/p/dcf-empfangsmodul-dcf1-810054)
 - [LM4670](http://www.ti.com/lit/ds/snas240c/snas240c.pdf) audio amplifier
 - CR2032 cell as backup battery
 - small buzzer
+- toggle switch from [pollin.de](https://www.pollin.de/p/kippschalter-kn3-c-123a-tastend-1-polig-on-off-on-420033)
+- rotary encoder with 24 or 30 detents
 - 24 V to 3.3 V step down regulator from [reichelt.de](https://www.reichelt.de/dc-dc-wandler-r78e-3-3-v-500-ma-sil-3-single-r-78e33-05-p177267.html?&trstct=pos_4&nbc=1) or [conrad.de](https://www.conrad.de/de/p/gaptec-lme78-03-1-0-dc-dc-wandler-print-24-v-dc-3-3-v-dc-1000-ma-3-3-w-anzahl-ausgaenge-1-x-1603783.html)
 
 ## Usage
 The clock will be in deep sleep most of the time. The display can be activated for about 10 seconds by tugging the emergency brake shortly.
 
-While the time is beeing displayed, flipping the toggle switch into one of its two "on" positions allows setting of alarm times. The alarms can be each de-/activated by pulling the emergency lever. A deactivated alarm will be represented by __:__ on the display.
+While the time is being displayed, flipping the toggle switch into one of its two "on" positions allows setting of alarm times. The alarms can be each de-/activated by pulling the emergency lever. A deactivated alarm will be represented by \_\_:\_\_ on the display.
 
 Setting the alarm time is done by pressing the rotary encoder's push button, the setting the hours, pressing it again to setting the minutes. Alarm times are stored inside an EEPROM to avoid loss of settings after a power outage.
 
