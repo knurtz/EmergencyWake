@@ -10,11 +10,11 @@ An STM32F103 microcontroller and its RTC unit is used for tracking the time. It 
 
 Soundfiles from an SD card can be read by the microcontroller and played through a small speaker.
 
-Because of the VFD's power consumption, I can't run the clock solely on battery, so a 24 V power supply is used. 
+Because of the VFD's power consumption, the clock can't run on battery power alone, so a 24 V power supply is used. 
 
 In case of a power outage, a 3 V coin cell battery powers the microcontroller. In this scenario a small buzzer will be used instead of a wakeup melody.
 
-Also there will be support for a DCF77 radio clock module to automatically update the time.
+Also there will be support for a [DCF77](https://en.wikipedia.org/wiki/DCF77) radio clock module to automatically update the time.
 
 A toggle switch will allow the selection of two different alarms. The times are set using a rotary encoder.
 
