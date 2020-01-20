@@ -36,15 +36,15 @@ A toggle switch will allow the selection of two different alarms. The times are 
 - [LM4670](http://www.ti.com/lit/ds/snas240c/snas240c.pdf) audio amplifier
 - CR2032 cell as backup battery
 - small buzzer
-- toggle switch from [pollin.de](https://www.pollin.de/p/kippschalter-kn3-c-123a-tastend-1-polig-on-off-on-420033)
-- rotary encoder with 24 or 30 detents
+- toggle switch from [pollin.de](https://www.pollin.de/p/kippschalter-kn3-c-103a-1-polig-on-off-on-420023)
+- rotary encoder from [reichelt.de](https://www.reichelt.de/drehimpulsegeber-15-impulse-30-rastungen-vertikal-stec11b03-p73913.html?r=1)
 - 24 V to 3.3 V step down regulator from [reichelt.de](https://www.reichelt.de/dc-dc-wandler-r78e-3-3-v-500-ma-sil-3-single-r-78e33-05-p177267.html?&trstct=pos_4&nbc=1) or [conrad.de](https://www.conrad.de/de/p/gaptec-lme78-03-1-0-dc-dc-wandler-print-24-v-dc-3-3-v-dc-1000-ma-3-3-w-anzahl-ausgaenge-1-x-1603783.html)
 
 ## Usage
 The clock will be in deep sleep most of the time. The display can be activated for about 10 seconds by tugging the emergency brake shortly.
 
-While the time is being displayed, flipping the toggle switch into one of its two "on" positions allows setting of alarm times. The alarms can be each de-/activated by pulling the emergency lever. A deactivated alarm will be represented by \_\_:\_\_ on the display.
+While the time is being displayed, flipping the toggle switch into one of its two "on" positions allows setting the alarm times. The alarms can each be de-/activated by pulling the emergency lever shortly. A deactivated alarm will be represented by \_\_:\_\_ on the display.
 
-Setting the alarm time is done by pressing the rotary encoder's push button, the setting the hours, pressing it again to setting the minutes. Alarm times are stored inside an EEPROM to avoid loss of settings after a power outage.
+Setting the alarm time is done by pressing the rotary encoder's push button, then setting the hours and then pressing it again to set the minutes. Alarm times are stored inside an EEPROM IC to avoid loss of settings after a power outage.
 
 Once one alarm rings, pulling the emergency lever shortly will put it into sleep mode, pulling longer will deactivate the alarm.
