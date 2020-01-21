@@ -21,6 +21,7 @@ A toggle switch will allow the selection of two different alarms. The times are 
 
 ## Resources
 - [Useful information](http://www.vwlowen.co.uk/arduino/vfd/vfd-clock.htm) about VFDs
+- [A Guide to Fundamental VFD Operation](https://www.noritake-elec.com/technology/general-technical-information/vfd-operation)
 - [Github project](https://github.com/AndruPol/ChibiOS-WavePlayer) for an STM32 wave player with ChibiOS
 - [Another Github project](https://github.com/no111u3/stm32f4d_encoder/blob/master/main.c) about using the timer's encoder mode with ChibiOS
 
