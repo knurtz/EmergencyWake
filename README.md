@@ -28,7 +28,7 @@ A toggle switch will allow the selection of two different alarms. The times are 
 ## Components
 - old emergency brake from eBay
 - VFD from [pollin.de](https://www.pollin.de/p/vakuum-fluoreszenzdisplay-futaba-4-lt-46zb3-4-digit-121537) with additional parts:
-  - UDN6118 VFD driver IC from eBay
+  - ~~UDN6118 VFD driver IC from eBay~~ [PT6312B](https://datasheet.lcsc.com/szlcsc/Princeton-Tech-PT6312B_C110225.pdf) VFD driver IC
   - L9110 H-bridge for VFD filament
   - MPSA13 darlington transistor from [reichelt.de](https://www.reichelt.de/bipolartransistor-npn-30v-0-5a-0-625w-to-92-mpsa-13-p13111.html?&trstct=pos_0&nbc=1])
   - GL5506 light dependent resistor from eBay
