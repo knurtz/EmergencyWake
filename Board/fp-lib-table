@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name VFD)(type KiCad)(uri ${KIPRJMOD}/VFD.pretty)(options "")(descr ""))
+  (lib (name Card)(type KiCad)(uri ${KIPRJMOD}/Card.pretty)(options "")(descr ""))
 )

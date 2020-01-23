@@ -1,4 +1,4 @@
-(module FUTABA_4-LT-46ZB3 (layer F.Cu) (tedit 5E28C39C)
+(module FUTABA_4-LT-46ZB3 (layer F.Cu) (tedit 5E29CFBC)
   (fp_text reference REF** (at 0 -1.6) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
