@@ -29,7 +29,8 @@ A toggle switch will allow the selection of two different alarms. The times are 
 ## Components
 - old emergency brake from eBay
 - VFD from [pollin.de](https://www.pollin.de/p/vakuum-fluoreszenzdisplay-futaba-4-lt-46zb3-4-digit-121537) with additional parts:
-  - ~~UDN6118 VFD driver IC from eBay~~ [PT6312B](https://datasheet.lcsc.com/szlcsc/Princeton-Tech-PT6312B_C110225.pdf) VFD driver IC
+  - UDN6118 VFD driver IC from eBay 
+  - Alternative: [PT6312B](https://datasheet.lcsc.com/szlcsc/Princeton-Tech-PT6312B_C110225.pdf) VFD controller IC (requires negative voltages)
   - L9110 H-bridge for VFD filament
   - MPSA13 darlington transistor from [reichelt.de](https://www.reichelt.de/bipolartransistor-npn-30v-0-5a-0-625w-to-92-mpsa-13-p13111.html?&trstct=pos_0&nbc=1])
   - GL5506 light dependent resistor from eBay
@@ -50,4 +51,4 @@ While the time is being displayed, flipping the toggle switch into one of its tw
 
 Setting the alarm time is done by pressing the rotary encoder's push button, then setting the hours and then pressing it again to set the minutes. Alarm times are stored inside an EEPROM IC to avoid loss of settings after a power outage.
 
-Once one alarm rings, pulling the emergency lever shortly will put it into sleep mode, pulling longer will deactivate the alarm.
+Once one alarm rings, pulling the emergency lever shortly will put it into snooze mode, pulling longer will deactivate the alarm.
