@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name VFD)(type Legacy)(uri ${KIPRJMOD}/VFD.lib)(options "")(descr ""))
+  (lib (name MotorDriver)(type Legacy)(uri ${KIPRJMOD}/MotorDriver.lib)(options "")(descr ""))
 )
