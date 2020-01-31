@@ -4,6 +4,10 @@ $CMP FUTABA_4-LT-46ZB3
 F https://www.pollin.de/productdownloads/D121537D.PDF
 $ENDCMP
 #
+$CMP PT6312B
+F https://datasheet.lcsc.com/szlcsc/Princeton-Tech-PT6312B_C110225.pdf
+$ENDCMP
+#
 $CMP UDN6118A
 F https://www.allegromicro.com/-/media/Files/Datasheets/UDN6118-Datasheet.ashx?la=en&hash=80FF761BA9A0EF733395AC11F2BDABFD6ADA087E
 $ENDCMP
