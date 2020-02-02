@@ -2,5 +2,5 @@
   (lib (name VFD)(type KiCad)(uri ${KIPRJMOD}/Libs/VFD.pretty)(options "")(descr ""))
   (lib (name Card)(type KiCad)(uri ${KIPRJMOD}/Libs/Card.pretty)(options "")(descr ""))
   (lib (name Switch)(type KiCad)(uri ${KIPRJMOD}/Libs/Switch.pretty)(options "")(descr ""))
-  (lib (name Wuerth)(type KiCad)(uri ${KIPRJMOD}/Wuerth.pretty)(options "")(descr ""))
+  (lib (name Wuerth)(type KiCad)(uri ${KIPRJMOD}/Libs/Wuerth.pretty)(options "")(descr ""))
 )
