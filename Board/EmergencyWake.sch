@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:EmergencyWake-cache
 EELAYER 30 0
 EELAYER END
 $Descr A3 16535 11693
@@ -3251,8 +3252,6 @@ F 3 "https://datasheet.lcsc.com/szlcsc/Texas-Instruments-TI-LM4670SD-NOPB_C13196
 	1    10200 1350
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	9750 1050 7850 1050
 Text Label 7850 1050 0    50   ~ 0
 AUDIO_EN
 $Comp
@@ -3367,7 +3366,7 @@ Wire Wire Line
 	9150 1250 9100 1250
 Wire Wire Line
 	8800 1250 8750 1250
-Text Notes 8000 1600 0    50   ~ 0
+Text Notes 9400 2100 0    50   ~ 0
 f_C = 1 / (2π*R_i*C_i) (Hz)
 $Comp
 L Device:C C24
@@ -3783,4 +3782,38 @@ Wire Wire Line
 	4800 1050 4650 1050
 Wire Wire Line
 	5650 1150 5750 1150
+$Comp
+L Device:R R41
+U 1 1 5E442E22
+P 9250 850
+F 0 "R41" H 9320 896 50  0000 L CNN
+F 1 "100k" H 9320 805 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 9180 850 50  0001 C CNN
+F 3 "~" H 9250 850 50  0001 C CNN
+F 4 "C25741" H 9250 850 50  0001 C CNN "LCSC"
+	1    9250 850 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9750 1050 9250 1050
+$Comp
+L power:VCC #PWR072
+U 1 1 5E4E85D6
+P 9400 650
+F 0 "#PWR072" H 9400 500 50  0001 C CNN
+F 1 "VCC" H 9417 823 50  0000 C CNN
+F 2 "" H 9400 650 50  0001 C CNN
+F 3 "" H 9400 650 50  0001 C CNN
+	1    9400 650 
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	9400 650  9250 650 
+Wire Wire Line
+	9250 650  9250 700 
+Wire Wire Line
+	9250 1000 9250 1050
+Connection ~ 9250 1050
+Wire Wire Line
+	9250 1050 7850 1050
 $EndSCHEMATC
