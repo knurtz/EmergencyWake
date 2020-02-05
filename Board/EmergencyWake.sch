@@ -151,18 +151,6 @@ F 4 "C37474" H 9400 8600 50  0001 C CNN "LCSC"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:D_Schottky D5
-U 1 1 5E2D4271
-P 5900 1150
-F 0 "D5" H 5900 1366 50  0000 C CNN
-F 1 "SS54" H 5900 1275 50  0000 C CNN
-F 2 "Diode_SMD:D_SMA" H 5900 1150 50  0001 C CNN
-F 3 "~" H 5900 1150 50  0001 C CNN
-F 4 "C22452" H 5900 1150 50  0001 C CNN "LCSC"
-	1    5900 1150
-	1    0    0    1   
-$EndComp
-$Comp
 L power:GND #PWR018
 U 1 1 5E2D57EC
 P 4650 1600
@@ -318,7 +306,7 @@ Wire Wire Line
 Connection ~ 3400 1150
 Wire Wire Line
 	3400 1150 3900 1150
-Text Notes 4800 800  0    50   ~ 0
+Text Notes 4800 750  0    50   ~ 0
 cp. https://www.st.com/resource/en/application_note/dm00206898.pdf
 $Comp
 L Device:Q_NMOS_GSD Q1
@@ -690,7 +678,7 @@ F 3 "~" H 13900 3300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	13050 3500 13700 3500
+	13050 3500 13450 3500
 Text Label 13050 3400 0    50   ~ 0
 DCF_PON
 $Comp
@@ -1274,8 +1262,6 @@ Connection ~ 12800 5150
 Wire Wire Line
 	12050 3200 13700 3200
 Wire Wire Line
-	12400 3400 12500 3400
-Wire Wire Line
 	11550 3500 12950 3500
 $Comp
 L VFD:FUTABA_4-LT-46ZB3 DISP1
@@ -1509,17 +1495,14 @@ Wire Wire Line
 $Comp
 L Connector:TestPoint TP11
 U 1 1 5E414D66
-P 12500 3400
-F 0 "TP11" H 12558 3518 50  0000 L CNN
-F 1 "TestPoint" H 12558 3427 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded" H 12700 3400 50  0001 C CNN
-F 3 "~" H 12700 3400 50  0001 C CNN
-	1    12500 3400
-	1    0    0    -1  
+P 13450 3500
+F 0 "TP11" H 13508 3618 50  0000 L CNN
+F 1 "TestPoint" H 13508 3527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded" H 13650 3500 50  0001 C CNN
+F 3 "~" H 13650 3500 50  0001 C CNN
+	1    13450 3500
+	-1   0    0    1   
 $EndComp
-Connection ~ 12500 3400
-Wire Wire Line
-	12500 3400 13700 3400
 Text Notes 15800 7500 1    50   ~ 0
 Grid 3 can either be permanently\nactive be driven together with\nGrid 2 (selectable by solder jumper)
 Connection ~ 15150 7500
@@ -1552,13 +1535,13 @@ $EndComp
 $Comp
 L Switch:SW_DPDT_x2 SW1
 U 2 1 5E4D5E2F
-P 5450 1150
-F 0 "SW1" H 5450 1435 50  0000 C CNN
-F 1 "SW_DPDT_x2" H 5450 1344 50  0000 C CNN
-F 2 "Wuerth:452404020202" H 5450 1150 50  0001 C CNN
-F 3 "https://www.we-online.de/katalog/datasheet/452404020202.pdf" H 5450 1150 50  0001 C CNN
-F 4 "452404020202" H 5450 1150 50  0001 C CNN "Würth"
-	2    5450 1150
+P 5850 1150
+F 0 "SW1" H 5850 1435 50  0000 C CNN
+F 1 "SW_DPDT_x2" H 5850 1344 50  0000 C CNN
+F 2 "Wuerth:452404020202" H 5850 1150 50  0001 C CNN
+F 3 "https://www.we-online.de/katalog/datasheet/452404020202.pdf" H 5850 1150 50  0001 C CNN
+F 4 "452404020202" H 5850 1150 50  0001 C CNN "Würth"
+	2    5850 1150
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
@@ -3192,6 +3175,7 @@ F 0 "U5" H 10200 1915 50  0000 C CNN
 F 1 "LM4670" H 10200 1824 50  0000 C CNN
 F 2 "Package_SON:WSON-8-1EP_3x3mm_P0.5mm_EP1.6x2.0mm" H 10200 600 50  0001 C CNN
 F 3 "https://datasheet.lcsc.com/szlcsc/Texas-Instruments-TI-LM4670SD-NOPB_C131968.pdf" H 10100 1900 50  0001 C CNN
+F 4 "C131968" H 10200 1350 50  0001 C CNN "LCSC"
 	1    10200 1350
 	1    0    0    -1  
 $EndComp
@@ -3701,9 +3685,7 @@ F 4 "436351045816" H 1100 9050 50  0001 C CNN "Würth"
 	1    0    0    -1  
 $EndComp
 NoConn ~ 2900 1050
-NoConn ~ 5250 1250
-Wire Wire Line
-	5250 1050 4800 1050
+NoConn ~ 5650 1250
 Connection ~ 4650 1050
 Wire Wire Line
 	4650 1050 4650 950 
@@ -3712,8 +3694,6 @@ Wire Wire Line
 Connection ~ 4800 1050
 Wire Wire Line
 	4800 1050 4650 1050
-Wire Wire Line
-	5650 1150 5750 1150
 $Comp
 L Device:R R41
 U 1 1 5E442E22
@@ -3815,4 +3795,25 @@ F 4 "173950378" H 10450 10150 50  0001 C CNN "Würth"
 	1    10450 10150
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	5450 1050 5650 1050
+Wire Wire Line
+	5150 1050 4800 1050
+$Comp
+L Device:D_Schottky D5
+U 1 1 5E2D4271
+P 5300 1050
+F 0 "D5" H 5300 1266 50  0000 C CNN
+F 1 "SS54" H 5300 1175 50  0000 C CNN
+F 2 "Diode_SMD:D_SMA" H 5300 1050 50  0001 C CNN
+F 3 "~" H 5300 1050 50  0001 C CNN
+F 4 "C22452" H 5300 1050 50  0001 C CNN "LCSC"
+	1    5300 1050
+	1    0    0    -1  
+$EndComp
+Connection ~ 13450 3500
+Wire Wire Line
+	13450 3500 13700 3500
+Wire Wire Line
+	12400 3400 13700 3400
 $EndSCHEMATC

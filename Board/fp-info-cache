@@ -1,400 +1,400 @@
-88988737554938
-TestPoint
-TestPoint_2Pads_Pitch2.54mm_Drill0.8mm
-Test point with 2 pins, pitch 2.54mm, drill diameter 0.8mm
-CONN DEV
+88988737498019
+Package_SON
+Diodes_PowerDI3333-8
+Diodes Incorporated PowerDI3333-8, Plastic Dual Flat No Lead Package, 3.3x3.3x0.8mm Body, https://www.diodes.com/assets/Package-Files/PowerDI3333-8.pdf
+PowerDI 0.65
 0
-2
-2
-TestPoint
-TestPoint_2Pads_Pitch5.08mm_Drill1.3mm
-Test point with 2 pads, pitch 5.08mm, hole diameter 1.3mm, wire diameter 1.0mm
-CONN DEV
+13
+5
+Package_SON
+Fairchild_DualPower33-6_3x3mm
+Fairchild Power33 MOSFET package, 3x3mm (see https://www.fairchildsemi.com/datasheets/FD/FDMC8032L.pdf)
+mosfet
 0
-2
-2
-TestPoint
-TestPoint_Bridge_Pitch2.0mm_Drill0.7mm
-wire loop as test point, pitch 2.0mm, hole diameter 0.7mm, wire diameter 0.5mm
-test point wire loop
+18
+6
+Package_SON
+Fairchild_MicroPak-6_1.0x1.45mm_P0.5mm
+Fairchild-specific MicroPak-6 1.0x1.45mm Pitch 0.5mm https://www.nxp.com/docs/en/application-note/AN10343.pdff
+Fairchild-specific MicroPak-6 1.0x1.45mm Pitch 0.5mm
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch2.54mm_Drill0.7mm
-wire loop as test point, pitch 2.0mm, hole diameter 0.7mm, wire diameter 0.5mm
-test point wire loop
+6
+6
+Package_SON
+Fairchild_MicroPak2-6_1.0x1.0mm_P0.35mm
+Fairchild-specific MicroPak2-6 1.0x1.0mm Pitch 0.35mm https://www.nxp.com/docs/en/application-note/AN10343.pdff
+Fairchild-specific MicroPak2-6 1.0x1.0mm Pitch 0.35mm
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch2.54mm_Drill1.0mm
-wire loop as test point, pitch 2.54mm, hole diameter 1.0mm, wire diameter 0.8mm
-test point wire loop
+6
+6
+Package_SON
+HUSON-3-1EP_2x2mm_P1.3mm_EP1.1x1.6mm
+HUSON, 3 Pin, SOT1061 (Ref: https://assets.nexperia.com/documents/data-sheet/PMEG2020CPA.pdf)
+huson nolead SOT1061
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch2.54mm_Drill1.3mm
-wire loop as test point, pitch 2.54mm, hole diameter 1.3mm, wire diameter 1.0mm
-test point wire loop
+4
+3
+Package_SON
+HVSON-8-1EP_4x4mm_P0.8mm_EP2.2x3.1mm
+HVSON, 8 Pin (https://www.nxp.com/docs/en/data-sheet/PCF8523.pdf (page 57)), generated with kicad-footprint-generator ipc_noLead_generator.py
+HVSON NoLead
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch3.81mm_Drill1.3mm
-wire loop as test point, pitch 3.81mm, hole diameter 1.3mm, wire diameter 1.0mm
-test point wire loop
+13
+9
+Package_SON
+NXP_XSON-16
+http://www.nxp.com/documents/outline_drawing/SOT1341-1.pdf
+NXP XSON SOT-1341
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch5.08mm_Drill0.7mm
-wire loop as test point, pitch 5.08mm, hole diameter 0.7mm, wire diameter 1.0mm
-test point wire loop
+16
+16
+Package_SON
+ROHM_VML0806
+VML0806, Rohm (http://rohmfs.rohm.com/en/techdata_basic/transistor/soldering_condition/VML0806_Soldering_Condition.pdf, http://rohmfs.rohm.com/en/products/databook/package/spec/discrete/vml0806_tr-e.pdf)
+ROHM VML0806
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch5.08mm_Drill1.3mm
-wire loop as test point, pitch 5.08mm, hole diameter 1.3mm, wire diameter 1.0mm
-test point wire loop
+3
+3
+Package_SON
+RTC_SMD_MicroCrystal_C3_2.5x3.7mm
+MicroCrystal C3 2.5x3.7mm, https://www.microcrystal.com/fileadmin/Media/Products/RTC/Datasheet/RV-1805-C3.pdf
+RTC C3
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch6.35mm_Drill1.3mm
-wire loop as test point, pitch 6.35mm, hole diameter 1.3mm, wire diameter 1.0mm
-test point wire loop
+10
+10
+Package_SON
+SON-8-1EP_3x2mm_P0.5mm_EP1.4x1.6mm
+SON, 8 Pin (http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RS16-DS501-00014-6v0-E.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+SON DFN_QFN
 0
-2
-1
-TestPoint
-TestPoint_Bridge_Pitch7.62mm_Drill1.3mm
-wire loop as test point, pitch 7.62mm, hole diameter 1.3mm, wire diameter 1.0mm
-test point wire loop
+13
+9
+Package_SON
+Texas_DQK
+Texas WSON-6 DQK, http://www.ti.com/lit/ds/symlink/csd16301q2.pdf
+Texas WSON6 2x2mm
 0
-2
-1
-TestPoint
-TestPoint_Keystone_5000-5004_Miniature
-Keystone Miniature THM Test Point 5000-5004, http://www.keyelco.com/product-pdf.cfm?p=1309
-Through Hole Mount Test Points
+10
+8
+Package_SON
+Texas_DRC0010J
+Texas DRC0010J, VSON10 3x3mm Body, 0.5mm Pitch,  http://www.ti.com/lit/ds/symlink/tps63000.pdf
+Texas VSON10 3x3mm
 0
-1
-1
-TestPoint
-TestPoint_Keystone_5005-5009_Compact
-Keystone Miniature THM Test Point 5005-5009, http://www.keyelco.com/product-pdf.cfm?p=1314
-Through Hole Mount Test Points
+17
+11
+Package_SON
+Texas_DRC0010J_ThermalVias
+Texas DRC0010J, VSON10 3x3mm Body, 0.5mm Pitch,  http://www.ti.com/lit/ds/symlink/tps63000.pdf
+Texas VSON10 3x3mm
 0
-1
-1
-TestPoint
-TestPoint_Keystone_5010-5014_Multipurpose
-Keystone Miniature THM Test Point 5010-5014, http://www.keyelco.com/product-pdf.cfm?p=1319
-Through Hole Mount Test Points
+21
+11
+Package_SON
+Texas_DSC0010J
+3x3mm Body, 0.5mm Pitch, DSC0010J, WSON, http://www.ti.com/lit/ds/symlink/tps61201.pdf
+0.5 DSC0010J WSON
 0
-1
-1
-TestPoint
-TestPoint_Keystone_5015_Micro-Minature
-SMT Test Point- Micro Miniature 5015, http://www.keyelco.com/product-pdf.cfm?p=1353
-Test Point
+33
+11
+Package_SON
+Texas_DSC0010J_ThermalVias
+3x3mm Body, 0.5mm Pitch, DSC0010J, WSON, http://www.ti.com/lit/ds/symlink/tps61201.pdf
+0.5 DSC0010J WSON
 0
-1
-1
-TestPoint
-TestPoint_Keystone_5019_Minature
-SMT Test Point- Micro Miniature 5019, http://www.keyelco.com/product-pdf.cfm?p=1357
-Test Point
+39
+11
+Package_SON
+Texas_PWSON-N6
+Plastic Small Outline No-Lead http://www.ti.com/lit/ml/mpds176e/mpds176e.pdf
+Plastic Small Outline No-Lead
 0
-1
-1
-TestPoint
-TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded
-wire loop with bead as test point, loop diameter 1.8mm, hole diameter 1.0mm
-test point wire loop bead
+7
+7
+Package_SON
+Texas_R-PWSON-N12_EP0.4x2mm
+http://www.ti.com/lit/ds/symlink/tpd6f003.pdf
+WSON SMD
 0
-1
-1
-TestPoint
-TestPoint_Loop_D2.50mm_Drill1.0mm
-wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm
-test point wire loop bead
+16
+13
+Package_SON
+Texas_S-PDSO-N12
+http://www.ti.com/lit/ds/symlink/bq27441-g1.pdf
+SON thermal pads
 0
-1
-1
-TestPoint
-TestPoint_Loop_D2.50mm_Drill1.0mm_LowProfile
-low profile wire loop as test point, loop diameter 2.5mm, hole diameter 1.0mm
-test point wire loop bead
+44
+13
+Package_SON
+Texas_S-PVSON-N8
+8-Lead Plastic VSON, 3x3mm Body, 0.65mm Pitch, S-PVSON-N8, http://www.ti.com/lit/ds/symlink/opa2333.pdf
+DFN 0.65 S-PVSON-N8
 0
-1
-1
-TestPoint
-TestPoint_Loop_D2.50mm_Drill1.85mm
-wire loop as test point, loop diameter 2.5mm, hole diameter 1.85mm
-test point wire loop bead
+21
+9
+Package_SON
+Texas_S-PVSON-N8_ThermalVias
+8-Lead Plastic VSON, 3x3mm Body, 0.65mm Pitch, S-PVSON-N8, http://www.ti.com/lit/ds/symlink/opa2333.pdf
+DFN 0.65 S-PVSON-N8
 0
-1
-1
-TestPoint
-TestPoint_Loop_D2.54mm_Drill1.5mm_Beaded
-wire loop with bead as test point, loop diameter2.548mm, hole diameter 1.5mm
-test point wire loop bead
+27
+9
+Package_SON
+Texas_S-PVSON-N10
+3x3mm Body, 0.5mm Pitch, S-PVSON-N10, DRC, http://www.ti.com/lit/ds/symlink/tps61201.pdf
+0.5 S-PVSON-N10 DRC
 0
-1
-1
-TestPoint
-TestPoint_Loop_D2.60mm_Drill0.9mm_Beaded
-wire loop with bead as test point, loop diameter2.6mm, hole diameter 0.9mm
-test point wire loop bead
+33
+11
+Package_SON
+Texas_S-PVSON-N10_ThermalVias
+3x3mm Body, 0.5mm Pitch, S-PVSON-N10, DRC, http://www.ti.com/lit/ds/symlink/tps61201.pdf
+0.5 S-PVSON-N10 DRC
 0
-1
-1
-TestPoint
-TestPoint_Loop_D2.60mm_Drill1.4mm_Beaded
-wire loop with bead as test point, loop diameter2.6mm, hole diameter 1.4mm
-test point wire loop bead
+39
+11
+Package_SON
+Texas_S-PWSON-N8_EP1.2x2mm
+WSON, 8 Pin (http://www.ti.com/lit/ds/symlink/lp2951.pdf#page=27), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+WSON DFN_QFN
 0
-1
-1
-TestPoint
-TestPoint_Loop_D2.60mm_Drill1.6mm_Beaded
-wire loop with bead as test point, loop diameter2.6mm, hole diameter 1.6mm
-test point wire loop bead
+11
+9
+Package_SON
+Texas_S-PWSON-N8_EP1.2x2mm_ThermalVias
+WSON, 8 Pin (http://www.ti.com/lit/ds/symlink/lp2951.pdf#page=27), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+WSON DFN_QFN
 0
-1
-1
-TestPoint
-TestPoint_Loop_D3.50mm_Drill0.9mm_Beaded
-wire loop with bead as test point, loop diameter2.6mm, hole diameter 0.9mm
-test point wire loop bead
+18
+9
+Package_SON
+Texas_S-PWSON-N10
+3x3mm Body, 0.5mm Pitch, S-PWSON-N10, DSC, http://www.ti.com/lit/ds/symlink/tps63060.pdf
+0.5 S-PWSON-N10 DSC
 0
-1
-1
-TestPoint
-TestPoint_Loop_D3.50mm_Drill1.4mm_Beaded
-wire loop with bead as test point, loop diameter 3.5mm, hole diameter 1.4mm
-test point wire loop bead
+41
+11
+Package_SON
+Texas_S-PWSON-N10_ThermalVias
+3x3mm Body, 0.5mm Pitch, S-PWSON-N10, DSC, http://www.ti.com/lit/ds/symlink/tps63060.pdf
+0.5 S-PWSON-N10 DSC
 0
-1
-1
-TestPoint
-TestPoint_Loop_D3.80mm_Drill2.0mm
-wire loop as test point, loop diameter 3.8mm, hole diameter 2.0mm
-test point wire loop bead
+47
+11
+Package_SON
+Texas_X2SON-4_1x1mm_P0.65mm
+X2SON 5 pin 1x1mm package (Reference Datasheet: http://www.ti.com/lit/ds/sbvs193d/sbvs193d.pdf Reference part: TPS383x) [StepUp generated footprint]
+X2SON
 0
-1
-1
-TestPoint
-TestPoint_Loop_D3.80mm_Drill2.5mm
-wire loop as test point, loop diameter 3.8mm, hole diameter 2.5mm
-test point wire loop bead
+13
+5
+Package_SON
+USON-10_2.5x1.0mm_P0.5mm
+USON-10 2.5x1.0mm_ Pitch 0.5mm http://www.ti.com/lit/ds/symlink/tpd4e02b04.pdf
+USON-10 2.5x1.0mm Pitch 0.5mm
 0
-1
-1
-TestPoint
-TestPoint_Loop_D3.80mm_Drill2.8mm
-wire loop as test point, loop diameter 3.8mm, hole diameter 2.8mm
-test point wire loop bead
+10
+10
+Package_SON
+USON-20_2x4mm_P0.4mm
+USON-20 2x4mm Pitch 0.4mm http://www.ti.com/lit/ds/symlink/txb0108.pdf
+USON-20 2x4mm Pitch 0.4mm
 0
-1
-1
-TestPoint
-TestPoint_Pad_1.0x1.0mm
-SMD rectangular pad as test Point, square 1.0mm side length
-test point SMD pad rectangle square
+20
+20
+Package_SON
+VSON-8_3.3x3.3mm_P0.65mm_NexFET
+8-Lead Plastic Dual Flat, No Lead Package (MF) - 3.3x3.3x1 mm Body [VSON] http://www.ti.com/lit/ds/symlink/csd87334q3d.pdf
+VSON 0.65
 0
-1
-1
-TestPoint
-TestPoint_Pad_1.5x1.5mm
-SMD rectangular pad as test Point, square 1.5mm side length
-test point SMD pad rectangle square
+12
+5
+Package_SON
+VSON-10-1EP_3x3mm_P0.5mm_EP1.2x2mm
+VSON, 10 Pin (http://rohmfs.rohm.com/en/products/databook/datasheet/ic/power/switching_regulator/bd8314nuv-e.pdf (Page 20)), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+VSON
 0
-1
-1
-TestPoint
-TestPoint_Pad_2.0x2.0mm
-SMD rectangular pad as test Point, square 2.0mm side length
-test point SMD pad rectangle square
+15
+11
+Package_SON
+VSON-10-1EP_3x3mm_P0.5mm_EP1.2x2mm_ThermalVias
+VSON, 10 Pin (http://rohmfs.rohm.com/en/products/databook/datasheet/ic/power/switching_regulator/bd8314nuv-e.pdf (Page 20)), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+VSON
 0
-1
-1
-TestPoint
-TestPoint_Pad_2.5x2.5mm
-SMD rectangular pad as test Point, square 2.5mm side length
-test point SMD pad rectangle square
+18
+11
+Package_SON
+VSON-10-1EP_3x3mm_P0.5mm_EP1.65x2.4mm
+VSON 10 Thermal on 11 3x3mm Pitch 0.5mm http://chip.tomsk.ru/chip/chipdoc.nsf/Package/D8A64DD165C2AAD9472579400024FC41!OpenDocument
+VSON 10 Thermal on 11 3x3mm Pitch 0.5mm
 0
-1
-1
-TestPoint
-TestPoint_Pad_3.0x3.0mm
-SMD rectangular pad as test Point, square 3.0mm side length
-test point SMD pad rectangle square
+21
+11
+Package_SON
+VSON-10-1EP_3x3mm_P0.5mm_EP1.65x2.4mm_ThermalVias
+VSON 10 Thermal on 11 3x3mm Pitch 0.5mm http://chip.tomsk.ru/chip/chipdoc.nsf/Package/D8A64DD165C2AAD9472579400024FC41!OpenDocument
+VSON 10 Thermal on 11 3x3mm Pitch 0.5mm
 0
-1
-1
-TestPoint
-TestPoint_Pad_4.0x4.0mm
-SMD rectangular pad as test Point, square 4.0mm side length
-test point SMD pad rectangle square
+27
+11
+Package_SON
+VSONP-8-1EP_5x6_P1.27mm
+SON, 8-Leads, Body 5x6x1mm, Pitch 1.27mm; (see Texas Instruments CSD18531Q5A http://www.ti.com/lit/ds/symlink/csd18531q5a.pdf)
+VSONP 1.27
 0
-1
-1
-TestPoint
-TestPoint_Pad_D1.0mm
-SMD pad as test Point, diameter 1.0mm
-test point SMD pad
+13
+3
+Package_SON
+WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm
+WSON, 6 Pin (http://www.ti.com/lit/ds/symlink/tps61040.pdf#page=35), generated with kicad-footprint-generator ipc_noLead_generator.py
+WSON NoLead
 0
-1
-1
-TestPoint
-TestPoint_Pad_D1.5mm
-SMD pad as test Point, diameter 1.5mm
-test point SMD pad
+9
+7
+Package_SON
+WSON-6-1EP_2x2mm_P0.65mm_EP1x1.6mm_ThermalVias
+WSON, 6 Pin (http://www.ti.com/lit/ds/symlink/tps61040.pdf#page=35), generated with kicad-footprint-generator ipc_noLead_generator.py
+WSON NoLead
 0
-1
-1
-TestPoint
-TestPoint_Pad_D2.0mm
-SMD pad as test Point, diameter 2.0mm
-test point SMD pad
+12
+7
+Package_SON
+WSON-6-1EP_3x3mm_P0.95mm
+WSON6 3*3 MM, 0.95 PITCH; http://www.ti.com/lit/ds/symlink/lmr62421.pdf
+WSON6 0.95
 0
-1
-1
-TestPoint
-TestPoint_Pad_D2.5mm
-SMD pad as test Point, diameter 2.5mm
-test point SMD pad
+10
+7
+Package_SON
+WSON-6_1.5x1.5mm_P0.5mm
+WSON6, http://www.ti.com/lit/ds/symlink/tlv702.pdf
+WSON6_1.5x1.5mm_P0.5mm
 0
-1
-1
-TestPoint
-TestPoint_Pad_D3.0mm
-SMD pad as test Point, diameter 3.0mm
-test point SMD pad
+6
+6
+Package_SON
+WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm
+8-Lead Plastic WSON, 2x2mm Body, 0.5mm Pitch, WSON-8, http://www.ti.com/lit/ds/symlink/lm27761.pdf
+WSON 8 1EP
 0
-1
-1
-TestPoint
-TestPoint_Pad_D4.0mm
-SMD pad as test Point, diameter 4.0mm
-test point SMD pad
+11
+9
+Package_SON
+WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias
+8-Lead Plastic WSON, 2x2mm Body, 0.5mm Pitch, WSON-8, http://www.ti.com/lit/ds/symlink/lm27761.pdf
+WSON 8 1EP ThermalVias
 0
-1
-1
-TestPoint
-TestPoint_Plated_Hole_D2.0mm
-Plated Hole as test Point, diameter 2.0mm
-test point plated hole
+14
+9
+Package_SON
+WSON-8-1EP_3x2.5mm_P0.5mm_EP1.2x1.5mm_PullBack
+WSON, 8 Pin (http://www.ti.com/lit/ml/mpds400/mpds400.pdf), generated with kicad-footprint-generator ipc_noLead_generator.py
+WSON NoLead
 0
-1
-1
-TestPoint
-TestPoint_Plated_Hole_D3.0mm
-Plated Hole as test Point, diameter 3.0mm
-test point plated hole
+13
+9
+Package_SON
+WSON-8-1EP_3x2.5mm_P0.5mm_EP1.2x1.5mm_PullBack_ThermalVias
+WSON, 8 Pin (http://www.ti.com/lit/ml/mpds400/mpds400.pdf), generated with kicad-footprint-generator ipc_noLead_generator.py
+WSON NoLead
 0
-1
-1
-TestPoint
-TestPoint_Plated_Hole_D4.0mm
-Plated Hole as test Point, diameter 4.0mm
-test point plated hole
+18
+9
+Package_SON
+WSON-8-1EP_3x3mm_P0.5mm_EP1.6x2.0mm
+8-Lead Plastic WSON, 2x2mm Body, 0.5mm Pitch, WSON-8, http://www.ti.com/lit/ds/symlink/lm27761.pdf
+WSON 8 1EP
 0
-1
-1
-TestPoint
-TestPoint_Plated_Hole_D5.0mm
-Plated Hole as test Point, diameter 5.0mm
-test point plated hole
+13
+9
+Package_SON
+WSON-8-1EP_6x5mm_P1.27mm_EP3.4x4.3mm
+WSON, 8 Pin (http://www.winbond.com/resource-files/w25q32jv%20revg%2003272018%20plus.pdf (page 68)), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+WSON DFN_QFN
 0
-1
-1
-TestPoint
-TestPoint_THTPad_1.0x1.0mm_Drill0.5mm
-THT rectangular pad as test Point, square 1.0mm side length, hole diameter 0.5mm
-test point THT pad rectangle square
+13
+9
+Package_SON
+WSON-8-1EP_6x5mm_P1.27mm_EP3.4x4mm
+WSON, 8 Pin (http://ww1.microchip.com/downloads/en/AppNotes/S72030.pdf), generated with kicad-footprint-generator ipc_dfn_qfn_generator.py
+WSON DFN_QFN
 0
-1
-1
-TestPoint
-TestPoint_THTPad_1.5x1.5mm_Drill0.7mm
-THT rectangular pad as test Point, square 1.5mm side length, hole diameter 0.7mm
-test point THT pad rectangle square
+13
+9
+Package_SON
+WSON-8_4x4mm_P0.8mm
+http://www.ti.com/lit/ml/mpds406/mpds406.pdf
+WSON8_4x4mm_P0.8mm
 0
-1
-1
-TestPoint
-TestPoint_THTPad_2.0x2.0mm_Drill1.0mm
-THT rectangular pad as test Point, square 2.0mm_Drill1.0mm  side length, hole diameter 1.0mm
-test point THT pad rectangle square
+9
+9
+Package_SON
+WSON-10-1EP_2x3mm_P0.5mm_EP0.84x2.4mm
+WSON-10 package 2x3mm body, pitch 0.5mm, see http://www.ti.com/lit/ds/symlink/tps62177.pdf
+WSON 0.5 
 0
-1
-1
-TestPoint
-TestPoint_THTPad_2.5x2.5mm_Drill1.2mm
-THT rectangular pad as test Point, square 2.5mm side length, hole diameter 1.2mm
-test point THT pad rectangle square
+14
+11
+Package_SON
+WSON-10-1EP_2x3mm_P0.5mm_EP0.84x2.4mm_ThermalVias
+WSON-10 package 2x3mm body, pitch 0.5mm, thermal vias and counter-pad, see http://www.ti.com/lit/ds/symlink/tps62177.pdf
+WSON 0.5 thermal vias
 0
-1
-1
-TestPoint
-TestPoint_THTPad_3.0x3.0mm_Drill1.5mm
-THT rectangular pad as test Point, square 3.0mm side length, hole diameter 1.5mm
-test point THT pad rectangle square
+17
+11
+Package_SON
+WSON-10-1EP_4x3mm_P0.5mm_EP2.2x2mm
+10-Lead Plastic WSON, 4x3mm Body, 0.5mm Pitch (http://www.ti.com/lit/ds/symlink/lm4990.pdf)
+WSON 0.5
 0
-1
-1
-TestPoint
-TestPoint_THTPad_4.0x4.0mm_Drill2.0mm
-THT rectangular pad as test Point, square 4.0mm  side length, hole diameter 2.0mm
-test point THT pad rectangle square
+15
+11
+Package_SON
+WSON-12-1EP_3x2mm_P0.5mm_EP1x2.65
+WSON-12 http://www.ti.com/lit/ds/symlink/lm27762.pdf
+WSON-12
 0
-1
-1
-TestPoint
-TestPoint_THTPad_D1.0mm_Drill0.5mm
-THT pad as test Point, diameter 1.0mm, hole diameter 0.5mm
-test point THT pad
+15
+13
+Package_SON
+WSON-12-1EP_3x2mm_P0.5mm_EP1x2.65_ThermalVias
+WSON-12 http://www.ti.com/lit/ds/symlink/lm27762.pdf
+WSON-12
 0
-1
-1
-TestPoint
-TestPoint_THTPad_D1.5mm_Drill0.7mm
-THT pad as test Point, diameter 1.5mm, hole diameter 0.7mm
-test point THT pad
+19
+13
+Package_SON
+WSON-12-1EP_4x4mm_P0.5mm_EP2.6x3mm
+WSON, 12 Pin (http://www.ti.com/lit/ds/symlink/ldc1312.pdf#page=62), generated with kicad-footprint-generator ipc_noLead_generator.py
+WSON NoLead
 0
-1
-1
-TestPoint
-TestPoint_THTPad_D2.0mm_Drill1.0mm
-THT pad as test Point, diameter 2.0mm, hole diameter 1.0mm
-test point THT pad
+17
+13
+Package_SON
+WSON-12-1EP_4x4mm_P0.5mm_EP2.6x3mm_ThermalVias
+WSON, 12 Pin (http://www.ti.com/lit/ds/symlink/ldc1312.pdf#page=62), generated with kicad-footprint-generator ipc_noLead_generator.py
+WSON NoLead
 0
-1
-1
-TestPoint
-TestPoint_THTPad_D2.5mm_Drill1.2mm
-THT pad as test Point, diameter 2.5mm, hole diameter 1.2mm 
-test point THT pad
+27
+13
+Package_SON
+WSON-14-1EP_4.0x4.0mm_P0.5mm_EP2.6x2.6mm
+14-Lead Plastic Dual Flat, No Lead Package - 4.0x4.0x0.8 mm Body [WSON], http://www.ti.com/lit/ml/mpds421/mpds421.pdf
+NHL014B
 0
-1
-1
-TestPoint
-TestPoint_THTPad_D3.0mm_Drill1.5mm
-THT pad as test Point, diameter 3.0mm, hole diameter 1.5mm
-test point THT pad
+19
+15
+Package_SON
+WSON-16_3.3x1.35_P0.4mm
+WSON-16 3.3 x 1.35mm  Pitch 0.4mm http://www.chip.tomsk.ru/chip/chipdoc.nsf/Package/C67E729A4D6C883A4725793E004C8739!OpenDocument
+WSON-16 3.3 x 1.35mm  Pitch 0.4mm
 0
-1
-1
-TestPoint
-TestPoint_THTPad_D4.0mm_Drill2.0mm
-THT pad as test Point, diameter 4.0mm, hole diameter 2.0mm
-test point THT pad
+20
+17
+Package_SON
+X2SON-8_1.4x1mm_P0.35mm
+X2SON-8 1.4x1mm Pitch0.35mm http://www.ti.com/lit/ds/symlink/pca9306.pdf
+X2SON-8 1.4x1mm Pitch0.35mm
 0
-1
-1
+8
+8
