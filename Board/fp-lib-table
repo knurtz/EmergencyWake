@@ -3,4 +3,6 @@
   (lib (name Card)(type KiCad)(uri ${KIPRJMOD}/Libs/Card.pretty)(options "")(descr ""))
   (lib (name Switch)(type KiCad)(uri ${KIPRJMOD}/Libs/Switch.pretty)(options "")(descr ""))
   (lib (name Wuerth)(type KiCad)(uri ${KIPRJMOD}/Libs/Wuerth.pretty)(options "")(descr ""))
+  (lib (name Board)(type KiCad)(uri /home/johannes/Documents/Projekte/EmergencyWake/Board)(options "")(descr ""))
+  (lib (name Logo)(type KiCad)(uri ${KIPRJMOD}/Libs/Logo)(options "")(descr ""))
 )
