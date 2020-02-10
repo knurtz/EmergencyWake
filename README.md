@@ -9,13 +9,13 @@ An STM32F103 microcontroller and its RTC unit is used for tracking the time. It 
 
 Soundfiles from an SD card can be read by the microcontroller and played through a small speaker.
 
-Because of the VFD's power consumption, the clock can't run on battery power alone, so a 24 V power supply is used. 
+Because of the VFD's power consumption, the clock can't completely run on battery power, so a USB-C connector for 5 V power supply is implemented. 
 
-In case of a power outage, a 3 V coin cell battery powers the microcontroller. In this scenario a small buzzer will be used instead of a wakeup melody.
+In case of a power outage, a 3 V coin cell battery powers the microcontroller. In this scenario a small buzzer will be used instead of a wakeup melody, in order to use as little power as possible.
 
-Also there will be support for a [DCF77](https://en.wikipedia.org/wiki/DCF77) radio clock module to automatically update the time.
+Also, there will be support for a [DCF77](https://en.wikipedia.org/wiki/DCF77) radio clock module to automatically update the time.
 
-A toggle switch will allow the selection of two different alarms. The times are set using a rotary encoder.
+A toggle switch allows programming to independent alarms. The times are set using a rotary encoder.
 
 
 ## Resources
@@ -28,8 +28,8 @@ A toggle switch will allow the selection of two different alarms. The times are 
 ## Components
 - old emergency brake from eBay
 - VFD from [pollin.de](https://www.pollin.de/p/vakuum-fluoreszenzdisplay-futaba-4-lt-46zb3-4-digit-121537) with additional parts:
-  - UDN6118 VFD driver IC from eBay 
-  - Alternative: [PT6312B](https://datasheet.lcsc.com/szlcsc/Princeton-Tech-PT6312B_C110225.pdf) VFD controller IC (requires negative voltages)
+  - [PT6312B](https://datasheet.lcsc.com/szlcsc/Princeton-Tech-PT6312B_C110225.pdf) VFD controller IC (requires negative voltages)
+  - Alternative: UDN6118 VFD driver IC from eBay 
   - L9110 H-bridge for VFD filament
   - MPSA13 darlington transistor from [reichelt.de](https://www.reichelt.de/bipolartransistor-npn-30v-0-5a-0-625w-to-92-mpsa-13-p13111.html?&trstct=pos_0&nbc=1])
   - GL5506 light dependent resistor from eBay
@@ -41,7 +41,8 @@ A toggle switch will allow the selection of two different alarms. The times are 
 - small buzzer
 - toggle switch from [pollin.de](https://www.pollin.de/p/kippschalter-kn3-c-103a-1-polig-on-off-on-420023)
 - rotary encoder from [reichelt.de](https://www.reichelt.de/drehimpulsegeber-15-impulse-30-rastungen-vertikal-stec11b03-p73913.html?r=1)
-- 24 V to 3.3 V step down regulator from [reichelt.de](https://www.reichelt.de/dc-dc-wandler-r78e-3-3-v-500-ma-sil-3-single-r-78e33-05-p177267.html?&trstct=pos_4&nbc=1) or [conrad.de](https://www.conrad.de/de/p/gaptec-lme78-03-1-0-dc-dc-wandler-print-24-v-dc-3-3-v-dc-1000-ma-3-3-w-anzahl-ausgaenge-1-x-1603783.html)
+- 5 V to 3.3 V step down regulator from [reichelt.de](https://www.reichelt.de/dc-dc-wandler-r78e-3-3-v-500-ma-sil-3-single-r-78e33-05-p177267.html?&trstct=pos_4&nbc=1) or [conrad.de](https://www.conrad.de/de/p/gaptec-lme78-03-1-0-dc-dc-wandler-print-24-v-dc-3-3-v-dc-1000-ma-3-3-w-anzahl-ausgaenge-1-x-1603783.html)
+- MC34063 DCDC converter
 
 ## Usage
 The clock will be in deep sleep most of the time. The display can be activated for about 10 seconds by tugging the emergency brake shortly.
