@@ -1,8 +1,7 @@
-# EmergencyWake
-Alarm clock with an emergency brake lever as a snooze button
+<img src="Images/Logo/EmergencyWake_Logo.png" width="400" />
 
 ## Idea
-A bedside alarm clock built around one of the big red [emergency brakes](https://www.google.com/search?tbm=isch&q=notbremse%20zug&tbs=imgo:1) found in trains.
+A bedside alarm clock that makes use of a big red [emergency brake lever](https://www.google.com/search?tbm=isch&q=notbremse%20zug&tbs=imgo:1) as a snooze button.
 
 To display the time, a vintage [VFD](https://en.wikipedia.org/wiki/Vacuum_fluorescent_display) is used.
 
