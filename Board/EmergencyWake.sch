@@ -49,12 +49,12 @@ $EndComp
 $Comp
 L Connector_Generic:Conn_01x02 J4
 U 1 1 5E2B13EE
-P 13900 2400
-F 0 "J4" H 13980 2392 50  0000 L CNN
-F 1 "Conn_01x02" H 13980 2301 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 13900 2400 50  0001 C CNN
-F 3 "~" H 13900 2400 50  0001 C CNN
-	1    13900 2400
+P 13900 2300
+F 0 "J4" H 13980 2292 50  0000 L CNN
+F 1 "Conn_01x02" H 13980 2201 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal" H 13900 2300 50  0001 C CNN
+F 3 "~" H 13900 2300 50  0001 C CNN
+	1    13900 2300
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -86,9 +86,9 @@ U 1 1 5E2B971C
 P 1650 4000
 F 0 "J2" H 1600 4817 50  0000 C CNN
 F 1 "Micro_SD_Card_Det" H 1600 4726 50  0000 C CNN
-F 2 "Card:microSD_Attend_112I-TDAR-R 1" H 3700 4700 50  0001 C CNN
-F 3 "https://asset.conrad.com/media10/add/160267/c1/-/en/001308329DS01/datenblatt-1308329-attend-microsd-kartensockel-druck-druck-112i-tdar-r-1-st.pdf" H 1650 4100 50  0001 C CNN
-F 4 "1308329 - 62" H 1650 4000 50  0001 C CNN "Conrad"
+F 2 "Wuerth:693071020811" H 3700 4700 50  0001 C CNN
+F 3 "https://www.we-online.de/katalog/datasheet/693071020811.pdf" H 1650 4100 50  0001 C CNN
+F 4 "693071020811" H 1650 4000 50  0001 C CNN "Würth"
 	1    1650 4000
 	-1   0    0    -1  
 $EndComp
@@ -98,9 +98,9 @@ U 1 1 5E2BD2DD
 P 6650 1650
 F 0 "BT1" H 6768 1746 50  0000 L CNN
 F 1 "Battery_Cell" H 6768 1655 50  0000 L CNN
-F 2 "Battery:BatteryHolder_Keystone_3002_1x2032" V 6650 1710 50  0001 C CNN
-F 3 "https://www.conrad.de/de/p/renata-100340-knopfzellenhalter-1x-cr-2032-horizontal-oberflaechenmontage-smd-l-x-b-x-h-30-7-x-20-x-4-mm-1009388.html" V 6650 1710 50  0001 C CNN
-F 4 "1009388 - 62" H 6650 1650 50  0001 C CNN "Conrad"
+F 2 "Wuerth:79523141" V 6650 1710 50  0001 C CNN
+F 3 "https://www.we-online.de/katalog/datasheet/79523141.pdf" V 6650 1710 50  0001 C CNN
+F 4 "79523141" H 6650 1650 50  0001 C CNN "Würth"
 	1    6650 1650
 	-1   0    0    -1  
 $EndComp
@@ -222,17 +222,6 @@ $EndComp
 Wire Wire Line
 	6650 1450 6100 1450
 Connection ~ 6650 1450
-$Comp
-L Connector_Generic:Conn_01x03 J5
-U 1 1 5E2E2ED5
-P 13900 2850
-F 0 "J5" H 13980 2892 50  0000 L CNN
-F 1 "Conn_01x03" H 13980 2801 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 13900 2850 50  0001 C CNN
-F 3 "~" H 13900 2850 50  0001 C CNN
-	1    13900 2850
-	1    0    0    -1  
-$EndComp
 Text Notes 14550 2850 0    50   ~ 0
 UART
 Text Notes 6850 6500 2    50   ~ 0
@@ -307,13 +296,13 @@ cp. https://www.st.com/resource/en/application_note/dm00206898.pdf
 $Comp
 L Device:Q_NMOS_GSD Q1
 U 1 1 5E31A1D8
-P 2900 4700
-F 0 "Q1" H 2750 4550 50  0000 L CNN
-F 1 "AO3400A" H 2550 4450 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 3100 4800 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/Alpha-Omega-Semicon-AOS-AO3400A_C20917.pdf" H 2900 4700 50  0001 C CNN
-F 4 "C20917" H 2900 4700 50  0001 C CNN "LCSC"
-	1    2900 4700
+P 2900 4750
+F 0 "Q1" H 2750 4600 50  0000 L CNN
+F 1 "AO3400A" H 2550 4500 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 3100 4850 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Alpha-Omega-Semicon-AOS-AO3400A_C20917.pdf" H 2900 4750 50  0001 C CNN
+F 4 "C20917" H 2900 4750 50  0001 C CNN "LCSC"
+	1    2900 4750
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -334,14 +323,14 @@ Wire Wire Line
 Wire Wire Line
 	2550 4100 2800 4100
 Wire Wire Line
-	2800 4100 2800 4500
+	2800 4100 2800 4550
 Wire Wire Line
-	2800 4900 2800 5100
+	2800 4950 2800 5150
 Wire Wire Line
-	2650 5100 2800 5100
-Connection ~ 2800 5100
+	2650 5150 2800 5150
+Connection ~ 2800 5150
 Wire Wire Line
-	2800 5100 2800 5200
+	2800 5150 2800 5200
 Wire Wire Line
 	2550 3900 2650 3900
 Wire Wire Line
@@ -358,7 +347,7 @@ F 3 "" H 2650 3150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3100 4700 3400 4700
+	3100 4750 3400 4750
 $Comp
 L power:GND #PWR03
 U 1 1 5E32E7FE
@@ -371,17 +360,17 @@ F 3 "" H 850 9500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2800 5100 3400 5100
+	2800 5150 3400 5150
 Wire Wire Line
-	3400 5100 3400 5050
+	3400 5150 3400 5100
 Wire Wire Line
-	3400 4750 3400 4700
-Connection ~ 3400 4700
+	3400 4800 3400 4750
+Connection ~ 3400 4750
 Wire Wire Line
-	3400 4700 4950 4700
-Text Label 4950 4700 2    50   ~ 0
+	3400 4750 4950 4750
+Text Label 4950 4750 2    50   ~ 0
 SD_EN
-Text Label 4950 4400 2    50   ~ 0
+Text Label 4950 4500 2    50   ~ 0
 SD_DET
 $Comp
 L Device:R R9
@@ -559,13 +548,13 @@ Connection ~ 5800 3600
 $Comp
 L Device:R R11
 U 1 1 5E33508E
-P 3400 4900
-F 0 "R11" H 3470 4946 50  0000 L CNN
-F 1 "100k" H 3470 4855 50  0000 L CNN
-F 2 "Resistor_SMD:R_0402_1005Metric" V 3330 4900 50  0001 C CNN
-F 3 "~" H 3400 4900 50  0001 C CNN
-F 4 "C25741" H 3400 4900 50  0001 C CNN "LCSC"
-	1    3400 4900
+P 3400 4950
+F 0 "R11" H 3470 4996 50  0000 L CNN
+F 1 "100k" H 3470 4905 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 3330 4950 50  0001 C CNN
+F 3 "~" H 3400 4950 50  0001 C CNN
+F 4 "C25741" H 3400 4950 50  0001 C CNN "LCSC"
+	1    3400 4950
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -640,11 +629,11 @@ Text Label 12800 3750 0    50   ~ 0
 SP-
 Text Label 13050 3500 0    50   ~ 0
 DCF_SIG
-Text Label 12800 1950 0    50   ~ 0
+Text Label 12800 1850 0    50   ~ 0
 TOGGLE_UP
-Text Label 12800 2050 0    50   ~ 0
+Text Label 12800 1950 0    50   ~ 0
 TOGGLE_DOWN
-Text Label 12800 2400 0    50   ~ 0
+Text Label 12800 2300 0    50   ~ 0
 LEVER
 Text Label 11450 4150 0    50   ~ 0
 ENC_A
@@ -975,25 +964,21 @@ F 3 "" H 11550 3150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	12200 2400 12250 2400
-Wire Wire Line
 	12200 2800 12250 2800
 Wire Wire Line
 	12250 2800 12250 2400
-Connection ~ 12250 2400
 Wire Wire Line
-	12250 2400 13700 2400
+	12250 2300 13700 2300
 Wire Wire Line
-	12250 2050 12250 2000
+	12250 1950 12250 2000
 Wire Wire Line
 	12250 2000 12200 2000
 Wire Wire Line
 	12200 1600 12250 1600
 Wire Wire Line
-	12250 1600 12250 2000
-Connection ~ 12250 2000
+	12250 1600 12250 1950
 Wire Wire Line
-	12350 1950 12350 1000
+	12350 1850 12350 1000
 Wire Wire Line
 	12350 1000 12200 1000
 Wire Wire Line
@@ -2317,17 +2302,6 @@ F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/da
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:TestPoint TP1
-U 1 1 5E3C768F
-P 2050 800
-F 0 "TP1" H 2108 918 50  0000 L CNN
-F 1 "5V in" H 2108 827 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded" H 2250 800 50  0001 C CNN
-F 3 "~" H 2250 800 50  0001 C CNN
-	1    2050 800 
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:TestPoint TP2
 U 1 1 5E3C8161
 P 2750 2500
@@ -3180,18 +3154,18 @@ Wire Notes Line
 Wire Notes Line
 	5050 2300 11450 2300
 Wire Wire Line
-	12250 2050 13700 2050
+	12250 1950 13700 1950
 Wire Wire Line
-	12350 1950 13700 1950
+	12350 1850 13700 1850
 $Comp
 L Connector_Generic:Conn_01x03 J3
 U 1 1 5E2B1093
-P 13900 2050
-F 0 "J3" H 13980 2092 50  0000 L CNN
-F 1 "Conn_01x03" H 13980 2001 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 13900 2050 50  0001 C CNN
-F 3 "~" H 13900 2050 50  0001 C CNN
-	1    13900 2050
+P 13900 1950
+F 0 "J3" H 13980 1992 50  0000 L CNN
+F 1 "Conn_01x03" H 13980 1901 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 13900 1950 50  0001 C CNN
+F 3 "~" H 13900 1950 50  0001 C CNN
+	1    13900 1950
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -3570,23 +3544,23 @@ $EndComp
 $Comp
 L power:VCC #PWR048
 U 1 1 5E63717C
-P 13700 2500
-F 0 "#PWR048" H 13700 2350 50  0001 C CNN
-F 1 "VCC" V 13718 2627 50  0000 L CNN
-F 2 "" H 13700 2500 50  0001 C CNN
-F 3 "" H 13700 2500 50  0001 C CNN
-	1    13700 2500
+P 13700 2400
+F 0 "#PWR048" H 13700 2250 50  0001 C CNN
+F 1 "VCC" V 13718 2527 50  0000 L CNN
+F 2 "" H 13700 2400 50  0001 C CNN
+F 3 "" H 13700 2400 50  0001 C CNN
+	1    13700 2400
 	0    -1   -1   0   
 $EndComp
 $Comp
 L power:GND #PWR059
 U 1 1 5E40A111
-P 13700 2150
-F 0 "#PWR059" H 13700 1900 50  0001 C CNN
-F 1 "GND" H 13705 1977 50  0000 C CNN
-F 2 "" H 13700 2150 50  0001 C CNN
-F 3 "" H 13700 2150 50  0001 C CNN
-	1    13700 2150
+P 13700 2050
+F 0 "#PWR059" H 13700 1800 50  0001 C CNN
+F 1 "GND" H 13705 1877 50  0000 C CNN
+F 2 "" H 13700 2050 50  0001 C CNN
+F 3 "" H 13700 2050 50  0001 C CNN
+	1    13700 2050
 	0    1    1    0   
 $EndComp
 $Comp
@@ -3765,12 +3739,6 @@ F 4 "C85174" H 15150 8450 50  0001 C CNN "LCSC"
 $EndComp
 Wire Wire Line
 	9250 1950 10200 1950
-Wire Wire Line
-	2550 4500 2650 4500
-Wire Wire Line
-	2650 4500 2650 5100
-Wire Wire Line
-	4950 4400 2550 4400
 $Comp
 L Connector:USB_C_Receptacle_USB2.0 J1
 U 1 1 5E98AED3
@@ -3779,6 +3747,7 @@ F 0 "J1" H 1307 2417 50  0000 C CNN
 F 1 "USB_C_Receptacle_USB2.0" H 1307 2326 50  0000 C CNN
 F 2 "Wuerth:632723300011" H 1350 1550 50  0001 C CNN
 F 3 "https://www.usb.org/sites/default/files/documents/usb_type-c.zip" H 1350 1550 50  0001 C CNN
+F 4 "632723300011" H 1200 1550 50  0001 C CNN "Würth"
 	1    1200 1550
 	1    0    0    -1  
 $EndComp
@@ -3941,4 +3910,49 @@ Wire Wire Line
 Wire Wire Line
 	4450 900  4700 900 
 Connection ~ 4700 900 
+$Comp
+L Connector:TestPoint TP1
+U 1 1 5E3C768F
+P 2050 800
+F 0 "TP1" H 2108 918 50  0000 L CNN
+F 1 "5V in" H 2108 827 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded" H 2250 800 50  0001 C CNN
+F 3 "~" H 2250 800 50  0001 C CNN
+	1    2050 800 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2650 4400 2550 4400
+Wire Wire Line
+	2650 4400 2650 5150
+Wire Wire Line
+	2550 4500 4950 4500
+$Comp
+L Connector_Generic:Conn_01x04 J5
+U 1 1 5E97C9A1
+P 13900 2750
+F 0 "J5" H 13980 2742 50  0000 L CNN
+F 1 "Conn_01x04" H 13980 2651 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal" H 13900 2750 50  0001 C CNN
+F 3 "~" H 13900 2750 50  0001 C CNN
+	1    13900 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR0102
+U 1 1 5E97D3B4
+P 13700 2650
+F 0 "#PWR0102" H 13700 2500 50  0001 C CNN
+F 1 "VCC" V 13718 2777 50  0000 L CNN
+F 2 "" H 13700 2650 50  0001 C CNN
+F 3 "" H 13700 2650 50  0001 C CNN
+	1    13700 2650
+	0    -1   -1   0   
+$EndComp
+Connection ~ 12250 1950
+Wire Wire Line
+	12200 2400 12250 2400
+Connection ~ 12250 2400
+Wire Wire Line
+	12250 2400 12250 2300
 $EndSCHEMATC
