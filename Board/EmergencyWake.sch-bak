@@ -4182,10 +4182,10 @@ F 3 "https://www.pollin.de/productdownloads/D121537D.PDF" V 14050 7450 50  0001 
 	1    0    0    -1  
 $EndComp
 $Comp
-L Power_Protection:SRV05-4 U?
+L Power_Protection:SRV05-4 U11
 U 1 1 5E538F1A
 P 3150 1650
-F 0 "U?" H 2900 1200 50  0000 C CNN
+F 0 "U11" H 2900 1200 50  0000 C CNN
 F 1 "SRV05-4" H 2900 1100 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-6" H 3850 1200 50  0001 C CNN
 F 3 "http://www.onsemi.com/pub/Collateral/SRV05-4-D.PDF" H 3150 1650 50  0001 C CNN
