@@ -4224,4 +4224,6 @@ Wire Wire Line
 	3150 850  3150 1000
 Wire Wire Line
 	3150 1000 3700 1000
+Text Notes 7000 8200 2    50   ~ 0
+must connect to 5V tolerant pin
 $EndSCHEMATC
