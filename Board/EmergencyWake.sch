@@ -4216,10 +4216,10 @@ Wire Wire Line
 Text Notes 7000 8200 2    50   ~ 0
 must connect to 5V tolerant pin
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0103
 U 1 1 5E551F58
 P 9400 650
-F 0 "#PWR?" H 9400 400 50  0001 C CNN
+F 0 "#PWR0103" H 9400 400 50  0001 C CNN
 F 1 "GND" H 9405 477 50  0000 C CNN
 F 2 "" H 9400 650 50  0001 C CNN
 F 3 "" H 9400 650 50  0001 C CNN

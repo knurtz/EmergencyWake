@@ -3296,17 +3296,6 @@ F 4 "C25741" H 9250 850 50  0001 C CNN "LCSC"
 $EndComp
 Wire Wire Line
 	9750 1050 9250 1050
-$Comp
-L power:VCC #PWR072
-U 1 1 5E4E85D6
-P 9400 650
-F 0 "#PWR072" H 9400 500 50  0001 C CNN
-F 1 "VCC" H 9417 823 50  0000 C CNN
-F 2 "" H 9400 650 50  0001 C CNN
-F 3 "" H 9400 650 50  0001 C CNN
-	1    9400 650 
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	9400 650  9250 650 
 Wire Wire Line
@@ -4226,4 +4215,15 @@ Wire Wire Line
 	3150 1000 3700 1000
 Text Notes 7000 8200 2    50   ~ 0
 must connect to 5V tolerant pin
+$Comp
+L power:GND #PWR?
+U 1 1 5E551F58
+P 9400 650
+F 0 "#PWR?" H 9400 400 50  0001 C CNN
+F 1 "GND" H 9405 477 50  0000 C CNN
+F 2 "" H 9400 650 50  0001 C CNN
+F 3 "" H 9400 650 50  0001 C CNN
+	1    9400 650 
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC
