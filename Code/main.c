@@ -23,16 +23,16 @@
  * This is a periodic thread that does absolutely nothing except flashing
  * a LED.
  */
-static THD_WORKING_AREA(waThread1, 128);
-static THD_FUNCTION(Thread1, arg) {
+static THD_WORKING_AREA(waBlinker, 128);
+static THD_FUNCTION(Blinker, arg) {
 
   (void)arg;
   chRegSetThreadName("blinker");
   while (true) {
-    palSetPad(GPIOD, GPIOD_LED3);       /* Orange.  */
+    palSetLine(LINE_LED1);
     chThdSleepMilliseconds(500);
-    palClearPad(GPIOD, GPIOD_LED3);     /* Orange.  */
-    chThdSleepMilliseconds(500);
+    palClearLine(LINE_LED1);
+    chThdSleepMilliseconds(200);
   }
 }
 
@@ -60,19 +60,20 @@ int main(void) {
   palSetPadMode(GPIOA, 3, PAL_MODE_ALTERNATE(7));
 
   /*
-   * Creates the example thread.
+   * Creates the blinker thread.
    */
-  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
+  chThdCreateStatic(waBlinker, sizeof(waBlinker), NORMALPRIO, Blinker, NULL);
 
   /*
    * Normal main() thread activity, in this demo it does nothing except
    * sleeping in a loop and check the button state.
    */
   while (true) {
-    if (palReadPad(GPIOA, GPIOA_BUTTON)) {
+    if (palReadLine(LINE_USER_BUTTON)) {
       test_execute((BaseSequentialStream *)&SD2, &rt_test_suite);
       test_execute((BaseSequentialStream *)&SD2, &oslib_test_suite);
     }
     chThdSleepMilliseconds(500);
   }
-}
+
+} /* end of main() */
