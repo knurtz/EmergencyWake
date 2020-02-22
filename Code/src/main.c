@@ -1,7 +1,9 @@
 #include "ch.h"
 #include "hal.h"
+
 #include "rt_test_root.h"
 #include "oslib_test_root.h"
+
 #include "usbcfg.h"
 
 /*
@@ -42,7 +44,14 @@ int main(void) {
   palSetLineMode(LINE_DISCO_LED3, PAL_MODE_OUTPUT_PUSHPULL);
   palSetLineMode(LINE_DISCO_LED4, PAL_MODE_OUTPUT_PUSHPULL);
 
-/*
+  palSetPadMode(GPIOA, GPIOA_USB_DM, PIN_MODE_ALTERNATE(10));
+  palSetPadMode(GPIOA, GPIOA_USB_DP, PIN_MODE_ALTERNATE(10));
+
+  // Creates the blinker thread.
+  chThdCreateStatic(waBlinker, sizeof(waBlinker), NORMALPRIO, Blinker, NULL);
+
+  chThdSleepMilliseconds(1000);
+
   // Initializes a serial-over-USB CDC driver.
   sduObjectInit(&SDU1);
   sduStart(&SDU1, &serusbcfg);
@@ -51,19 +60,20 @@ int main(void) {
   usbDisconnectBus(serusbcfg.usbp);
   chThdSleepMilliseconds(1000);
   usbStart(serusbcfg.usbp, &usbcfg);
+  chThdSleepMilliseconds(1000);
   usbConnectBus(serusbcfg.usbp);
 
-*/
-  // Creates the blinker thread.
-  chThdCreateStatic(waBlinker, sizeof(waBlinker), NORMALPRIO, Blinker, NULL);
-
   while (true) {
-    if (palReadLine(LINE_USER_BUTTON)) {
-      test_execute((BaseSequentialStream *)&SDU1, &rt_test_suite);
-      test_execute((BaseSequentialStream *)&SDU1, &oslib_test_suite);
+
+    if (palReadLine(LINE_DISCO_BUTTON)) {
+      //test_execute((BaseSequentialStream *)&SDU1, &rt_test_suite);
+      //test_execute((BaseSequentialStream *)&SDU1, &oslib_test_suite);
+
+      palToggleLine(LINE_DISCO_LED3);
     }
+
     chThdSleepMilliseconds(500);
-    palToggleLine(LINE_DISCO_LED3);
+
   }
 
 } /* end of main() */
