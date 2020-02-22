@@ -1,12 +1,15 @@
 #include "ch.h"
 #include "hal.h"
 
+#include "shell.h"
+#include "chprintf.h"
+
 #include "usbcfg.h"
 
-/*
- * This is a periodic thread that does absolutely nothing except flashing
- * a LED.
- */
+/*===========================================================================*/
+/* Thread functions   .                                                      */
+/*===========================================================================*/
+
 static THD_WORKING_AREA(waBlinker, 128);
 static THD_FUNCTION(Blinker, arg) {
 
@@ -24,9 +27,37 @@ static THD_FUNCTION(Blinker, arg) {
   }
 }
 
-/*
- * Application entry point.
- */
+/*===========================================================================*/
+/* Command line related.                                                     */
+/*===========================================================================*/
+
+#define SHELL_WA_SIZE   THD_WORKING_AREA_SIZE(2048)
+
+static void cmd_write(BaseSequentialStream *chp, int argc, char *argv[]) {
+
+  (void)argv;
+  if (argc > 0) {
+    chprintf(chp, "Usage: write\r\n");
+    return;
+  }
+
+  chprintf(chp, "Hello world!");
+}
+
+static const ShellCommand commands[] = {
+  {"hello", cmd_write},
+  {NULL, NULL}
+};
+
+static const ShellConfig shell_cfg1 = {
+  (BaseSequentialStream *)&SDU1,
+  commands
+};
+
+/*===========================================================================*/
+/* Application entry point                                                   */
+/*===========================================================================*/
+
 int main(void) {
 
   // System initializations
@@ -47,8 +78,6 @@ int main(void) {
   // Creates the blinker thread.
   chThdCreateStatic(waBlinker, sizeof(waBlinker), NORMALPRIO, Blinker, NULL);
 
-  chThdSleepMilliseconds(1000);
-
   // Initializes a serial-over-USB CDC driver.
   sduObjectInit(&SDU1);
   sduStart(&SDU1, &serusbcfg);
@@ -59,15 +88,19 @@ int main(void) {
   usbStart(serusbcfg.usbp, &usbcfg);
   usbConnectBus(serusbcfg.usbp);
 
+  shellInit();
+
   while (true) {
 
-    if (palReadLine(LINE_DISCO_BUTTON)) {
-      palToggleLine(LINE_DISCO_LED3);
-      static uint8_t buf[] = "Hello world!";
-      chnWrite(&SDU1, buf, sizeof buf - 1);
+    if (SDU1.config->usbp->state == USB_ACTIVE) {
+      thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
+                                              "shell", NORMALPRIO + 1,
+                                              shellThread, (void *)&shell_cfg1);
+      chThdWait(shelltp);       // wait for termination of shell thread
     }
 
-    chThdSleepMilliseconds(500);
+    chThdSleepMilliseconds(1000);
+    //chprintf((BaseSequentialStream *)&SDU1, "Hello world!");
 
   }
 
