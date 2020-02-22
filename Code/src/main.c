@@ -1,9 +1,6 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "rt_test_root.h"
-#include "oslib_test_root.h"
-
 #include "usbcfg.h"
 
 /*
@@ -58,17 +55,16 @@ int main(void) {
 
   // Activates the USB driver and then the USB bus pull-up on D+.
   usbDisconnectBus(serusbcfg.usbp);
-  chThdSleepMilliseconds(1500);
+  chThdSleepMilliseconds(1000);
   usbStart(serusbcfg.usbp, &usbcfg);
   usbConnectBus(serusbcfg.usbp);
 
   while (true) {
 
     if (palReadLine(LINE_DISCO_BUTTON)) {
-      //test_execute((BaseSequentialStream *)&SDU1, &rt_test_suite);
-      //test_execute((BaseSequentialStream *)&SDU1, &oslib_test_suite);
-
       palToggleLine(LINE_DISCO_LED3);
+      static uint8_t buf[] = "Hello world!";
+      chnWrite(&SDU1, buf, sizeof buf - 1);
     }
 
     chThdSleepMilliseconds(500);
