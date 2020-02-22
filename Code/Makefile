@@ -129,7 +129,8 @@ LDSCRIPT= $(STARTUPLD)/STM32F407xE.ld
 # setting.
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
-       main.c
+       src/main.c \
+	   src/usbcfg.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -142,7 +143,7 @@ ASMSRC = $(ALLASMSRC)
 ASMXSRC = $(ALLXASMSRC)
 
 # Inclusion directories.
-INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC)
+INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC) inc
 
 # Define C warning options here.
 CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes

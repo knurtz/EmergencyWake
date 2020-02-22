@@ -38,21 +38,20 @@
 
 /*
  * Board oscillators-related settings.
- * NOTE: LSE not fitted.
  */
 #if !defined(STM32_LSECLK)
-#define STM32_LSECLK                32786U
+#define STM32_LSECLK                0U
 #endif
 
 #if !defined(STM32_HSECLK)
-#define STM32_HSECLK                0U
+#define STM32_HSECLK                8000000U
 #endif
 
 /*
  * Board voltages.
  * Required for performance limits calculation.
  */
-#define STM32_VDD                   330U
+#define STM32_VDD                   300U
 
 /*
  * MCU type as defined in the ST header.
@@ -148,14 +147,29 @@
 #define GPIOE_5V_SENSE              15U
 
 /*
- * IO lines assignments.
+ * EmergencyWake board assignments.
  */
 #define LINE_USER_BUTTON            PAL_LINE(GPIOE, GPIOE_USER_BUTTON)
+#define LINE_LEVER                  PAL_LINE(GPIOA, GPIOA_WAKEUP)
+#define LINE_TOGGLE_UP              PAL_LINE(GPIOE, GPIOE_TOGGLE_UP)
+#define LINE_TOGGLE_DOWN            PAL_LINE(GPIOE, GPIOE_TOGGLE_DOWN)
+#define LINE_ENCODER_BUTTON         PAL_LINE(GPIOE, GPIOE_ENCODER_BUTTON)
 
 #define LINE_LED1                   PAL_LINE(GPIOC, GPIOC_LED1)                     
 #define LINE_LED2                   PAL_LINE(GPIOC, GPIOC_LED2)
 #define LINE_LED3                   PAL_LINE(GPIOC, GPIOC_LED3)
 #define LINE_LED4                   PAL_LINE(GPIOC, GPIOC_LED4)
+
+/*
+ * Discovery board assignments.
+ */
+#define LINE_DISCO_BUTTON           PAL_LINE(GPIOA, 0)
+
+#define LINE_DISCO_LED1             PAL_LINE(GPIOD, 12U)       // green                 
+#define LINE_DISCO_LED2             PAL_LINE(GPIOD, 13U)       // orange
+#define LINE_DISCO_LED3             PAL_LINE(GPIOD, 14U)       // red
+#define LINE_DISCO_LED4             PAL_LINE(GPIOD, 15U)       // blue
+
 
 /*===========================================================================*/
 /* Driver pre-compile time settings.                                         */
