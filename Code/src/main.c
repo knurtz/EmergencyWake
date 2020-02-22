@@ -44,8 +44,8 @@ int main(void) {
   palSetLineMode(LINE_DISCO_LED3, PAL_MODE_OUTPUT_PUSHPULL);
   palSetLineMode(LINE_DISCO_LED4, PAL_MODE_OUTPUT_PUSHPULL);
 
-  palSetPadMode(GPIOA, GPIOA_USB_DM, PIN_MODE_ALTERNATE(10));
-  palSetPadMode(GPIOA, GPIOA_USB_DP, PIN_MODE_ALTERNATE(10));
+  palSetPadMode(GPIOA, GPIOA_USB_DM, PAL_MODE_ALTERNATE(10));
+  palSetPadMode(GPIOA, GPIOA_USB_DP, PAL_MODE_ALTERNATE(10));
 
   // Creates the blinker thread.
   chThdCreateStatic(waBlinker, sizeof(waBlinker), NORMALPRIO, Blinker, NULL);
@@ -58,9 +58,8 @@ int main(void) {
 
   // Activates the USB driver and then the USB bus pull-up on D+.
   usbDisconnectBus(serusbcfg.usbp);
-  chThdSleepMilliseconds(1000);
+  chThdSleepMilliseconds(1500);
   usbStart(serusbcfg.usbp, &usbcfg);
-  chThdSleepMilliseconds(1000);
   usbConnectBus(serusbcfg.usbp);
 
   while (true) {
