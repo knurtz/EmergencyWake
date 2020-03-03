@@ -1319,12 +1319,12 @@ $EndComp
 $Comp
 L Connector:TestPoint TP4
 U 1 1 5EB86E6F
-P 5000 900
-F 0 "TP4" H 5058 1018 50  0000 L CNN
-F 1 "VCC" H 5058 927 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded" H 5200 900 50  0001 C CNN
-F 3 "~" H 5200 900 50  0001 C CNN
-	1    5000 900 
+P 5550 1350
+F 0 "TP4" H 5608 1468 50  0000 L CNN
+F 1 "VCC" H 5608 1377 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded" H 5750 1350 50  0001 C CNN
+F 3 "~" H 5750 1350 50  0001 C CNN
+	1    5550 1350
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -3637,10 +3637,7 @@ Wire Wire Line
 Wire Wire Line
 	5250 1200 5250 1350
 Wire Wire Line
-	5250 1350 5650 1350
-Wire Wire Line
-	5000 900  5250 900 
-Connection ~ 5250 900 
+	5250 1350 5550 1350
 $Comp
 L Connector:TestPoint TP1
 U 1 1 5E3C768F
@@ -4324,4 +4321,7 @@ Wire Wire Line
 	8950 3200 9850 3200
 Wire Wire Line
 	8950 3300 9850 3300
+Connection ~ 5550 1350
+Wire Wire Line
+	5550 1350 5650 1350
 $EndSCHEMATC
