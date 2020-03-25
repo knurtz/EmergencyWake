@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:EmergencyWake-cache
 EELAYER 30 0
 EELAYER END
 $Descr A2 23386 16535
@@ -1347,8 +1348,8 @@ F 3 "~" H 20150 7050 50  0001 C CNN
 	1    19950 7050
 	-1   0    0    1   
 $EndComp
-Text Notes 22050 11950 1    50   ~ 0
-Grid 3 can either be permanently\nactive be driven together with\nGrid 2 (selectable by solder jumper)
+Text Notes 21400 11000 0    50   ~ 0
+Grid 3 can either be permanently\nactive or be driven together with\nGrid 2 (selectable by solder jumper)
 Connection ~ 21400 11950
 $Comp
 L Device:R R40
@@ -2134,19 +2135,6 @@ F 4 "C23196" V 17150 10800 50  0001 C CNN "LCSC"
 	1    17150 10800
 	0    1    1    0   
 $EndComp
-$Comp
-L power:VCC #PWR038
-U 1 1 5FFA697A
-P 16900 10800
-F 0 "#PWR038" H 16900 10650 50  0001 C CNN
-F 1 "VCC" H 16917 10973 50  0000 C CNN
-F 2 "" H 16900 10800 50  0001 C CNN
-F 3 "" H 16900 10800 50  0001 C CNN
-	1    16900 10800
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	16900 10800 17000 10800
 Text Label 16900 11000 0    50   ~ 0
 VFD_DIN
 Text Label 16900 11200 0    50   ~ 0
@@ -3116,31 +3104,6 @@ Wire Wire Line
 	19950 7050 20050 7050
 Wire Wire Line
 	18750 6950 20050 6950
-$Comp
-L Device:R R42
-U 1 1 5E477866
-P 16700 11450
-F 0 "R42" H 16770 11496 50  0000 L CNN
-F 1 "100k" H 16770 11405 50  0000 L CNN
-F 2 "Resistor_SMD:R_0402_1005Metric" V 16630 11450 50  0001 C CNN
-F 3 "~" H 16700 11450 50  0001 C CNN
-F 4 "C25741" H 16700 11450 50  0001 C CNN "LCSC"
-	1    16700 11450
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:VCC #PWR0101
-U 1 1 5E678EA5
-P 16700 11750
-F 0 "#PWR0101" H 16700 11600 50  0001 C CNN
-F 1 "VCC" H 16717 11923 50  0000 C CNN
-F 2 "" H 16700 11750 50  0001 C CNN
-F 3 "" H 16700 11750 50  0001 C CNN
-	1    16700 11750
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	16700 11600 16700 11750
 Wire Wire Line
 	17400 11300 16900 11300
 Wire Wire Line
@@ -3218,8 +3181,6 @@ NoConn ~ 18000 13600
 NoConn ~ 17900 13600
 NoConn ~ 17800 13600
 NoConn ~ 17400 11550
-Wire Wire Line
-	16700 11100 16700 11300
 $Comp
 L VFD:PT6312B U7
 U 1 1 5F5EFE8A
@@ -3646,7 +3607,7 @@ $EndComp
 Wire Wire Line
 	19600 5650 19250 5650
 Text Label 18900 5650 0    50   ~ 0
-I2C_EN
+PROX_EN
 Wire Wire Line
 	19900 5450 19900 5400
 Wire Wire Line
@@ -3662,7 +3623,7 @@ I2C_SCL
 Text Label 18900 5200 0    50   ~ 0
 I2C_SDA
 Text Label 8350 9200 0    50   ~ 0
-I2C_EN
+PROX_EN
 Wire Wire Line
 	9250 9200 8350 9200
 $Comp
@@ -4245,8 +4206,6 @@ Wire Wire Line
 Wire Wire Line
 	10550 14350 10550 15100
 Wire Wire Line
-	10550 15100 9450 15100
-Wire Wire Line
 	10850 14350 10850 15200
 Wire Wire Line
 	10850 15200 9450 15200
@@ -4523,4 +4482,45 @@ F 4 "C1570" H 7800 7000 50  0001 C CNN "LCSC"
 	1    7800 7000
 	1    0    0    -1  
 $EndComp
+$Comp
+L Device:R R42
+U 1 1 5E477866
+P 16700 10950
+F 0 "R42" H 16770 10996 50  0000 L CNN
+F 1 "100k" H 16770 10905 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 16630 10950 50  0001 C CNN
+F 3 "~" H 16700 10950 50  0001 C CNN
+F 4 "C25741" H 16700 10950 50  0001 C CNN "LCSC"
+	1    16700 10950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	16400 10800 16700 10800
+$Comp
+L power:VCC #PWR038
+U 1 1 5FFA697A
+P 16400 10800
+F 0 "#PWR038" H 16400 10650 50  0001 C CNN
+F 1 "VCC" H 16417 10973 50  0000 C CNN
+F 2 "" H 16400 10800 50  0001 C CNN
+F 3 "" H 16400 10800 50  0001 C CNN
+	1    16400 10800
+	0    -1   -1   0   
+$EndComp
+Connection ~ 16700 10800
+Wire Wire Line
+	16700 10800 17000 10800
+$Comp
+L Connector:TestPoint TP7
+U 1 1 5E81CC9A
+P 9150 15100
+F 0 "TP7" H 9208 15218 50  0000 L CNN
+F 1 "MCLK" H 9208 15127 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Loop_D1.80mm_Drill1.0mm_Beaded" H 9350 15100 50  0001 C CNN
+F 3 "~" H 9350 15100 50  0001 C CNN
+	1    9150 15100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9150 15100 10550 15100
 $EndSCHEMATC
