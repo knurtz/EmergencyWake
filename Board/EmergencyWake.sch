@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:EmergencyWake-cache
 EELAYER 30 0
 EELAYER END
 $Descr A2 23386 16535
@@ -4087,7 +4086,8 @@ P 10100 12800
 F 0 "U5" H 11250 11200 50  0000 C CNN
 F 1 "WM8960" H 11250 11300 50  0000 C CNN
 F 2 "Package_DFN_QFN:QFN-32-1EP_5x5mm_P0.5mm_EP3.45x3.45mm" H 10100 14750 50  0001 C CNN
-F 3 "" H 9550 12450 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Wolfson-Microelectronics-PLC-WM8960CGEFL-RV_C18752.pdf" H 9550 12450 50  0001 C CNN
+F 4 "C18752" H 10100 12800 50  0001 C CNN "LCSC"
 	1    10100 12800
 	1    0    0    -1  
 $EndComp
