@@ -5,13 +5,13 @@ A bedside alarm clock that uses a big red [emergency brake lever](https://www.go
 
 To display the time, a vintage [VFD](https://en.wikipedia.org/wiki/Vacuum_fluorescent_display) is used.
 
-An STM32 microcontroller and its RTC unit is used for tracking the time. It goes into deep sleep mode most of the time.
+An STM32 microcontroller and its RTC unit is used for tracking the time. It's in deep sleep most of the time.
 
 Soundfiles from an SD card can be read by the microcontroller and played back through a small speaker.
 
-Because of the VFD's power consumption, the clock can't run on battery power, so a USB-C connector for a 5 V power supply is supplied. 
+Because of the VFD's relatively high power consumption, the clock can't run on battery power alone, so a USB-C connector is used for a 5 V power supply. 
 
-In case of a power outage, a 3 V coin cell battery powers the microcontroller. In this scenario a small buzzer will be used instead of a wakeup melody, in order to use as little power as possible. Also the display won't work. That way, I should soon notice that something's wrong.
+In case of a power outage, a 3 V coin cell battery powers the microcontroller. In this scenario a small buzzer will be used instead of a wakeup melody, in order to use as little power as possible and to also notify the user, something's wrong. Also the display won't work.
 
 Also, there will be support for a [DCF77](https://en.wikipedia.org/wiki/DCF77) radio clock module to automatically update the time.
 
@@ -40,14 +40,15 @@ A toggle switch allows programming two independent alarms. The times are set usi
 - small buzzer
 - toggle switch from [pollin.de](https://www.pollin.de/p/kippschalter-kn3-c-103a-1-polig-on-off-on-420023)
 - rotary encoder from [reichelt.de](https://www.reichelt.de/drehimpulsegeber-15-impulse-30-rastungen-vertikal-stec11b03-p73913.html?r=1)
-- MC34063 DCDC converter for generating -19 V
+- MC34063 DCDC converter for generating negative supply for VFD
 - 5 V to 3.3 V step down regulator from [Würth](https://www.we-online.de/katalog/datasheet/173950378.pdf)
+- [WM8960](https://datasheet.lcsc.com/szlcsc/Wolfson-Microelectronics-PLC-WM8960CGEFL-RV_C18752.pdf) audio codec with integrated class-D amplifier
 
 ## Usage
 The clock will be in deep sleep most of the time. The display can be activated for about 10 seconds by tugging the emergency brake shortly.
 
-While the time is being displayed, flipping the toggle switch into one of its two "on" positions allows setting the alarm times. The alarms can each be de-/activated by pulling the emergency lever shortly. A deactivated alarm will be represented by \_\_:\_\_ on the display.
+While the time is being displayed, flipping the toggle switch into one of its two "on" positions allows setting the alarm times. In this mode, the alarms can each be (de-)activated by pulling the emergency lever once. A deactivated alarm will be represented by \_\_:\_\_ on the display.
 
-Setting the alarm time is done by pressing the rotary encoder's push button, then setting the hours and then pressing it again to set the minutes. Alarm times are stored inside an EEPROM IC to avoid loss of settings after a power outage.
+Setting the alarm time is done by pressing the rotary encoder's push button to set the hours and then pressing it again to set the minutes. Alarm times are stored inside an EEPROM IC to avoid loss of settings after a power outage.
 
 Once one alarm rings, pulling the emergency lever shortly will put it into snooze mode, pulling longer will deactivate the alarm.
