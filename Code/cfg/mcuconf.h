@@ -178,7 +178,7 @@
 /*
  * I2S driver system settings.
  */
-#define STM32_I2S_USE_SPI2                  FALSE
+#define STM32_I2S_USE_SPI2                  TRUE
 #define STM32_I2S_USE_SPI3                  FALSE
 #define STM32_I2S_SPI2_IRQ_PRIORITY         10
 #define STM32_I2S_SPI3_IRQ_PRIORITY         10

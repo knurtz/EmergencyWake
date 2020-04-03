@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "stm32_gpio.h": "c"
+        "stm32_gpio.h": "c",
+        "ff.h": "c"
     }
 }
