@@ -18,6 +18,9 @@ static THD_FUNCTION(Blinker, arg) {
 
   (void)arg;
   chRegSetThreadName("blinker");
+
+  uint8_t foo = 0;
+
   while (true) {
     palSetLine(LINE_DISCO_LED1);
     chThdSleepMilliseconds(100);
@@ -126,7 +129,7 @@ void cmd_sdc(BaseSequentialStream *chp, int argc, char *argv[]) {
   sdcDisconnect(&SDCD1);
 }
 
-// tree command
+// FatFS tree command
 static void cmd_tree(BaseSequentialStream *chp, int argc, char *argv[]) {
   FRESULT err;
   uint32_t fre_clust;
@@ -173,7 +176,7 @@ static void cmd_tree(BaseSequentialStream *chp, int argc, char *argv[]) {
   fs_ready = FALSE;
 }
 
-// create command
+// FatFS create command
 static void cmd_create(BaseSequentialStream *chp, int argc, char *argv[]) {
   FRESULT err;
   FIL f;
@@ -270,12 +273,14 @@ int main(void) {
   palSetLineMode(LINE_DISCO_LED3, PAL_MODE_OUTPUT_PUSHPULL);
   palSetLineMode(LINE_DISCO_LED4, PAL_MODE_OUTPUT_PUSHPULL);
 
-  palSetPadMode(GPIOA, GPIOA_USB_DM, PAL_MODE_ALTERNATE(10));     // USB FS DM
-  palSetPadMode(GPIOA, GPIOA_USB_DP, PAL_MODE_ALTERNATE(10));     // USB FS DP
+  palSetLineMode(LINE_USB_DP, PAL_MODE_ALTERNATE(USB_AF));     // USB FS DM
+  palSetLineMode(LINE_USB_DM, PAL_MODE_ALTERNATE(USB_AF));     // USB FS DP
 
-  palSetPadMode(GPIOD, 2, PAL_STM32_MODE_ALTERNATE | PAL_STM32_OTYPE_PUSHPULL | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_ALTERNATE(12));    // SDIO CMD
-  palSetPadMode(GPIOC, 12, PAL_STM32_MODE_ALTERNATE | PAL_STM32_OTYPE_PUSHPULL | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_ALTERNATE(12));   // SDIO CK
-  palSetPadMode(GPIOC, 8, PAL_STM32_MODE_ALTERNATE | PAL_STM32_OTYPE_PUSHPULL | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_ALTERNATE(12));    // SDIO D0
+  palSetLineMode(LINE_SD_CMD, PAL_MODE_ALTERNATE(SD_AF));     // SDIO CMD
+  palSetLineMode(LINE_SD_CK, PAL_MODE_ALTERNATE(SD_AF));      // SDIO CK
+  palSetLineMode(LINE_SD_D0, PAL_MODE_ALTERNATE(SD_AF));      // SDIO D0
+
+  palSetLineMode(LINE_I2S_MCLK, PAL_MODE_ALTERNATE(MCO_AF));    // MCLK as MCO2
 
   // Initialize a serial-over-USB CDC driver
   sduObjectInit(&SDU1);

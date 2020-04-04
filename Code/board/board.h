@@ -64,11 +64,11 @@
 #define GPIOA_WAKEUP                0U
 #define GPIOA_LEVER                 1U
 #define GPIOA_PIN2                  2U
-#define GPIOA_AUDIO_EN              3U
-#define GPIOA_AUDIO_OUT             4U
-#define GPIOA_PIN5                  5U
-#define GPIOA_LDR_IN                6U
-#define GPIOA_PIN7                  7U
+#define GPIOA_PIN3                  3U
+#define GPIOA_SD_CS                 4U
+#define GPIOA_SD_SCK                5U
+#define GPIOA_LDR                   6U
+#define GPIOA_SD_MOSI               7U
 #define GPIOA_PIN8                  8U
 #define GPIOA_UART_TX               9U
 #define GPIOA_UART_RX               10U
@@ -76,20 +76,20 @@
 #define GPIOA_USB_DP                12U
 #define GPIOA_SWDIO                 13U
 #define GPIOA_SWCLK                 14U
-#define GPIOA_SD_NSS                15U
+#define GPIOA_I2S_WS                15U
 
-#define GPIOB_PIN0                  0U
+#define GPIOB_I2C_INT               0U
 #define GPIOB_BUZZER                1U
 #define GPIOB_PIN2                  2U
-#define GPIOB_SD_SCK                3U
+#define GPIOB_PIN3                  3U
 #define GPIOB_SD_MISO               4U
-#define GPIOB_SD_MOSI               5U
+#define GPIOB_I2S_SD                5U
 #define GPIOB_EEPROM_SCL            6U
 #define GPIOB_EEPROM_SDA            7U
 #define GPIOB_PIN8                  8U
 #define GPIOB_PIN9                  9U
-#define GPIOB_PROXIMITY_SCL         10U
-#define GPIOB_PROXIMITY_SDA         11U
+#define GPIOB_I2C_SCL               10U
+#define GPIOB_I2C_SDA               11U
 #define GPIOB_DISPLAY_STB           12U
 #define GPIOB_DISPLAY_SCK           13U
 #define GPIOB_DISPLAY_MISO          14U
@@ -104,8 +104,8 @@
 #define GPIOC_FILA                  6U
 #define GPIOC_FILB                  7U
 #define GPIOC_SD_D0                 8U
-#define GPIOC_PIN9                  9U
-#define GPIOC_PIN10                 10U
+#define GPIOC_I2S_MCLK              9U
+#define GPIOC_I2S_CK                10U
 #define GPIOC_PIN11                 11U
 #define GPIOC_SD_CK                 12U
 #define GPIOC_PIN13                 13U
@@ -121,20 +121,20 @@
 #define GPIOD_SD_DET                6U
 #define GPIOD_PIN7                  7U
 #define GPIOD_PIN8                  8U
-#define GPIOD_PIN9                  9U
+#define GPIOD_PROX_EN               9U
 #define GPIOD_PIN10                 10U
 #define GPIOD_PIN11                 11U
-#define GPIOD_ENCODER_A             12U
-#define GPIOD_ENCODER_B             13U
+#define GPIOD_ENC_A                 12U
+#define GPIOD_ENC_B                 13U
 #define GPIOD_PIN14                 14U
 #define GPIOD_DCDC_EN               15U
 
 #define GPIOE_EEPROM_NWC            0U
 #define GPIOE_PIN1                  1U
-#define GPIOE_ENCODER_BUTTON        2U
+#define GPIOE_ENC_BUT               2U
 #define GPIOE_TOGGLE_UP             3U
-#define GPIOE_TOGGLE_DOWN           4U
-#define GPIOE_USER_BUTTON           5U
+#define GPIOE_TOGGLE_DN             4U
+#define GPIOE_USER_BUT              5U
 #define GPIOE_PIN6                  6U
 #define GPIOE_PIN7                  7U
 #define GPIOE_PIN8                  8U
@@ -149,16 +149,38 @@
 /*
  * EmergencyWake board assignments.
  */
-#define LINE_USER_BUTTON            PAL_LINE(GPIOE, GPIOE_USER_BUTTON)
-#define LINE_LEVER                  PAL_LINE(GPIOA, GPIOA_WAKEUP)
-#define LINE_TOGGLE_UP              PAL_LINE(GPIOE, GPIOE_TOGGLE_UP)
-#define LINE_TOGGLE_DOWN            PAL_LINE(GPIOE, GPIOE_TOGGLE_DOWN)
-#define LINE_ENCODER_BUTTON         PAL_LINE(GPIOE, GPIOE_ENCODER_BUTTON)
 
 #define LINE_LED1                   PAL_LINE(GPIOC, GPIOC_LED1)                     
 #define LINE_LED2                   PAL_LINE(GPIOC, GPIOC_LED2)
 #define LINE_LED3                   PAL_LINE(GPIOC, GPIOC_LED3)
 #define LINE_LED4                   PAL_LINE(GPIOC, GPIOC_LED4)
+
+#define LINE_USER_BUT               PAL_LINE(GPIOE, GPIOE_USER_BUT)
+#define LINE_LEVER                  PAL_LINE(GPIOA, GPIOA_LEVER)
+#define LINE_TOGGLE_UP              PAL_LINE(GPIOE, GPIOE_TOGGLE_UP)
+#define LINE_TOGGLE_DN              PAL_LINE(GPIOE, GPIOE_TOGGLE_DN)
+#define LINE_ENC_BUT                PAL_LINE(GPIOE, GPIOE_ENC_BUT)
+
+#define LINE_USB_DP                 PAL_LINE(GPIOA, GPIOA_USB_DP)
+#define LINE_USB_DM                 PAL_LINE(GPIOA, GPIOA_USB_DM)
+#define USB_AF                      10U
+
+#define LINE_SD_CMD                 PAL_LINE(GPIOD, GPIOD_SD_CMD)
+#define LINE_SD_CK                  PAL_LINE(GPIOC, GPIOC_SD_CK)
+#define LINE_SD_D0                  PAL_LINE(GPIOC, GPIOC_SD_D0)
+#define SD_AF                       12U
+
+#define LINE_I2S_MCLK               PAL_LINE(GPIOC, GPIOC_I2S_MCLK)
+#define MCO_AF                      0U
+#define LINE_I2S_CK                 PAL_LINE(GPIOC, GPIOC_I2S_CK)        // I2S3 - CK         
+#define LINE_I2S_SD                 PAL_LINE(GPIOB, GPIOB_I2S_SD)        // I2S3 - SD
+#define LINE_I2S_WS                 PAL_LINE(GPIOA, GPIOA_I2S_WS)        // I2S3 - WS
+#define I2S_AF                      6U
+
+#define LINE_I2C_SCL                PAL_LINE(GPIOB, GPIOB_I2C_SCL)       // I2C2 - SCL
+#define LINE_I2C_SDA                PAL_LINE(GPIOC, GPIOB_I2C_SDA)       // I2C2 - SDA
+#define I2C_AF                      4U
+
 
 /*
  * Discovery board assignments.
