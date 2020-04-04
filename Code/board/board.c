@@ -124,6 +124,8 @@ static void stm32_gpio_init(void) {
 
   palSetLineMode(LINE_I2S_MCLK, PAL_MODE_ALTERNATE(MCO_AF));    // MCLK as MCO2
 
+  palSetPadMode(GPIOB, 1, PAL_MODE_INPUT_PULLUP);         // temporarily used for proximity sensor interrupt
+
 }
 
 /*===========================================================================*/
