@@ -61,9 +61,9 @@ typedef struct {
 /**
  * @brief   STM32 GPIO static initialization data.
  */
+/*
 static const gpio_config_t gpio_default_config = {
 
-/*
   {VAL_GPIOA_MODER, VAL_GPIOA_OTYPER, VAL_GPIOA_OSPEEDR, VAL_GPIOA_PUPDR,
    VAL_GPIOA_ODR,   VAL_GPIOA_AFRL,   VAL_GPIOA_AFRH},
 
@@ -78,13 +78,14 @@ static const gpio_config_t gpio_default_config = {
 
   {VAL_GPIOE_MODER, VAL_GPIOE_OTYPER, VAL_GPIOE_OSPEEDR, VAL_GPIOE_PUPDR,
    VAL_GPIOE_ODR,   VAL_GPIOE_AFRL,   VAL_GPIOE_AFRH}
-*/
+
 };
+*/
 
 /*===========================================================================*/
 /* Driver local functions.                                                   */
 /*===========================================================================*/
-
+/*
 static void gpio_init(stm32_gpio_t *gpiop, const gpio_setup_t *config) {
   gpiop->OTYPER  = config->otyper;
   gpiop->OSPEEDR = config->ospeedr;
@@ -94,6 +95,7 @@ static void gpio_init(stm32_gpio_t *gpiop, const gpio_setup_t *config) {
   gpiop->AFRH    = config->afrh;
   gpiop->MODER   = config->moder;
 }
+*/
 
 static void stm32_gpio_init(void) {
 
@@ -102,18 +104,25 @@ static void stm32_gpio_init(void) {
   rccResetAHB1(STM32_GPIO_EN_MASK);
   rccEnableAHB1(STM32_GPIO_EN_MASK, true);
 
-  /* Initializing all the defined GPIO ports.*/
-/*
-  gpio_init(GPIOA, &gpio_default_config.PAData);
+  /* Initializing all used GPIO ports.*/
+  palSetLineMode(LINE_DISCO_BUTTON, PAL_MODE_INPUT);
 
-  gpio_init(GPIOB, &gpio_default_config.PBData);
+  palSetLineMode(LINE_DISCO_LED1, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(LINE_DISCO_LED2, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(LINE_DISCO_LED3, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(LINE_DISCO_LED4, PAL_MODE_OUTPUT_PUSHPULL);
 
-  gpio_init(GPIOC, &gpio_default_config.PCData);
+  palSetLineMode(LINE_USB_DP, PAL_MODE_ALTERNATE(USB_AF));      // USB FS DM
+  palSetLineMode(LINE_USB_DM, PAL_MODE_ALTERNATE(USB_AF));      // USB FS DP
 
-  gpio_init(GPIOD, &gpio_default_config.PDData);
+  palSetLineMode(LINE_SD_CMD, PAL_MODE_ALTERNATE(SD_AF));       // SDIO CMD
+  palSetLineMode(LINE_SD_CK, PAL_MODE_ALTERNATE(SD_AF));        // SDIO CK
+  palSetLineMode(LINE_SD_D0, PAL_MODE_ALTERNATE(SD_AF));        // SDIO D0
 
-  gpio_init(GPIOE, &gpio_default_config.PEData);
-  */
+  palSetLineMode(LINE_I2C_SCL, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 SCL
+  palSetLineMode(LINE_I2C_SDA, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 SDA
+
+  palSetLineMode(LINE_I2S_MCLK, PAL_MODE_ALTERNATE(MCO_AF));    // MCLK as MCO2
 
 }
 
@@ -138,13 +147,13 @@ void __early_init(void) {
 }
 
 #if HAL_USE_SDC || defined(__DOXYGEN__)
+
 /**
  * @brief   SDC card detection.
  */
 bool sdc_lld_is_card_inserted(SDCDriver *sdcp) {
 
   (void)sdcp;
-  /* CHTODO: Fill the implementation.*/
   return true;
 }
 
@@ -154,10 +163,10 @@ bool sdc_lld_is_card_inserted(SDCDriver *sdcp) {
 bool sdc_lld_is_write_protected(SDCDriver *sdcp) {
 
   (void)sdcp;
-  /* CHTODO: Fill the implementation.*/
   return false;
 }
-#endif /* HAL_USE_SDC */
+
+#endif // HAL_USE_SDC
 
 #if HAL_USE_MMC_SPI || defined(__DOXYGEN__)
 /**
@@ -166,7 +175,6 @@ bool sdc_lld_is_write_protected(SDCDriver *sdcp) {
 bool mmc_lld_is_card_inserted(MMCDriver *mmcp) {
 
   (void)mmcp;
-  /* CHTODO: Fill the implementation.*/
   return true;
 }
 
@@ -176,10 +184,9 @@ bool mmc_lld_is_card_inserted(MMCDriver *mmcp) {
 bool mmc_lld_is_write_protected(MMCDriver *mmcp) {
 
   (void)mmcp;
-  /* CHTODO: Fill the implementation.*/
   return false;
 }
-#endif
+#endif // HAL_USE_MMC_SPI
 
 /**
  * @brief   Board-specific initialization code.
@@ -187,4 +194,7 @@ bool mmc_lld_is_write_protected(MMCDriver *mmcp) {
  */
 void boardInit(void) {
 
+
+
 }
+

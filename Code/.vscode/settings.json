@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "stm32_gpio.h": "c",
-        "ff.h": "c"
+        "ff.h": "c",
+        "ch.h": "c",
+        "hal.h": "c",
+        "cstdlib": "c",
+        "stdlib.h": "c"
     }
 }

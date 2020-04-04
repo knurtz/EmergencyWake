@@ -178,7 +178,7 @@
 #define I2S_AF                      6U
 
 #define LINE_I2C_SCL                PAL_LINE(GPIOB, GPIOB_I2C_SCL)       // I2C2 - SCL
-#define LINE_I2C_SDA                PAL_LINE(GPIOC, GPIOB_I2C_SDA)       // I2C2 - SDA
+#define LINE_I2C_SDA                PAL_LINE(GPIOB, GPIOB_I2C_SDA)       // I2C2 - SDA
 #define I2C_AF                      4U
 
 
