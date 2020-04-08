@@ -5,6 +5,8 @@
         "ch.h": "c",
         "hal.h": "c",
         "cstdlib": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "usbcfg.h": "c",
+        "statemachine.h": "c"
     }
 }
