@@ -23,7 +23,9 @@ A toggle switch allows programming two independent alarms. The times are set usi
 - [A Guide to Fundamental VFD Operation](https://www.noritake-elec.com/technology/general-technical-information/vfd-operation)
 - [Instructables page](https://www.instructables.com/id/A-Simple-Driver-for-VFD-Displays/) about controlling VFDs
 - [Github project](https://github.com/AndruPol/ChibiOS-WavePlayer) about an STM32 wave player with ChibiOS
+- [Github project](https://github.com/vanbwodonk/F4D_MP3) about an STM32 MP3 decoder
 - [Another Github project](https://github.com/no111u3/stm32f4d_encoder/blob/master/main.c) about using the timer's encoder mode
+
 
 ## Components
 - used emergency brake from eBay
@@ -35,12 +37,11 @@ A toggle switch allows programming two independent alarms. The times are set usi
 - STM32F407VET6 microcontroller
 - SD card holder from [Würth](https://www.we-online.de/katalog/datasheet/693071020811.pdf)
 - DCF77 module from [pollin.de](https://www.pollin.de/p/dcf-empfangsmodul-dcf1-810054)
-- [LM4670](http://www.ti.com/lit/ds/snas240c/snas240c.pdf) Class-D audio amplifier
 - CR2032 coin cell holder
 - small buzzer
 - toggle switch from [pollin.de](https://www.pollin.de/p/kippschalter-kn3-c-103a-1-polig-on-off-on-420023)
 - rotary encoder from [reichelt.de](https://www.reichelt.de/drehimpulsegeber-15-impulse-30-rastungen-vertikal-stec11b03-p73913.html?r=1)
-- MC34063 DCDC converter for generating negative supply for VFD
+- MC34063 DCDC converter
 - 5 V to 3.3 V step down regulator from [Würth](https://www.we-online.de/katalog/datasheet/173950378.pdf)
 - [WM8960](https://datasheet.lcsc.com/szlcsc/Wolfson-Microelectronics-PLC-WM8960CGEFL-RV_C18752.pdf) audio codec with integrated class-D amplifier
 
