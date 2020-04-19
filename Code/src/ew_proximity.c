@@ -1,3 +1,8 @@
+/*
+Functions for everything regarding the proximity sensor. Involves setting it up and clearing the interrupt pin.
+
+*/
+
 #include "ch.h"
 #include "hal.h"
 #include "usbcfg.h"

@@ -134,10 +134,10 @@ CSRC = $(ALLCSRC) \
        $(TESTSRC) \
        src/main.c \
 	     src/usbcfg.c \
-       src/shell_commands.c \
-       src/audio.c \
-       src/proximity.c \
-       src/statemachine.c
+       src/ew_shell.c \
+       src/ew_audio.c \
+       src/ew_proximity.c \
+       src/ew_statemachine.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

@@ -7,6 +7,8 @@
         "cstdlib": "c",
         "stdlib.h": "c",
         "usbcfg.h": "c",
-        "statemachine.h": "c"
+        "statemachine.h": "c",
+        "time.h": "c",
+        "ew_time.h": "c"
     }
 }
