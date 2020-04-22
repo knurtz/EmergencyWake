@@ -40,7 +40,7 @@
  * Board oscillators-related settings.
  */
 #if !defined(STM32_LSECLK)
-#define STM32_LSECLK                0U
+#define STM32_LSECLK                32768U
 #endif
 
 #if !defined(STM32_HSECLK)
@@ -164,6 +164,10 @@
 #define LINE_USB_DP                 PAL_LINE(GPIOA, GPIOA_USB_DP)
 #define LINE_USB_DM                 PAL_LINE(GPIOA, GPIOA_USB_DM)
 #define USB_AF                      10U
+
+#define LINE_UART_TX                PAL_LINE(GPIOA, GPIOA_UART_TX)
+#define LINE_UART_RX                PAL_LINE(GPIOA, GPIOA_UART_RX)
+#define UART_AF                     7U
 
 #define LINE_SD_CMD                 PAL_LINE(GPIOD, GPIOD_SD_CMD)
 #define LINE_SD_CK                  PAL_LINE(GPIOC, GPIOC_SD_CK)

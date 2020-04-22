@@ -3,14 +3,13 @@
 
 #include <string.h>
 #include "chprintf.h"
-#include "usbcfg.h"
+//#include "usbcfg.h"
 #include "shell.h"
 #include "ew_shell.h"
 
 #include "ew_time.h"
 #include "ew_statemachine.h"
 
-#define USB_DEBUG
 
 //===========================================================================
 // Global variables
@@ -33,13 +32,13 @@ static THD_FUNCTION(blinker, arg) {
     chRegSetThreadName("blinker");
 
     while (true) {
-        palSetLine(LINE_DISCO_LED1);
+        palSetLine(LINE_LED1);
         chThdSleepMilliseconds(100);
-        palSetLine(LINE_DISCO_LED2);
+        palSetLine(LINE_LED2);
         chThdSleepMilliseconds(500);
-        palClearLine(LINE_DISCO_LED1);
+        palClearLine(LINE_LED1);
         chThdSleepMilliseconds(100);
-        palClearLine(LINE_DISCO_LED2);
+        palClearLine(LINE_LED2);
         chThdSleepMilliseconds(500);
     }
 }
@@ -56,11 +55,13 @@ static const ShellCommand commands[] = {
     {"sdc", cmd_sdc},
     {"hello", cmd_write},
     {"i2c", cmd_i2c},
-    {NULL, NULL}};
+    {NULL, NULL}
+};
 
-static const ShellConfig shell_cfg1 = {
-    (BaseSequentialStream *)&SDU1,
-    commands};
+static const ShellConfig shell_cfg = {
+    (BaseSequentialStream *)&SD1,
+    commands
+};
 
 //===========================================================================
 // Application entry point
@@ -78,6 +79,7 @@ int main(void) {
     // initialize RTC unit, and assign callback functions (alarms and periodic wakeup once a minute), if reset after power loss: load alarms from eeprom
 
     // start blinker thread
+    palSetLine(LINE_LED3);
     chThdCreateStatic(wa_blinker, sizeof(wa_blinker), NORMALPRIO, blinker, NULL);
 
     // start display, audio and proximity threads
@@ -87,6 +89,18 @@ int main(void) {
     // activate external interrupts for lever, toggle, buttons and proximity interrupt and assign callback functions
 
     // activate event listeners for main thread
+
+    
+    sdStart(&SD1, NULL);
+
+    while (true) {
+    thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
+                                            "shell", NORMALPRIO + 1,
+                                            shellThread, (void *)&shell_cfg);
+    chThdWait(shelltp);                     /* Waiting termination.             */
+    chThdSleepMilliseconds(1000);
+  }
+
 
 #ifdef USB_DEBUG
 
@@ -108,6 +122,10 @@ int main(void) {
 
 #endif
 
+while(1) {
+    chThdSleepMilliseconds(100);
+}
+/*
     uint16_t alarm_flags = (RTC->ISR & (RTC_ISR_ALRAF | RTC_ISR_ALRBF)) >> RTC_ISR_ALRAF_Pos;   // yields 1 for alarm A flag, 2 for alarm B flag, 3 for both
     if (alarm_flags > 0) current_state = enterAlarmRinging(alarm_flags);
     else current_state = enterIdle();
@@ -116,5 +134,6 @@ int main(void) {
         eventmask_t new_event = chEvtWaitOne(ALL_EVENTS);
         current_state = handleEvent(new_event, current_state);
     }
+    */
 
 }  // end of main()

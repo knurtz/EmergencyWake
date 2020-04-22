@@ -105,15 +105,20 @@ static void stm32_gpio_init(void) {
   rccEnableAHB1(STM32_GPIO_EN_MASK, true);
 
   /* Initializing all used GPIO ports.*/
-  palSetLineMode(LINE_DISCO_BUTTON, PAL_MODE_INPUT);
+  palSetLineMode(LINE_USER_BUT, PAL_MODE_INPUT);
 
-  palSetLineMode(LINE_DISCO_LED1, PAL_MODE_OUTPUT_PUSHPULL);
-  palSetLineMode(LINE_DISCO_LED2, PAL_MODE_OUTPUT_PUSHPULL);
-  palSetLineMode(LINE_DISCO_LED3, PAL_MODE_OUTPUT_PUSHPULL);
-  palSetLineMode(LINE_DISCO_LED4, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(LINE_LED1, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(LINE_LED2, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(LINE_LED3, PAL_MODE_OUTPUT_PUSHPULL);
+  palSetLineMode(LINE_LED4, PAL_MODE_OUTPUT_PUSHPULL);
 
+/*
   palSetLineMode(LINE_USB_DP, PAL_MODE_ALTERNATE(USB_AF));      // USB FS DM
   palSetLineMode(LINE_USB_DM, PAL_MODE_ALTERNATE(USB_AF));      // USB FS DP
+*/
+
+  palSetLineMode(LINE_UART_TX, PAL_MODE_ALTERNATE(UART_AF));    // UART TX
+  palSetLineMode(LINE_UART_RX, PAL_MODE_ALTERNATE(UART_AF));    // UART RX
 
   palSetLineMode(LINE_SD_CMD, PAL_MODE_ALTERNATE(SD_AF));       // SDIO CMD
   palSetLineMode(LINE_SD_CK, PAL_MODE_ALTERNATE(SD_AF));        // SDIO CK
@@ -122,9 +127,7 @@ static void stm32_gpio_init(void) {
   palSetLineMode(LINE_I2C_SCL, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 SCL
   palSetLineMode(LINE_I2C_SDA, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 SDA
 
-  palSetLineMode(LINE_I2S_MCLK, PAL_MODE_ALTERNATE(MCO_AF));    // MCLK as MCO2
-
-  palSetPadMode(GPIOB, 1, PAL_MODE_INPUT_PULLUP);         // temporarily used for proximity sensor interrupt
+  //palSetLineMode(LINE_I2S_MCLK, PAL_MODE_ALTERNATE(MCO_AF));    // MCLK as MCO2
 
 }
 

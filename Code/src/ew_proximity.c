@@ -5,7 +5,7 @@ Functions for everything regarding the proximity sensor. Involves setting it up 
 
 #include "ch.h"
 #include "hal.h"
-#include "usbcfg.h"
+//#include "usbcfg.h"
 
 #include <string.h>
 #include "chprintf.h"
@@ -50,5 +50,5 @@ void proximity_init(void)
                                1,
                                TIME_MS2I(10));
     i2cReleaseBus(&I2CD2);
-    chprintf((BaseSequentialStream*) &SDU1, "prox value: %d\r\n", rx[0]);
+    chprintf((BaseSequentialStream*) &SD1, "prox value: %d\r\n", rx[0]);
 }

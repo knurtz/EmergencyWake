@@ -13,8 +13,8 @@
 #define EW_STANDBY_TIMER_EVENT          8
 
 
-#define EW_TIMEOUT_SHORT            10      // short timeout, after starting snooze
-#define EW_TIMEOUT_LONG             300     // long timeout, after showing current time
+#define EW_TIMEOUT_SHORT            10U      // short timeout, after starting snooze
+#define EW_TIMEOUT_LONG             300U     // long timeout, after showing current time
 
 
 typedef enum ew_togglevalue {

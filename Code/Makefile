@@ -133,11 +133,11 @@ LDSCRIPT= $(STARTUPLD)/STM32F407xE.ld
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
        src/main.c \
-	     src/usbcfg.c \
        src/ew_shell.c \
        src/ew_audio.c \
        src/ew_proximity.c \
-       src/ew_statemachine.c
+       src/ew_statemachine.c \
+#	     src/usbcfg.c \
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

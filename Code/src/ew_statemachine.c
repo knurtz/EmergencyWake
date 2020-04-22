@@ -6,7 +6,7 @@
 #include "ch.h"
 #include "hal.h"
 #include "chprintf.h"
-#include "usbcfg.h"
+//#include "usbcfg.h"
 #include "ew_statemachine.h"
 #include "ew_time.h"
 #include <string.h>
@@ -93,7 +93,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
     ew_togglevalue_t toggle_value = getToggleValue();   // determines whether one of the two alarms or the current time is selected
     uint8_t encoder_diff = getEncoderDifference();
 
-    chprintf((BaseSequentialStream*)&SDU1, "Handling event: 0x%x\r\n", new_event);
+    chprintf((BaseSequentialStream*)&SD1, "Handling event: 0x%x\r\n", new_event);
 
     if (new_event & EVENT_MASK(EW_RTC_ALARM_A_EVENT) || new_event & EVENT_MASK(EW_RTC_ALARM_B_EVENT))
         return(enterAlarmRinging(new_event & EVENT_MASK(EW_RTC_ALARM_A_EVENT) ? EW_TOGGLE_ALARM_A : EW_TOGGLE_ALARM_B));
