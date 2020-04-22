@@ -63,6 +63,20 @@ static const ShellConfig shell_cfg = {
     commands
 };
 
+static const I2CConfig i2ccfg = {
+    OPMODE_I2C,
+    100000,
+    STD_DUTY_CYCLE,
+};
+
+// Working area for driver.
+static uint8_t sd_scratchpad[512];
+static const SDCConfig sdccfg = {
+  sd_scratchpad,
+  SDC_MODE_1BIT
+};
+
+
 //===========================================================================
 // Application entry point
 //===========================================================================
@@ -90,6 +104,11 @@ int main(void) {
 
     // activate event listeners for main thread
 
+    i2cStart(&I2CD2, &i2ccfg);
+
+    palSetLine(LINE_SD_EN);
+    //chThdSleepSeconds(1);
+    sdcStart(&SDCD1, &sdccfg);
     
     sdStart(&SD1, NULL);
 

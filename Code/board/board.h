@@ -172,6 +172,7 @@
 #define LINE_SD_CMD                 PAL_LINE(GPIOD, GPIOD_SD_CMD)
 #define LINE_SD_CK                  PAL_LINE(GPIOC, GPIOC_SD_CK)
 #define LINE_SD_D0                  PAL_LINE(GPIOC, GPIOC_SD_D0)
+#define LINE_SD_EN                  PAL_LINE(GPIOD, GPIOD_SD_EN)
 #define SD_AF                       12U
 
 #define LINE_I2S_MCLK               PAL_LINE(GPIOC, GPIOC_I2S_MCLK)
