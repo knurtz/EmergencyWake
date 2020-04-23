@@ -3,9 +3,10 @@
 
 #include <string.h>
 #include "chprintf.h"
-//#include "usbcfg.h"
 #include "shell.h"
 #include "ew_shell.h"
+
+#include "ew_audio.h"
 
 #include "ew_time.h"
 #include "ew_statemachine.h"
@@ -26,11 +27,10 @@ ew_time_t alarm_b = {0, 0, false, false};
 // Blinker thread
 //===========================================================================
 
-static THD_WORKING_AREA(wa_blinker, 128);
-static THD_FUNCTION(blinker, arg) {
+static THD_WORKING_AREA(blinker_wa, 128);
+static THD_FUNCTION(blinkerThd, arg) {
     (void)arg;
     chRegSetThreadName("blinker");
-
     while (true) {
         palSetLine(LINE_LED1);
         chThdSleepMilliseconds(100);
@@ -63,14 +63,17 @@ static const ShellConfig shell_cfg = {
     commands
 };
 
+//===========================================================================
+// Driver configurations
+//===========================================================================
+
 static const I2CConfig i2ccfg = {
     OPMODE_I2C,
     100000,
     STD_DUTY_CYCLE,
 };
 
-// Working area for driver.
-static uint8_t sd_scratchpad[512];
+static uint8_t sd_scratchpad[512];      // Working area for SDC driver
 static const SDCConfig sdccfg = {
   sd_scratchpad,
   SDC_MODE_1BIT
@@ -92,11 +95,13 @@ int main(void) {
 
     // initialize RTC unit, and assign callback functions (alarms and periodic wakeup once a minute), if reset after power loss: load alarms from eeprom
 
-    // start blinker thread
-    palSetLine(LINE_LED3);
-    chThdCreateStatic(wa_blinker, sizeof(wa_blinker), NORMALPRIO, blinker, NULL);
+    // start all nedded peripheral drivers
+    i2cStart(&I2CD2, &i2ccfg);
+    //sdcStart(&SDCD1, &sdccfg);
 
-    // start display, audio and proximity threads
+    // start threads
+    chThdCreateStatic(blinker_wa, sizeof(blinker_wa), NORMALPRIO, blinkerThd, NULL);
+    chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
 
     // initialize timer for rotary encoder and assign callback function
 
@@ -104,46 +109,18 @@ int main(void) {
 
     // activate event listeners for main thread
 
-    i2cStart(&I2CD2, &i2ccfg);
-
+/*
     palSetLine(LINE_SD_EN);
-    //chThdSleepSeconds(1);
-    sdcStart(&SDCD1, &sdccfg);
+*/
     
     sdStart(&SD1, NULL);
 
-    while (true) {
-    thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
-                                            "shell", NORMALPRIO + 1,
-                                            shellThread, (void *)&shell_cfg);
-    chThdWait(shelltp);                     /* Waiting termination.             */
-    chThdSleepMilliseconds(1000);
-  }
+    while (1) {
+        thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO + 1, shellThread, (void *)&shell_cfg);
+        chThdWait(shelltp);
+        chThdSleepMilliseconds(1000);
+    }
 
-
-#ifdef USB_DEBUG
-
-    // Initialize a serial-over-USB CDC driver
-    sduObjectInit(&SDU1);
-    sduStart(&SDU1, &serusbcfg);
-
-    // Activate the USB driver and pull-up on D+ by connecting the bus
-    usbDisconnectBus(serusbcfg.usbp);
-    chThdSleepMilliseconds(1000);
-    usbStart(serusbcfg.usbp, &usbcfg);
-    usbConnectBus(serusbcfg.usbp);
-
-    // Initialize shell
-    shellInit();
-
-    // Create shell thread
-    if (SDU1.config->usbp->state == USB_ACTIVE) chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO + 1, shellThread, (void *)&shell_cfg1);
-
-#endif
-
-while(1) {
-    chThdSleepMilliseconds(100);
-}
 /*
     uint16_t alarm_flags = (RTC->ISR & (RTC_ISR_ALRAF | RTC_ISR_ALRBF)) >> RTC_ISR_ALRAF_Pos;   // yields 1 for alarm A flag, 2 for alarm B flag, 3 for both
     if (alarm_flags > 0) current_state = enterAlarmRinging(alarm_flags);

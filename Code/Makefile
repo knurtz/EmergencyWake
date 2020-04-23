@@ -135,7 +135,8 @@ CSRC = $(ALLCSRC) \
        src/ew_shell.c \
        src/ew_audio.c \
        src/ew_proximity.c \
-       src/ew_statemachine.c \
+       src/ew_sine.c \
+#      src/ew_statemachine.c \
 #	     src/usbcfg.c \
 #      $(TESTSRC) \
 
