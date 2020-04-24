@@ -187,8 +187,9 @@
 #define STM32_I2S_SPI2_RX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 3)
 #define STM32_I2S_SPI2_TX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 4)
 #define STM32_I2S_SPI3_RX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 0)
-#define STM32_I2S_SPI3_TX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 7)
+#define STM32_I2S_SPI3_TX_DMA_STREAM        STM32_DMA_STREAM_ID(1, 5)           // used to be (1, 7) but ref manual says SPI3_TX is also on DMA1 stream 5
 #define STM32_I2S_DMA_ERROR_HOOK(i2sp)      osalSysHalt("DMA failure")
+#define STM32_I2S_SPI3_MODE                 (STM32_I2S_MODE_MASTER | STM32_I2S_MODE_TX)
 
 /*
  * ICU driver system settings.

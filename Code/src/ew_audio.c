@@ -57,8 +57,8 @@ THD_FUNCTION(audioThd, arg) {
     i2sStart(&I2SD3, &i2scfg);
 
     // test if driver sets up data direction the right way
-    if ((I2SD3.spi->I2SCFGR & SPI_I2SCFGR_I2SCFG_Msk) == (0b10 << SPI_I2SCFGR_I2SCFG_Pos)) palSetLine(LINE_LED3);
-    if ((I2SD3.spi->I2SCFGR & SPI_I2SCFGR_I2SCFG_Msk) == (0b11 << SPI_I2SCFGR_I2SCFG_Pos)) palSetLine(LINE_LED4);
+    if ((I2SD3.spi->I2SCFGR & SPI_I2SCFGR_I2SCFG_Msk) == (0b10 << SPI_I2SCFGR_I2SCFG_Pos)) palSetLine(LINE_LED3);       // test for master mode transmit
+    if ((I2SD3.spi->I2SCFGR & SPI_I2SCFGR_I2SCFG_Msk) == (0b11 << SPI_I2SCFGR_I2SCFG_Pos)) palSetLine(LINE_LED4);       // test for master mode receive
 
     // setup audio codec
     // I2C2 driver is already started in main()
@@ -95,8 +95,8 @@ THD_FUNCTION(audioThd, arg) {
     wm8960SetRegister(WM8960_LOUTMIX, 1 << 8);      // route left DAC to left output mixer
 
     // setup speaker output
-    wm8960SetRegister(WM8960_LOUT2, (1 << 8) | 111);             // update left volume: 111 -> -10 dB -> ca. 1 V bei 3 V supply
     wm8960SetRegister(WM8960_CLASSD1, (1 << 6) | 0b110111);     // enable left class D speaker output
+    wm8960SetRegister(WM8960_LOUT2, (1 << 8) | (1 << 7) | 88);  // update left volume
 
     i2cReleaseBus(&I2CD2);
 
