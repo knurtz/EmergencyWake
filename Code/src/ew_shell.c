@@ -17,7 +17,7 @@ static FATFS SDC_FS;
 static bool fs_ready = FALSE;
 
 // Generic large buffer
-static uint8_t fbuff[1024];
+static uint8_t fbuff[512];
 
 static FRESULT scan_files(BaseSequentialStream *chp, char *path) {
   static FILINFO fno;

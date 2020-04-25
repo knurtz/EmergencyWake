@@ -53,7 +53,6 @@ static const ShellCommand commands[] = {
     {"tree", cmd_tree},
     {"create", cmd_create},
     {"sdc", cmd_sdc},
-    {"hello", cmd_write},
     {"i2c", cmd_i2c},
     {NULL, NULL}
 };
@@ -64,7 +63,7 @@ static const ShellConfig shell_cfg = {
 };
 
 //===========================================================================
-// Driver configurations
+// Driver configs and callbacks
 //===========================================================================
 
 static const I2CConfig i2ccfg = {
@@ -97,7 +96,7 @@ int main(void) {
 
     // start all nedded peripheral drivers
     i2cStart(&I2CD2, &i2ccfg);
-    //sdcStart(&SDCD1, &sdccfg);
+    sdcStart(&SDCD1, &sdccfg);
 
     // start threads
     chThdCreateStatic(blinker_wa, sizeof(blinker_wa), NORMALPRIO, blinkerThd, NULL);
@@ -109,9 +108,7 @@ int main(void) {
 
     // activate event listeners for main thread
 
-/*
     palSetLine(LINE_SD_EN);
-*/
     
     sdStart(&SD1, NULL);
 

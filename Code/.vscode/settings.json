@@ -9,6 +9,9 @@
         "usbcfg.h": "c",
         "statemachine.h": "c",
         "time.h": "c",
-        "ew_time.h": "c"
-    }
+        "ew_time.h": "c",
+        "string.h": "c"
+    },
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

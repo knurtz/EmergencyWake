@@ -4,7 +4,7 @@
 #include "ch.h"
 #include "hal.h"
 
-THD_WORKING_AREA(audio_wa, 1024);
+THD_WORKING_AREA(audio_wa, 2048);
 THD_FUNCTION(audioThd, arg);
 
 void playSnooze(void);
