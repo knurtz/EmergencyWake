@@ -7,7 +7,7 @@
 #include "ew_shell.h"
 
 #include "ew_audio.h"
-
+#include "ew_display.h"
 #include "ew_time.h"
 #include "ew_statemachine.h"
 
@@ -100,7 +100,8 @@ int main(void) {
 
     // start threads
     chThdCreateStatic(blinker_wa, sizeof(blinker_wa), NORMALPRIO, blinkerThd, NULL);
-    chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
+    //chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
+    chThdCreateStatic(display_wa, sizeof(display_wa), NORMALPRIO, displayThd, NULL);
 
     // initialize timer for rotary encoder and assign callback function
 

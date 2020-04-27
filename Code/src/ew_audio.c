@@ -21,8 +21,8 @@ reading files from the SD card, and providing functions for other threads to sta
 #define DATA			0x61746164  // atad
 #define FMT				0x20746D66  //  tmf
 
-#define EVT_DAC_TC			     0	// DAC half/full transmission complete
-#define EVT_DAC_HT			     1	// DAC error
+#define EVT_DAC_TC			     0	// DAC transmission complete
+#define EVT_DAC_HT			     1	// DAC transmission half complete
 
 
 static int16_t dac_buffer[WAV_BUFFER_SIZE];

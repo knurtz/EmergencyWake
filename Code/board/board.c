@@ -58,53 +58,14 @@ typedef struct {
   gpio_setup_t          PEData;
 } gpio_config_t;
 
-/**
- * @brief   STM32 GPIO static initialization data.
- */
-/*
-static const gpio_config_t gpio_default_config = {
-
-  {VAL_GPIOA_MODER, VAL_GPIOA_OTYPER, VAL_GPIOA_OSPEEDR, VAL_GPIOA_PUPDR,
-   VAL_GPIOA_ODR,   VAL_GPIOA_AFRL,   VAL_GPIOA_AFRH},
-
-  {VAL_GPIOB_MODER, VAL_GPIOB_OTYPER, VAL_GPIOB_OSPEEDR, VAL_GPIOB_PUPDR,
-   VAL_GPIOB_ODR,   VAL_GPIOB_AFRL,   VAL_GPIOB_AFRH},
-
-  {VAL_GPIOC_MODER, VAL_GPIOC_OTYPER, VAL_GPIOC_OSPEEDR, VAL_GPIOC_PUPDR,
-   VAL_GPIOC_ODR,   VAL_GPIOC_AFRL,   VAL_GPIOC_AFRH},
-
-  {VAL_GPIOD_MODER, VAL_GPIOD_OTYPER, VAL_GPIOD_OSPEEDR, VAL_GPIOD_PUPDR,
-   VAL_GPIOD_ODR,   VAL_GPIOD_AFRL,   VAL_GPIOD_AFRH},
-
-  {VAL_GPIOE_MODER, VAL_GPIOE_OTYPER, VAL_GPIOE_OSPEEDR, VAL_GPIOE_PUPDR,
-   VAL_GPIOE_ODR,   VAL_GPIOE_AFRL,   VAL_GPIOE_AFRH}
-
-};
-*/
-
-/*===========================================================================*/
-/* Driver local functions.                                                   */
-/*===========================================================================*/
-/*
-static void gpio_init(stm32_gpio_t *gpiop, const gpio_setup_t *config) {
-  gpiop->OTYPER  = config->otyper;
-  gpiop->OSPEEDR = config->ospeedr;
-  gpiop->PUPDR   = config->pupdr;
-  gpiop->ODR     = config->odr;
-  gpiop->AFRL    = config->afrl;
-  gpiop->AFRH    = config->afrh;
-  gpiop->MODER   = config->moder;
-}
-*/
 
 static void stm32_gpio_init(void) {
 
-  /* Enabling GPIO-related clocks, the mask comes from the
-     registry header file.*/
+  // Enable GPIO-related clocks, the mask comes from the registry header file
   rccResetAHB1(STM32_GPIO_EN_MASK);
   rccEnableAHB1(STM32_GPIO_EN_MASK, true);
 
-  /* Initializing all used GPIO ports.*/
+  // Initialize all used GPIO ports
   palSetLineMode(LINE_USER_BUT, PAL_MODE_INPUT);
 
   palSetLineMode(LINE_LED1, PAL_MODE_OUTPUT_PUSHPULL);
@@ -120,32 +81,31 @@ static void stm32_gpio_init(void) {
   palSetLineMode(LINE_UART_TX, PAL_MODE_ALTERNATE(UART_AF));    // UART1 TX
   palSetLineMode(LINE_UART_RX, PAL_MODE_ALTERNATE(UART_AF));    // UART1 RX
 
-  palSetLineMode(LINE_SD_CMD, PAL_MODE_ALTERNATE(SD_AF));       // SDIO CMD
-  palSetLineMode(LINE_SD_CK, PAL_MODE_ALTERNATE(SD_AF));        // SDIO CK
-  palSetLineMode(LINE_SD_D0, PAL_MODE_ALTERNATE(SD_AF));        // SDIO D0
-/*
-  palSetPadMode(GPIOD, 2, PAL_STM32_MODE_ALTERNATE | PAL_STM32_OTYPE_PUSHPULL | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_ALTERNATE(12));    // SDIO CMD
-  palSetPadMode(GPIOC, 12, PAL_STM32_MODE_ALTERNATE | PAL_STM32_OTYPE_PUSHPULL | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_ALTERNATE(12));   // SDIO CK
-  palSetPadMode(GPIOC, 8, PAL_STM32_MODE_ALTERNATE | PAL_STM32_OTYPE_PUSHPULL | PAL_STM32_OSPEED_HIGHEST | PAL_STM32_ALTERNATE(12));    // SDIO D0
-*/
+  palSetLineMode(LINE_SD_CK, PAL_MODE_ALTERNATE(SD_AF));        // SDIO clock
+  palSetLineMode(LINE_SD_CMD, PAL_MODE_ALTERNATE(SD_AF));       // SDIO command
+  palSetLineMode(LINE_SD_D0, PAL_MODE_ALTERNATE(SD_AF));        // SDIO data
   palSetLineMode(LINE_SD_EN, PAL_MODE_OUTPUT_PUSHPULL);         // enable line for SD card power supply
 
-  palSetLineMode(LINE_I2C_SCL, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 SCL
-  palSetLineMode(LINE_I2C_SDA, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 SDA
+  palSetLineMode(LINE_I2C_SCL, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 clock
+  palSetLineMode(LINE_I2C_SDA, PAL_STM32_OTYPE_OPENDRAIN | PAL_MODE_ALTERNATE(I2C_AF));     // I2C2 data
+  palSetLineMode(LINE_I2C_INT, PAL_MODE_INPUT);
 
   palSetLineMode(LINE_I2S_CK, PAL_MODE_ALTERNATE(I2S_AF));      // I2S3 clock
   palSetLineMode(LINE_I2S_WS, PAL_MODE_ALTERNATE(I2S_AF));      // I2S3 data
   palSetLineMode(LINE_I2S_SD, PAL_MODE_ALTERNATE(I2S_AF));      // I2S3 word select / left right clock
 
+  palSetLineMode(LINE_SPI_SCK, PAL_MODE_ALTERNATE(SPI_AF) | PAL_STM32_OSPEED_HIGHEST);     // SPI2 clock
+  palSetLineMode(LINE_SPI_MISO, PAL_MODE_ALTERNATE(SPI_AF) | PAL_STM32_OSPEED_HIGHEST);    // SPI2 MOSI
+  palSetLineMode(LINE_SPI_MOSI, PAL_MODE_ALTERNATE(SPI_AF) | PAL_STM32_OSPEED_HIGHEST);    // SPI2 MISO
+  palSetLineMode(LINE_SPI_STB, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);       // SPI2 not slave select as strobe signal (cp. datasheet for PT6312)
+
+  palSetLineMode(LINE_DCDC_EN, PAL_MODE_OUTPUT_OPENDRAIN);
+  palSetLine(LINE_DCDC_EN);
+
+  palSetLineMode(LINE_FILA, PAL_MODE_ALTERNATE(FIL_AF));
+  palSetLineMode(LINE_FILB, PAL_MODE_ALTERNATE(FIL_AF));
+
 }
-
-/*===========================================================================*/
-/* Driver interrupt handlers.                                                */
-/*===========================================================================*/
-
-/*===========================================================================*/
-/* Driver exported functions.                                                */
-/*===========================================================================*/
 
 /**
  * @brief   Early initialization code.
@@ -206,8 +166,6 @@ bool mmc_lld_is_write_protected(MMCDriver *mmcp) {
  * @note    You can add your board-specific code here.
  */
 void boardInit(void) {
-
-
 
 }
 

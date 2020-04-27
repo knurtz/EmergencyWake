@@ -51,7 +51,7 @@
  * Board voltages.
  * Required for performance limits calculation.
  */
-#define STM32_VDD                   300U
+#define STM32_VDD                   330U
 
 /*
  * MCU type as defined in the ST header.
@@ -90,10 +90,10 @@
 #define GPIOB_PIN9                  9U
 #define GPIOB_I2C_SCL               10U
 #define GPIOB_I2C_SDA               11U
-#define GPIOB_DISPLAY_STB           12U
-#define GPIOB_DISPLAY_SCK           13U
-#define GPIOB_DISPLAY_MISO          14U
-#define GPIOB_DISPLAY_MOSI          15U
+#define GPIOB_SPI_STB               12U
+#define GPIOB_SPI_SCK               13U
+#define GPIOB_SPI_MISO              14U
+#define GPIOB_SPI_MOSI              15U
 
 #define GPIOC_LED1                  0U
 #define GPIOC_LED2                  1U
@@ -156,10 +156,16 @@
 #define LINE_LED4                   PAL_LINE(GPIOC, GPIOC_LED4)
 
 #define LINE_USER_BUT               PAL_LINE(GPIOE, GPIOE_USER_BUT)
+
 #define LINE_LEVER                  PAL_LINE(GPIOA, GPIOA_LEVER)
+
 #define LINE_TOGGLE_UP              PAL_LINE(GPIOE, GPIOE_TOGGLE_UP)
 #define LINE_TOGGLE_DN              PAL_LINE(GPIOE, GPIOE_TOGGLE_DN)
+
 #define LINE_ENC_BUT                PAL_LINE(GPIOE, GPIOE_ENC_BUT)
+#define LINE_ENC_A                  PAL_LINE(GPIOD, GPIOD_ENC_A)
+#define LINE_ENC_B                  PAL_LINE(GPIOD, GPIOD_ENC_B)
+#define ENC_AF                      2U
 
 #define LINE_USB_DP                 PAL_LINE(GPIOA, GPIOA_USB_DP)
 #define LINE_USB_DM                 PAL_LINE(GPIOA, GPIOA_USB_DM)
@@ -184,7 +190,21 @@
 
 #define LINE_I2C_SCL                PAL_LINE(GPIOB, GPIOB_I2C_SCL)       // I2C2 - SCL
 #define LINE_I2C_SDA                PAL_LINE(GPIOB, GPIOB_I2C_SDA)       // I2C2 - SDA
+#define LINE_I2C_INT                PAL_LINE(GPIOB, GPIOB_I2C_INT)
 #define I2C_AF                      4U
+
+#define LINE_SPI_MISO               PAL_LINE(GPIOB, GPIOB_SPI_MISO)
+#define LINE_SPI_MOSI               PAL_LINE(GPIOB, GPIOB_SPI_MOSI)
+#define LINE_SPI_SCK                PAL_LINE(GPIOB, GPIOB_SPI_SCK)
+#define LINE_SPI_STB                PAL_LINE(GPIOB, GPIOB_SPI_STB)
+#define SPI_AF                      5U
+
+#define LINE_DCDC_EN                PAL_LINE(GPIOD, GPIOD_DCDC_EN)
+
+#define LINE_FILA                   PAL_LINE(GPIOC, GPIOC_FILA)
+#define LINE_FILB                   PAL_LINE(GPIOC, GPIOC_FILB)
+#define FIL_AF                      3U
+
 
 
 /*
@@ -197,22 +217,6 @@
 #define LINE_DISCO_LED3             PAL_LINE(GPIOD, 14U)       // red
 #define LINE_DISCO_LED4             PAL_LINE(GPIOD, 15U)       // blue
 
-
-/*===========================================================================*/
-/* Driver pre-compile time settings.                                         */
-/*===========================================================================*/
-
-/*===========================================================================*/
-/* Derived constants and error checks.                                       */
-/*===========================================================================*/
-
-/*===========================================================================*/
-/* Driver data structures and types.                                         */
-/*===========================================================================*/
-
-/*===========================================================================*/
-/* Driver macros.                                                            */
-/*===========================================================================*/
 
 /*
  * I/O ports initial setup, this configuration is established soon after reset
@@ -236,123 +240,7 @@
 #define PIN_PUPDR_PULLDOWN(n)       (2U << ((n) * 2U))
 #define PIN_AFIO_AF(n, v)           ((v) << (((n) % 8U) * 4U))
 
-/*
- * GPIOA setup:
- *
- * PA0  - BUTTON                    (input floating).
- * PA1  - PIN1                      (input pullup).
- * PA2  - PIN2                      (input pullup).
- * PA3  - PIN3                      (input pullup).
- * PA4  - LRCK                      (alternate 6).
- * PA5  - SPC                       (alternate 5).
- * PA6  - SDO                       (alternate 5).
- * PA7  - SDI                       (alternate 5).
- * PA8  - PIN8                      (input pullup).
- * PA9  - VBUS_FS                   (input floating).
- * PA10 - OTG_FS_ID                 (alternate 10).
- * PA11 - OTG_FS_DM                 (alternate 10).
- * PA12 - OTG_FS_DP                 (alternate 10).
- * PA13 - SWDIO                     (alternate 0).
- * PA14 - SWCLK                     (alternate 0).
- * PA15 - PIN15                     (input pullup).
- 
-#define VAL_GPIOA_MODER             (PIN_MODE_INPUT(GPIOA_BUTTON) |         \
-                                     PIN_MODE_INPUT(GPIOA_PIN1) |           \
-                                     PIN_MODE_INPUT(GPIOA_PIN2) |           \
-                                     PIN_MODE_INPUT(GPIOA_PIN3) |           \
-                                     PIN_MODE_ALTERNATE(GPIOA_LRCK) |       \
-                                     PIN_MODE_ALTERNATE(GPIOA_SPC) |        \
-                                     PIN_MODE_ALTERNATE(GPIOA_SDO) |        \
-                                     PIN_MODE_ALTERNATE(GPIOA_SDI) |        \
-                                     PIN_MODE_INPUT(GPIOA_PIN8) |           \
-                                     PIN_MODE_INPUT(GPIOA_VBUS_FS) |        \
-                                     PIN_MODE_ALTERNATE(GPIOA_OTG_FS_ID) |  \
-                                     PIN_MODE_ALTERNATE(GPIOA_OTG_FS_DM) |  \
-                                     PIN_MODE_ALTERNATE(GPIOA_OTG_FS_DP) |  \
-                                     PIN_MODE_ALTERNATE(GPIOA_SWDIO) |      \
-                                     PIN_MODE_ALTERNATE(GPIOA_SWCLK) |      \
-                                     PIN_MODE_INPUT(GPIOA_PIN15))
-#define VAL_GPIOA_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOA_BUTTON) |     \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_PIN1) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_PIN2) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_PIN3) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_LRCK) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_SPC) |        \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_SDO) |        \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_SDI) |        \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_PIN8) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_VBUS_FS) |    \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_OTG_FS_ID) |  \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_OTG_FS_DM) |  \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_OTG_FS_DP) |  \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_SWDIO) |      \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_SWCLK) |      \
-                                     PIN_OTYPE_PUSHPULL(GPIOA_PIN15))
-#define VAL_GPIOA_OSPEEDR           (PIN_OSPEED_HIGH(GPIOA_BUTTON) |        \
-                                     PIN_OSPEED_HIGH(GPIOA_PIN1) |          \
-                                     PIN_OSPEED_HIGH(GPIOA_PIN2) |          \
-                                     PIN_OSPEED_HIGH(GPIOA_PIN3) |          \
-                                     PIN_OSPEED_HIGH(GPIOA_LRCK) |          \
-                                     PIN_OSPEED_MEDIUM(GPIOA_SPC) |         \
-                                     PIN_OSPEED_MEDIUM(GPIOA_SDO) |         \
-                                     PIN_OSPEED_MEDIUM(GPIOA_SDI) |         \
-                                     PIN_OSPEED_HIGH(GPIOA_PIN8) |          \
-                                     PIN_OSPEED_HIGH(GPIOA_VBUS_FS) |       \
-                                     PIN_OSPEED_HIGH(GPIOA_OTG_FS_ID) |     \
-                                     PIN_OSPEED_HIGH(GPIOA_OTG_FS_DM) |     \
-                                     PIN_OSPEED_HIGH(GPIOA_OTG_FS_DP) |     \
-                                     PIN_OSPEED_HIGH(GPIOA_SWDIO) |         \
-                                     PIN_OSPEED_HIGH(GPIOA_SWCLK) |         \
-                                     PIN_OSPEED_HIGH(GPIOA_PIN15))
-#define VAL_GPIOA_PUPDR             (PIN_PUPDR_FLOATING(GPIOA_BUTTON) |     \
-                                     PIN_PUPDR_PULLUP(GPIOA_PIN1) |         \
-                                     PIN_PUPDR_PULLUP(GPIOA_PIN2) |         \
-                                     PIN_PUPDR_PULLUP(GPIOA_PIN3) |         \
-                                     PIN_PUPDR_FLOATING(GPIOA_LRCK) |       \
-                                     PIN_PUPDR_FLOATING(GPIOA_SPC) |        \
-                                     PIN_PUPDR_FLOATING(GPIOA_SDO) |        \
-                                     PIN_PUPDR_FLOATING(GPIOA_SDI) |        \
-                                     PIN_PUPDR_PULLUP(GPIOA_PIN8) |         \
-                                     PIN_PUPDR_FLOATING(GPIOA_VBUS_FS) |    \
-                                     PIN_PUPDR_FLOATING(GPIOA_OTG_FS_ID) |  \
-                                     PIN_PUPDR_FLOATING(GPIOA_OTG_FS_DM) |  \
-                                     PIN_PUPDR_FLOATING(GPIOA_OTG_FS_DP) |  \
-                                     PIN_PUPDR_FLOATING(GPIOA_SWDIO) |      \
-                                     PIN_PUPDR_FLOATING(GPIOA_SWCLK) |      \
-                                     PIN_PUPDR_PULLUP(GPIOA_PIN15))
-#define VAL_GPIOA_ODR               (PIN_ODR_HIGH(GPIOA_BUTTON) |           \
-                                     PIN_ODR_HIGH(GPIOA_PIN1) |             \
-                                     PIN_ODR_HIGH(GPIOA_PIN2) |             \
-                                     PIN_ODR_HIGH(GPIOA_PIN3) |             \
-                                     PIN_ODR_HIGH(GPIOA_LRCK) |             \
-                                     PIN_ODR_HIGH(GPIOA_SPC) |              \
-                                     PIN_ODR_HIGH(GPIOA_SDO) |              \
-                                     PIN_ODR_HIGH(GPIOA_SDI) |              \
-                                     PIN_ODR_HIGH(GPIOA_PIN8) |             \
-                                     PIN_ODR_HIGH(GPIOA_VBUS_FS) |          \
-                                     PIN_ODR_HIGH(GPIOA_OTG_FS_ID) |        \
-                                     PIN_ODR_HIGH(GPIOA_OTG_FS_DM) |        \
-                                     PIN_ODR_HIGH(GPIOA_OTG_FS_DP) |        \
-                                     PIN_ODR_HIGH(GPIOA_SWDIO) |            \
-                                     PIN_ODR_HIGH(GPIOA_SWCLK) |            \
-                                     PIN_ODR_HIGH(GPIOA_PIN15))
-#define VAL_GPIOA_AFRL              (PIN_AFIO_AF(GPIOA_BUTTON, 0U) |        \
-                                     PIN_AFIO_AF(GPIOA_PIN1, 0U) |          \
-                                     PIN_AFIO_AF(GPIOA_PIN2, 0U) |          \
-                                     PIN_AFIO_AF(GPIOA_PIN3, 0U) |          \
-                                     PIN_AFIO_AF(GPIOA_LRCK, 6U) |          \
-                                     PIN_AFIO_AF(GPIOA_SPC, 5U) |           \
-                                     PIN_AFIO_AF(GPIOA_SDO, 5U) |           \
-                                     PIN_AFIO_AF(GPIOA_SDI, 5U))
-#define VAL_GPIOA_AFRH              (PIN_AFIO_AF(GPIOA_PIN8, 0U) |          \
-                                     PIN_AFIO_AF(GPIOA_VBUS_FS, 0U) |       \
-                                     PIN_AFIO_AF(GPIOA_OTG_FS_ID, 10U) |    \
-                                     PIN_AFIO_AF(GPIOA_OTG_FS_DM, 10U) |    \
-                                     PIN_AFIO_AF(GPIOA_OTG_FS_DP, 10U) |    \
-                                     PIN_AFIO_AF(GPIOA_SWDIO, 0U) |         \
-                                     PIN_AFIO_AF(GPIOA_SWCLK, 0U) |         \
-                                     PIN_AFIO_AF(GPIOA_PIN15, 0U))
-*/
+
 /*===========================================================================*/
 /* External declarations.                                                    */
 /*===========================================================================*/
