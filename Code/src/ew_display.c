@@ -136,7 +136,7 @@ static PWMConfig pwmcfg = {
 THD_FUNCTION(displayThd, arg) {
     (void)arg;
 
-    chThdSleepMilliseconds(2000);
+    chThdSleepMilliseconds(500);
 
     // power up dcdc converter
     palClearLine(LINE_DCDC_EN);
@@ -146,10 +146,10 @@ THD_FUNCTION(displayThd, arg) {
     pwmEnableChannel(&PWMD8, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
     pwmEnableChannel(&PWMD8, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
 
-    digits[0].complete = 0xffff;
-    digits[1].complete = 0xffff;
-    digits[2].complete = 0xffff;
-    digits[3].complete = 0xffff;
+    digits[0].complete = 0x1;
+    digits[1].complete = 0x1;
+    digits[2].complete = 0x1;
+    digits[3].complete = 0x1;
 	
     // start SPI2 driver
     spiStart(&SPID2, &spicfg);
@@ -159,7 +159,18 @@ THD_FUNCTION(displayThd, arg) {
     pt6312SendCommand(PT6312_COMMAND_1, PT6312_MODE_4DIGITS);
     pt6312SendCommand(PT6312_COMMAND_4, PT6312_DISPLAY_ON | PT6312_PULSEWIDTH_MAX);
 
+    uint16_t current_value = 1;
+
     while(1) {
-        chThdSleepMilliseconds(200);
+        chThdSleepMilliseconds(85);
+        current_value <<= 1;
+        if (current_value == 0)
+            current_value = 1;
+        digits[0].complete = current_value;
+        digits[1].complete = current_value;
+        digits[2].complete = current_value;
+        digits[3].complete = current_value;  
+        
+        pt6312SendCompleteDigitData();      
     }
 }
