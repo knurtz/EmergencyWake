@@ -110,13 +110,13 @@ const SPIConfig spicfg = {
   NULL,                     // end callback
   GPIOB,                    // chip select port
   GPIOB_SPI_STB,            // chip select pin
-  SPI_CR1_MSTR | 0b101 << SPI_CR1_BR_Pos | SPI_CR1_CPOL | SPI_CR1_CPHA,      // SPI CR1 register
+  SPI_CR1_MSTR | SPI_CR1_LSBFIRST | 0b101 << SPI_CR1_BR_Pos | SPI_CR1_CPOL | SPI_CR1_CPHA,      // SPI CR1 register
   0                         // SPI CR2 register
 };
 
 static PWMConfig pwmcfg = {
   100000,                           // 100 kHz PWM clock frequency
-  1000,                               // Initial PWM period 1000 ms -> 100 Hz
+  1000,                             // Initial PWM period 1000 ms -> 100 Hz
   NULL,                             // no callback for timer update interrupt
   {
    {PWM_OUTPUT_ACTIVE_HIGH, NULL},  // channel 1 = PC6 = fil a line
