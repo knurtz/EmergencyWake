@@ -205,17 +205,7 @@
 #define LINE_FILB                   PAL_LINE(GPIOC, GPIOC_FILB)
 #define FIL_AF                      3U
 
-
-
-/*
- * Discovery board assignments.
- */
-#define LINE_DISCO_BUTTON           PAL_LINE(GPIOA, 0)
-
-#define LINE_DISCO_LED1             PAL_LINE(GPIOD, 12U)       // green                 
-#define LINE_DISCO_LED2             PAL_LINE(GPIOD, 13U)       // orange
-#define LINE_DISCO_LED3             PAL_LINE(GPIOD, 14U)       // red
-#define LINE_DISCO_LED4             PAL_LINE(GPIOD, 15U)       // blue
+#define LINE_BUZZER                 PAL_LINE(GPIOB, GPIOB_BUZZER)
 
 
 /*

@@ -66,6 +66,8 @@ typedef union
 
 static DigitData digits[4];
 
+stm32_tim_t *enc = STM32_TIM4;
+
 
 //===========================================================================
 // Modify display content
@@ -124,8 +126,8 @@ static void setDigit(uint8_t n, char value) {
 
 static void setMinutes(uint8_t value) {
     if (value > 100) return;
-    setDigit(0, value % 10);
-    setDigit(1, value / 10);
+    setDigit(0, enc->CNT % 10);
+    setDigit(1, enc->CNT / 10);
 }
 
 static void setHours(uint8_t value) {

@@ -99,11 +99,17 @@ static void stm32_gpio_init(void) {
   palSetLineMode(LINE_SPI_MOSI, PAL_MODE_ALTERNATE(SPI_AF) | PAL_STM32_OSPEED_HIGHEST);    // SPI2 MISO
   palSetLineMode(LINE_SPI_STB, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);       // SPI2 not slave select as strobe signal (cp. datasheet for PT6312)
 
-  palSetLineMode(LINE_DCDC_EN, PAL_MODE_OUTPUT_OPENDRAIN);
+  palSetLineMode(LINE_DCDC_EN, PAL_MODE_OUTPUT_OPENDRAIN);      // enable line for DCDC converter
   palSetLine(LINE_DCDC_EN);
 
-  palSetLineMode(LINE_FILA, PAL_MODE_ALTERNATE(FIL_AF));
+  palSetLineMode(LINE_FILA, PAL_MODE_ALTERNATE(FIL_AF));        // control signals for display filament drivers
   palSetLineMode(LINE_FILB, PAL_MODE_ALTERNATE(FIL_AF));
+
+  palSetLineMode(LINE_BUZZER, PAL_MODE_OUTPUT_PUSHPULL);        // buzzer
+
+  palSetLineMode(LINE_ENC_BUT, PAL_MODE_INPUT);                 // encoder button and A/B channels
+  palSetLineMode(LINE_ENC_A, PAL_MODE_ALTERNATE(ENC_AF));
+  palSetLineMode(LINE_ENC_B, PAL_MODE_ALTERNATE(ENC_AF));
 
 }
 

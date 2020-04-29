@@ -13,7 +13,7 @@
 
 
 //===========================================================================
-// Global variables
+// Variables
 //===========================================================================
 
 ew_state_t current_state = EW_STARTUP;
@@ -21,6 +21,8 @@ ew_state_t current_state = EW_STARTUP;
 ew_time_t current_time = {0, 0, false, false};
 ew_time_t alarm_a = {0, 0, false, false};
 ew_time_t alarm_b = {0, 0, false, false};
+
+static uint8_t last_encoder_value = 0;
 
 
 //===========================================================================
@@ -78,6 +80,19 @@ static const SDCConfig sdccfg = {
   SDC_MODE_1BIT
 };
 
+CH_IRQ_HANDLER(STM32_TIM4_HANDLER) {
+    CH_IRQ_PROLOGUE();
+    
+    STM32_TIM4->SR = 0;         // clear all pending TIM4 interrupts
+    palToggleLine(LINE_LED3);  
+ 
+    chSysLockFromISR();
+    /* Invocation of some I-Class system APIs, never preemptable.*/
+    chSysUnlockFromISR();
+ 
+    CH_IRQ_EPILOGUE();  
+}
+
 
 //===========================================================================
 // Application entry point
@@ -92,6 +107,14 @@ int main(void) {
     halInit();
     chSysInit();
 
+    palSetLine(LINE_BUZZER);
+    chThdSleepMilliseconds(10);
+    palClearLine(LINE_BUZZER);
+    chThdSleepMilliseconds(50);
+    palSetLine(LINE_BUZZER);
+    chThdSleepMilliseconds(10);
+    palClearLine(LINE_BUZZER);
+
     // initialize RTC unit, and assign callback functions (alarms and periodic wakeup once a minute), if reset after power loss: load alarms from eeprom
 
     // start all nedded peripheral drivers
@@ -103,7 +126,21 @@ int main(void) {
     //chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
     chThdCreateStatic(display_wa, sizeof(display_wa), NORMALPRIO, displayThd, NULL);
 
+
+
     // initialize timer for rotary encoder and assign callback function
+    stm32_tim_t *enc = STM32_TIM4;
+    rccEnableTIM4(TRUE);
+    enc->SMCR = 3;          // encoder mode 3
+    enc->CCER = 0;          // rising edge polarity
+    enc->ARR = 0x1;         // count between 0 and 255
+    enc->CCMR1 = 0xc1c1;    // f_DTS/16, N=8 IC1->TI1, IC2->TI2
+    enc->CNT = 0;           // initialize counter
+    enc->EGR = 1;           // generate an update event, clearing the counter
+    enc->CR1 = 1;           // enable the counter
+    enc->DIER = 1;          // enable update interrupt
+    STM32_TIM4->SR = 0;     // clear all pending interrupts
+    nvicEnableVector(STM32_TIM4_NUMBER, 7);         // enable TIM4 interrupt vector with priotity 7 = default priority from mcuconf.h (i)f GPT was used)
 
     // activate external interrupts for lever, toggle, buttons and proximity interrupt and assign callback functions
 
