@@ -79,47 +79,37 @@ static void setDigit(uint8_t n, char value) {
 
     digits[n].complete |= 0x7f;        // initially turn on all segments needed for numbers
 
-    switch (value) {
-        case 0:
+    switch (value) {	    
+	case 0:
             digits[n].segments.seg_g = 0;
             break;
+		    
         case 1:
             digits[n].segments.seg_a = 0;
+	case 7:
             digits[n].segments.seg_d = 0;
-            digits[n].segments.seg_e = 0;
-            digits[n].segments.seg_f = 0;
             digits[n].segments.seg_g = 0;
+	case 3:
+            digits[n].segments.seg_f = 0;
+	case 9:
+            digits[n].segments.seg_e = 0;
             break;
+		    
         case 2:
             digits[n].segments.seg_c = 0;
             digits[n].segments.seg_f = 0;
             break;
-        case 3:
-            digits[n].segments.seg_e = 0;
-            digits[n].segments.seg_f = 0;
-            break;
+		    
         case 4:
             digits[n].segments.seg_a = 0;
             digits[n].segments.seg_d = 0;
             digits[n].segments.seg_e = 0;
             break;
+		    
         case 5:
-            digits[n].segments.seg_b = 0;
             digits[n].segments.seg_e = 0;
-            break;
         case 6:
             digits[n].segments.seg_b = 0;
-            break;
-        case 7:
-            digits[n].segments.seg_d = 0;
-            digits[n].segments.seg_e = 0;
-            digits[n].segments.seg_f = 0;
-            digits[n].segments.seg_g = 0;
-            break;
-        case 8:
-            break;
-        case 9:
-            digits[n].segments.seg_e = 0;
             break;
     }
 }
