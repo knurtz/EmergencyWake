@@ -8,8 +8,16 @@
 #include "chprintf.h"
 //#include "usbcfg.h"
 #include "ew_statemachine.h"
+#include "device_status.h"
 #include "ew_time.h"
 #include <string.h>
+#include "ew_events.h"
+
+typedef enum ew_togglevalue {
+    EW_TOGGLE_TIME,
+    EW_TOGGLE_ALARM_A,
+    EW_TOGGLE_ALARM_B,
+} ew_togglevalue_t;
 
 static uint8_t ringing_alarm = 0;     // remember which alarm is currently ringing in order to disable it after snooze timer runs out
 static uint8_t encoder_old = 0;           // remember old value to calculate the difference on encoder changed event

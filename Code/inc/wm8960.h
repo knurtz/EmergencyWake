@@ -1,5 +1,5 @@
 /*
- * wm8960.h  --  WM8960 Soc Audio driver
+ * wm8960.h  --  WM8960 SOC Audio driver
  * Source: https://github.com/waveshare/WM8960-Audio-HAT/blob/master/wm8960.h
  *
  * This program is free software; you can redistribute it and/or modify
@@ -10,11 +10,7 @@
 #ifndef _WM8960_H
 #define _WM8960_H
 
-/* WM8960 register space */
-
-
-#define WM8960_CACHEREGNUM 	56
-
+// WM8960 register space
 #define WM8960_LINVOL		0x0
 #define WM8960_RINVOL		0x1
 #define WM8960_LOUT1		0x2
@@ -68,10 +64,7 @@
 #define WM8960_PLL3		    0x36
 #define WM8960_PLL4		    0x37
 
-
-/*
- * WM8960 Clock dividers
- */
+// WM8960 Clock dividers
 #define WM8960_SYSCLKDIV 		0
 #define WM8960_DACDIV			1
 #define WM8960_OPCLKDIV			2
@@ -109,7 +102,7 @@
 #define WM8960_OPCLK_DIV_2		(1 << 0)
 #define WM8960_OPCLK_DIV_3		(2 << 0)
 #define WM8960_OPCLK_DIV_4		(3 << 0)
-#define WM8960_OPCLK_DIV_5_5		(4 << 0)
+#define WM8960_OPCLK_DIV_5_5	(4 << 0)
 #define WM8960_OPCLK_DIV_6		(5 << 0)
 
 #endif

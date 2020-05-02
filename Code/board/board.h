@@ -158,6 +158,8 @@
 #define LINE_USER_BUT               PAL_LINE(GPIOE, GPIOE_USER_BUT)
 
 #define LINE_LEVER                  PAL_LINE(GPIOA, GPIOA_LEVER)
+#define LEVER_DOWN                  0
+#define LEVER_UP                    1
 
 #define LINE_TOGGLE_UP              PAL_LINE(GPIOE, GPIOE_TOGGLE_UP)
 #define LINE_TOGGLE_DN              PAL_LINE(GPIOE, GPIOE_TOGGLE_DN)

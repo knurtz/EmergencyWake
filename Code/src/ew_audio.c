@@ -11,6 +11,7 @@ reading files from the SD card, and providing functions for other threads to sta
 #include "chprintf.h"
 #include "wm8960.h"
 #include "wave_header.h"
+#include "device_status.h"
 
 
 #define WAV_BUFFER_SIZE 512
@@ -27,14 +28,16 @@ reading files from the SD card, and providing functions for other threads to sta
 
 static int16_t dac_buffer[WAV_BUFFER_SIZE];
 
-FATFS SDC_FS;
+static FATFS SDC_FS;
 static FIL file;
 static bool fs_ready = false;
 
-uint32_t bytes_to_play;
+static uint32_t bytes_to_play;
 
 static event_source_t audio_dma_tc_event;
 static event_source_t audio_dma_ht_event;
+
+extern ew_device_status_t device_status;
 
 
 static void mclkDisable(void) {
@@ -80,7 +83,6 @@ static void wm8960Init(void) {
 
     // setup DAC
     wm8960SetRegister(WM8960_IFACE1, 0b0010);               // set audio format to 16 bit, I2C standard
-    //wm8960SetRegister(WM8960_LDAC, 1 << 8 | 0b11111100);    // set to -1.5 dB
     wm8960SetRegister(WM8960_DACCTL2, (1 << 3) | (1 << 2)); // enable soft mute with a slow ramp up (171 ms)
 
     // setup mixer
@@ -90,12 +92,15 @@ static void wm8960Init(void) {
     wm8960SetRegister(WM8960_CLASSD1, (1 << 6) | 0b110111);     // enable left class D speaker output
     
     wm8960SetRegister(WM8960_DACCTL1, 0);                       // disable mute
-    wm8960SetRegister(WM8960_LOUT2, (1 << 8) | (1 << 7) | 122);  // update left volume
+    wm8960SetRegister(WM8960_LOUT2, (1 << 8) | (1 << 7) | device_status.alarm_volume);  // update left volume
     i2cReleaseBus(&I2CD2);
 }
 
 static void sdCardInit(void) {
     FRESULT err;
+
+    // enable SD card power supply
+    palSetLine(LINE_SD_EN);
 
     // Connect to the card
     if (sdcConnect(&SDCD1)) return;
@@ -130,6 +135,7 @@ static void wm8960PlayFile(char* filename) {
         chprintf((BaseSequentialStream*) &SD1, "Error reading file header.\n");
         return;
     }
+
     FILEHeader* header = (FILEHeader*) dac_buffer;
 
     if (!(header->riff.descriptor.id == RIFF
@@ -182,8 +188,6 @@ static void wm8960PlayFile(char* filename) {
 
     // start continuous transfer of audio data
     i2sStartExchange(&I2SD3);
-
-    return;
 }
 
 //===========================================================================
@@ -191,7 +195,6 @@ static void wm8960PlayFile(char* filename) {
 //===========================================================================
 
 static void i2scallback(I2SDriver *i2sp) {
-
     chSysLockFromISR();
     if (i2sIsBufferComplete(i2sp)) {
         chEvtBroadcastI(&audio_dma_tc_event);
@@ -242,29 +245,22 @@ THD_FUNCTION(audioThd, arg) {
     while (1) {
         eventmask_t evt = chEvtWaitOne(ALL_EVENTS);
 
-        //int16_t foo_buffer[WAV_BUFFER_SIZE / 2];
-
-        palSetLine(LINE_LED3);
-
         if (evt & EVENT_MASK(EVT_DAC_TC)) {
             // TC -> fill second half of buffer with new data
             pbuffer += WAV_BUFFER_SIZE * sizeof(int16_t) / 2;
-            //f_read(&file, &dac_buffer + (WAV_BUFFER_SIZE * sizeof(int16_t) / 2), WAV_BUFFER_SIZE * sizeof(int16_t) / 2, &btr);
-            //f_read(&file, &foo_buffer, WAV_BUFFER_SIZE / 2, &btr);
         }
 
         if (evt & EVENT_MASK(EVT_DAC_HT)) {
             // HT -> fill first half of buffer with new data
             pbuffer = dac_buffer;
-            //f_read(&file, &dac_buffer, WAV_BUFFER_SIZE * sizeof(int16_t) / 2, &btr);
-            //f_read(&file, &foo_buffer, WAV_BUFFER_SIZE / 2, &btr);
         }
 
         f_read(&file, pbuffer, WAV_BUFFER_SIZE * sizeof(int16_t) / 2, &btr);
 
         bytes_to_play -= btr;
 
-        if (bytes_to_play < WAV_BUFFER_SIZE * sizeof(int16_t)) {
+        // stop playing when there are not enough bytes left to play
+        if (bytes_to_play < WAV_BUFFER_SIZE * sizeof(int16_t) / 2) {
             i2sStopExchange(&I2SD3);
         }
     }

@@ -7,42 +7,10 @@ to generate a PWM signal for the display's filament and communicating with the P
 #include "hal.h"
 #include <string.h>
 #include "chprintf.h"
+#include "pt6312.h"
+#include "device_status.h"
 
-#define PT6312_COMMAND_1            (0b00 << 6)
-#define PT6312_COMMAND_2            (0b01 << 6)
-#define PT6312_COMMAND_3            (0b11 << 6)
-#define PT6312_COMMAND_4            (0b10 << 6)
-
-// options for command 1
-#define PT6312_MODE_4DIGITS         0
-
-// options for command 2
-#define PT6312_WRITE_DISPLAY_DATA   0
-#define PT6312_AUTO_INCREMENT       0
-
-// options for command 3
-#define PT6312_ADDRESS_DIGIT0       0
-#define PT6312_ADDRESS_DIGIT1       2
-#define PT6312_ADDRESS_DIGIT2       4
-#define PT6312_ADDRESS_DIGIT3       6
-
-// options for command 4
-#define PT6312_PULSEWIDTH_MIN       0
-#define PT6312_PULSEWIDTH_1         0
-#define PT6312_PULSEWIDTH_2         1
-#define PT6312_PULSEWIDTH_4         2
-#define PT6312_PULSEWIDTH_10        3
-#define PT6312_PULSEWIDTH_11        4
-#define PT6312_PULSEWIDTH_12        5
-#define PT6312_PULSEWIDTH_13        6
-#define PT6312_PULSEWIDTH_14        7
-#define PT6312_PULSEWIDTH_MAX       7
-#define PT6312_DISPLAY_ON           (1 << 3)
-#define PT6312_DISPLAY_OFF          0
-
-
-typedef union
-{
+typedef union {
     struct {
         uint8_t seg_a : 1;
         uint8_t seg_b : 1;
@@ -66,7 +34,7 @@ typedef union
 
 static DigitData digits[4];
 
-stm32_tim_t *enc = STM32_TIM4;
+extern ew_device_status_t device_status;            // global device status, defined in main.c
 
 
 //===========================================================================
@@ -74,8 +42,8 @@ stm32_tim_t *enc = STM32_TIM4;
 //===========================================================================
 
 // value can be a number between 0 - 9 for now
-static void setDigit(uint8_t n, char value) {
-    if (n > 3) return;
+static void setDigit(uint8_t n, uint8_t value) {
+    if (n > 3 || value > 9) return;
 
     digits[n].complete |= 0x7f;        // initially turn on all segments needed for numbers
 
@@ -116,8 +84,8 @@ static void setDigit(uint8_t n, char value) {
 
 static void setMinutes(uint8_t value) {
     if (value > 100) return;
-    setDigit(0, enc->CNT % 10);
-    setDigit(1, enc->CNT / 10);
+    setDigit(0, value % 10);
+    setDigit(1, value / 10);
 }
 
 static void setHours(uint8_t value) {
@@ -128,12 +96,17 @@ static void setHours(uint8_t value) {
 
 // number can be a value between 1 and 4
 static void enableAlarmNumber(uint8_t number, bool enabled) {
+    if (number > 4) return;
     if (enabled) digits[3].complete |= 1 << (6 + number);
     else digits[3].complete &= ~(uint16_t)(1 << (6 + number));
 }
 
 static void enableDecimalPoint(bool enabled) {
     digits[1].segments.seg_p = enabled;
+}
+
+static void toggleDecimalPoint(void) {
+    digits[1].segments.seg_p ^= 1;
 }
 
 static void enableFanIcon(bool enabled) {
@@ -147,10 +120,9 @@ static void enableFanIcon(bool enabled) {
 
 static void pt6312SendCommand(uint8_t command, uint8_t options) {
     uint8_t txbuf[1] = {command | options};
-    uint8_t rxbuf[1];
 
     spiSelect(&SPID2);          // strobe signal low
-    spiExchange(&SPID2, 1, txbuf, rxbuf);         // send data
+    spiExchange(&SPID2, 1, txbuf, txbuf);         // send data
     spiUnselect(&SPID2);        // strobe signal high
 
     chThdSleepMicroseconds(1);  // PW_STB on page 13 of PT6312 datasheet
@@ -158,7 +130,7 @@ static void pt6312SendCommand(uint8_t command, uint8_t options) {
 
 static void pt6312SendCompleteDigitData(void) {
     uint8_t txbuf[9] = {
-        PT6312_COMMAND_3 | PT6312_ADDRESS_DIGIT0,
+        PT6312_COMMAND_3 | PT6312_ADDRESS_DIGIT(0),
         digits[0].bytes.low_byte,
         digits[0].bytes.high_byte,
         digits[1].bytes.low_byte,
@@ -168,12 +140,30 @@ static void pt6312SendCompleteDigitData(void) {
         digits[3].bytes.low_byte,
         digits[3].bytes.high_byte,
     };
-    uint8_t rxbuf[9];
 
     pt6312SendCommand(PT6312_COMMAND_2, PT6312_AUTO_INCREMENT);
 
     spiSelect(&SPID2);          // strobe signal low
-    spiExchange(&SPID2, 9, txbuf, rxbuf);         // send data
+    spiExchange(&SPID2, 9, txbuf, txbuf);         // send data, overwrite tx buffer with received data, since it is a local variable anyways
+    chThdSleepMicroseconds(1);  // t_CLK-STB on page 13 of PT6312 datasheet
+    spiUnselect(&SPID2);        // strobe signal high
+
+    chThdSleepMicroseconds(1);  // PW_STB on page 13 of PT6312 datasheet
+}
+
+// n can be a value from 0 to 3
+static void pt6312SendSingleDigitData(uint8_t n) {
+    if (n > 3) return;
+    uint8_t txbuf[3] = {
+        PT6312_COMMAND_3 | PT6312_ADDRESS_DIGIT(n),
+        digits[n].bytes.low_byte,
+        digits[n].bytes.high_byte,
+    };
+
+    pt6312SendCommand(PT6312_COMMAND_2, PT6312_AUTO_INCREMENT);
+
+    spiSelect(&SPID2);          // strobe signal low
+    spiExchange(&SPID2, 3, txbuf, txbuf);         // send data
     chThdSleepMicroseconds(1);  // t_CLK-STB on page 13 of PT6312 datasheet
     spiUnselect(&SPID2);        // strobe signal high
 
@@ -225,11 +215,6 @@ THD_FUNCTION(displayThd, arg) {
     pwmStart(&PWMD8, &pwmcfg);
     pwmEnableChannel(&PWMD8, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
     pwmEnableChannel(&PWMD8, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
-
-    digits[0].complete = 0;
-    digits[1].complete = 0;
-    digits[2].complete = 0;
-    digits[3].complete = 0;
 	
     // start SPI2 driver
     spiStart(&SPID2, &spicfg);
@@ -239,26 +224,11 @@ THD_FUNCTION(displayThd, arg) {
     pt6312SendCommand(PT6312_COMMAND_1, PT6312_MODE_4DIGITS);
     pt6312SendCommand(PT6312_COMMAND_4, PT6312_DISPLAY_ON | PT6312_PULSEWIDTH_MAX);
 
-    uint8_t current_value = 0;
-    uint8_t alarm_number = 1;
-    bool foo = true;
+    // display current time
 
     while(1) {
-        chThdSleepMilliseconds(100);
-
-        setMinutes(current_value);
-        setHours(current_value);
-
-        enableAlarmNumber(alarm_number, true);
-        enableDecimalPoint(foo);
-        enableFanIcon(foo);
-        
-        pt6312SendCompleteDigitData();
-
-        enableAlarmNumber(alarm_number, false);
-
-        if (++current_value > 100) current_value = 0;
-        foo = !foo;
-        if (++alarm_number > 4) alarm_number = 1;
+        chThdSleepMilliseconds(1000);
+        // wait for event: minute interrupt from RTC or new display data from main statemachine
+        toggleDecimalPoint();
     }
 }
