@@ -19,12 +19,7 @@ typedef enum ew_togglevalue {
     EW_TOGGLE_ALARM_B,
 } ew_togglevalue_t;
 
-static uint8_t ringing_alarm = 0;     // remember which alarm is currently ringing in order to disable it after snooze timer runs out
-static uint8_t encoder_old = 0;           // remember old value to calculate the difference on encoder changed event
-
-extern ew_time_t current_time;
-extern ew_time_t alarm_a;
-extern ew_time_t alarm_b;
+extern ew_device_status_t device_status;    
 
 
 //===========================================================================
@@ -36,12 +31,14 @@ ew_togglevalue_t getToggleValue() {
     return (ret > 2) ? EW_TOGGLE_TIME : ret;
 };
 
+/*
 int8_t getEncoderDifference() {
     uint8_t encoder_new;      // = read encoder timer counter register
     int8_t ret = encoder_old - encoder_new;
     encoder_old = encoder_new;
     return ret;
 };
+*/
 
 
 //===========================================================================
@@ -65,19 +62,28 @@ ew_state_t enterSetMinutes(ew_togglevalue_t toggle){
     // tell display thread to only display minutes of current time or selected alarm
 };
 
-ew_state_t enterAlarmRinging(ew_togglevalue_t toggle) {
+ew_state_t enterAlarmRinging() {
     // tell display thread to display the corresponding alarm, blinking alarm number
     // tell audio thread to start playing alarm sound
+    device_status.active_alarm = device_status.next_alarm;
+    chEvtBroadcastFlags(&display_event, 0);
+    chEvtBroadcastFlags(&audio_event, 0);
 };
 
 ew_state_t enterStandby() {
 
     // tell display thread to shut down DCDC converter and display driver IC
+    chEvtBroadcastFlags(&display_event, 1);
+    // wait for display thread to terminate
+    
     // tell audio thread to stop playing any sound and disable the audio codec IC and MCLK
+    chEvtBroadcastFlags(&audio_event, 0);
+    // wait for audio thread to terminate
 
     PWR->CSR |= (PWR_CSR_EWUP);                     // enable wakeup on pin PA0
     RTC->ISR &= ~(RTC_ISR_ALRBF | RTC_ISR_ALRAF);   // clear RTC alarm flags
-    PWR->CR  |= (PWR_CR_CSBF | PWR_CR_CWUF);        // clear wakeup flag -> any new event on one of the wakeup sources will keep device from entering standby
+    // disable RTC alarm a (minute interrupt)
+    PWR->CR  |= (PWR_CR_CSBF | PWR_CR_CWUF);        // clear wakeup flag -> any wakeup event after this instruction will keep device from entering standby
 
     // tell proximity thread to clear interrupt from proximity sensor and disable ambient light engine
 
@@ -103,8 +109,8 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
 
     chprintf((BaseSequentialStream*)&SD1, "Handling event: 0x%x\r\n", new_event);
 
-    if (new_event & EVENT_MASK(EW_RTC_ALARM_A_EVENT) || new_event & EVENT_MASK(EW_RTC_ALARM_B_EVENT))
-        return(enterAlarmRinging(new_event & EVENT_MASK(EW_RTC_ALARM_A_EVENT) ? EW_TOGGLE_ALARM_A : EW_TOGGLE_ALARM_B));
+    if (new_event & EVENT_MASK(EW_RTC_USER_ALARM_EVENT))
+        return(enterAlarmRinging());
 
     if (new_event & EVENT_MASK(EW_LEVER_DOWN_EVENT)) {
         switch (old_state) {
@@ -137,7 +143,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
                     // restore ringing alarm from eeprom
                     // play alarm stopped sound
                 }                
-                ringing_alarm = 0;      // for now, no alarm is ringing anymore          
+                device_status.active_alarm = EW_ALARM_NONE;      // for now, no alarm is ringing anymore          
                 return(enterIdle(EW_TIMEOUT_SHORT));
         }
         return(old_state);
@@ -187,9 +193,9 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
     if (new_event & EVENT_MASK(EW_SNOOZE_TIMER_EVENT)) {
         // disable alarm automatically after some time
         stopRingtone();
-        toggleAlarmEnable(ringing_alarm);       // alarms that were ignored once will be turned off to prevent this in the future
-        saveAlarm(ringing_alarm);
-        ringing_alarm = 0;
+        toggleAlarmEnable(device_status.active_alarm);       // alarms that were ignored once will be turned off to prevent this in the future
+        saveAlarm();
+        device_status.active_alarm = EW_ALARM_NONE;
         return(enterIdle(EW_TIMEOUT_SHORT));
     }
 

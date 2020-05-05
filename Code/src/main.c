@@ -18,15 +18,16 @@
 // Variables and local functions
 //===========================================================================
 
+// global variable for device status. also accessed by audio and display thread.
 ew_device_status_t device_status;
 
-// calculate depending on current RTC timee, saved alarm times and their respective states (only look at enabled alarms and if they are set to snooze or not)
-uint8_t findNextAlarm(void) {
-    return 1;
+// calculate depending on current RTC time, saved alarm times and their respective states (only look at enabled alarms and if they are set to snooze or not)
+ew_alarmnumber_t findNextAlarm(void) {
+    return EW_ALARM_ONE;
 }
 
 ew_time_t findNextAlarmTime(void) {
-    uint8_t next_alarm = findNextAlarm();
+    ew_alarmnumber_t next_alarm = findNextAlarm();
     ew_time_t ret = {
         device_status.alarms[next_alarm - 1].saved_time.hours, 
         device_status.alarms[next_alarm - 1].saved_time.minutes
@@ -34,19 +35,23 @@ ew_time_t findNextAlarmTime(void) {
     return ret;
 }
 
-// hard coded values for now, read from eeprom later
+// hard coded values for now, read from eeprom and backup registers later
+// RTC backup registers:
+// 0 - snooze timer and state for alarm one
+// 1 - snooze timer and state for alarm two
 static void retrieveDeviceStatus(void) {
     device_status.state = EW_INIT;
+    device_status.active_alarm = EW_ALARM_NONE;
 
-    device_status.alarms[0].saved_time.hours = 6;       // get alarm info from eeprom
-    device_status.alarms[0].saved_time.minutes = 23;
-    device_status.alarms[0].snooze_timer = 0;
-    device_status.alarms[0].state = EW_ALARM_ENABLED;
+    device_status.alarms[EW_ALARM_ONE].saved_time.hours = 6;        // get saved alarm info from eeprom
+    device_status.alarms[EW_ALARM_ONE].saved_time.minutes = 23;
+    device_status.alarms[EW_ALARM_ONE].snooze_timer = RTC->BKP0R & 0xffff;      // lower 16 bits for snooze timer
+    device_status.alarms[EW_ALARM_ONE].state = RTC->BKP0R >> 16 & 0x11;         // bits 16 and 17, values either 0, 1 or 2
     
-    device_status.alarms[1].saved_time.hours = 8;
-    device_status.alarms[1].saved_time.minutes = 41;
-    device_status.alarms[1].snooze_timer = 0;
-    device_status.alarms[1].state = EW_ALARM_ENABLED;
+    device_status.alarms[EW_ALARM_TWO].saved_time.hours = 8;
+    device_status.alarms[EW_ALARM_TWO].saved_time.minutes = 41;
+    device_status.alarms[EW_ALARM_TWO].snooze_timer = RTC->BKP1R & 0xffff;
+    device_status.alarms[EW_ALARM_TWO].state = RTC->BKP1R >> 16 & 0x11;
 
     device_status.next_alarm = findNextAlarm();
     device_status.next_alarm_time = findNextAlarmTime();    
@@ -184,9 +189,9 @@ CH_IRQ_HANDLER(STM32_TIM4_HANDLER) {
     STM32_TIM4->SR = 0;         // clear all pending TIM4 interrupts
      
     chSysLockFromISR();
-    if (STM32_TIM4->CR1 & TIM_CR1_DIR) palToggleLine(LINE_LED3);
-    else palToggleLine(LINE_LED4);
-    chEvtBroadcastI(&encoder_changed_event);
+    // figure out direction
+    if (STM32_TIM4->CR1 & TIM_CR1_DIR) chEvtBroadcastFlagsI(&encoder_changed_event, 1);
+    else chEvtBroadcastFlagsI(&encoder_changed_event, 0);
     chSysUnlockFromISR();
  
     CH_IRQ_EPILOGUE();  
@@ -197,6 +202,15 @@ CH_IRQ_HANDLER(STM32_TIM4_HANDLER) {
 //===========================================================================
 
 int main(void) {
+    // event listeners for main thread -> events processed by statemachine
+    event_listener_t    el_toggle, 
+                        el_lever_down,
+                        el_lever_up,
+                        el_encoder_button,
+                        el_encoder,
+                        el_proximity,
+                        el_user_alarm;
+
     // System initialization
     // initializes GPIOs by calling __early_init() from board file
     halInit();
@@ -206,6 +220,7 @@ int main(void) {
     bool restarting_after_standby = PWR->CSR & PWR_CSR_SBF;         // did we just wakeup from standby?
     PWR->CR |= PWR_CR_CSBF;                                         // clear standby flag
 
+    // init all event sources, also the ones not processed by main thread
     chEvtObjectInit(&toggle_changed_event);
     chEvtObjectInit(&lever_down_event);
     chEvtObjectInit(&lever_up_event);
@@ -215,6 +230,15 @@ int main(void) {
     chEvtObjectInit(&user_alarm_event);
     chEvtObjectInit(&display_update_event);
     chEvtObjectInit(&play_audio_event);
+
+    // hook up only the event listeners, that get processed by main thread
+    chEvtRegister(&toggle_changed_event, &el_toggle, EW_TOGGLE_CHANGE_EVENT);
+    chEvtRegister(&lever_down_event, &el_toggle, EW_LEVER_DOWN_EVENT);
+    chEvtRegister(&lever_up_event, &el_toggle, EW_LEVER_UP_EVENT);
+    chEvtRegister(&encoder_changed_event, &el_toggle, EW_ENCODER_CHANGED_EVENT);
+    chEvtRegister(&encoder_button_event, &el_toggle, EW_ENCODER_BUTTON_EVENT);
+    chEvtRegister(&proximity_event, &el_toggle, EW_LEVER_DOWN_EVENT);       // for now, either get own event id later or merge into one callback function for both pins
+    chEvtRegister(&el_user_alarm, &el_toggle, EW_RTC_USER_ALARM_EVENT);
 
     // retrieve device status from eeprom
     retrieveDeviceStatus();
