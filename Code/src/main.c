@@ -21,6 +21,9 @@
 // global variable for device status. also accessed by audio and display thread.
 ew_device_status_t device_status;
 
+// event listener for main thread statemachine
+event_listener_t el_statemachine;
+
 // calculate depending on current RTC time, saved alarm times and their respective states (only look at enabled alarms and if they are set to snooze or not)
 ew_alarmnumber_t findNextAlarm(void) {
     return EW_ALARM_ONE;
@@ -36,9 +39,9 @@ ew_time_t findNextAlarmTime(void) {
 }
 
 // hard coded values for now, read from eeprom and backup registers later
-// RTC backup registers:
-// 0 - snooze timer and state for alarm one
-// 1 - snooze timer and state for alarm two
+// Used RTC backup registers:
+// BKP0R - snooze timer and state for alarm one
+// BKP1R - snooze timer and state for alarm two
 static void retrieveDeviceStatus(void) {
     device_status.state = EW_INIT;
     device_status.active_alarm = EW_ALARM_NONE;
@@ -132,7 +135,8 @@ static const SDCConfig sdccfg = {
 //===========================================================================
 
 // External interrupts
-event_source_t toggle_changed_event;
+event_source_t statemachine_event;
+/*
 event_source_t lever_down_event;
 event_source_t lever_up_event;
 event_source_t encoder_changed_event;
@@ -141,57 +145,64 @@ event_source_t proximity_event;
 event_source_t alarm_event;
 event_source_t display_update_event;
 event_source_t play_audio_event;
+*/
 
 static void toggle_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
-    chEvtBroadcastI(&toggle_changed_event);
+    // toggle change has no additional flags. new toggle status is read by statemachine
+    chEvtBroadcastFlagsI(&statemachine_event, 1 << EW_TOGGLE_CHANGE);
     chSysUnlockFromISR();
 }
 
 static void lever_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
+    // lever also has no flags, but two seperate events for falling / rising edge. could technically be handled by two sepearte callback functions.
     if (palReadLine(LINE_LEVER) == LEVER_DOWN)
-        chEvtBroadcastI(&lever_down_event);
+        chEvtBroadcastFlagsI(&statemachine_event, 1 << EW_LEVER_DOWN);
     else
-        chEvtBroadcastI(&lever_up_event);
+        chEvtBroadcastFlagsI(&statemachine_event, 1 << EW_LEVER_UP);
     chSysUnlockFromISR();
 }
 
 static void encoder_button_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
-    chEvtBroadcastI(&encoder_button_event);
+    // encoder button has no additional flags.
+    chEvtBroadcastFlagsI(&statemachine_event, 1 << EW_ENCODER_BUTTON);
     chSysUnlockFromISR();
 }
 
+// for now, proximity interrupt is only used to wakeup device from standby and not during operation
+/*
 static void proximity_interrupt_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
-    chEvtBroadcastI(&proximity_event);
+    chEvtBroadcastFlagsI(&statemachine_event, 1 << EW_LEVER_UP);
     chSysUnlockFromISR();
 }
+*/
 
 static void rtc_alarm_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
+    // RTC alarm also has no flags, but two seperate events depending on alarm A or alarm B
     // if alarm a (aka minute interrupt)
-    chEvtBroadcastI(&display_update_event);     // set flags to signal minute interrupt to display thread
+    chEvtBroadcastFlagsI(&display_event, 1);     // set flags to signal minute interrupt to display thread
     // else (aka alarm b aka user alarm)
-    chEvtBroadcastI(&user_alarm_event);
+    chEvtBroadcastFlagsI(&statemachine_event, 1 << EW_USER_ALARM);
     chSysUnlockFromISR();
 }
 
 CH_IRQ_HANDLER(STM32_TIM4_HANDLER) {
     CH_IRQ_PROLOGUE();
     
-    STM32_TIM4->SR = 0;         // clear all pending TIM4 interrupts
-     
     chSysLockFromISR();
-    // figure out direction
-    if (STM32_TIM4->CR1 & TIM_CR1_DIR) chEvtBroadcastFlagsI(&encoder_changed_event, 1);
-    else chEvtBroadcastFlagsI(&encoder_changed_event, 0);
+    STM32_TIM4->SR = 0;         // clear all pending TIM4 interrupts
+    // encoder changed event has a flag, indicating the direction (flag set for positive direction)
+    if (STM32_TIM4->CR1 & TIM_CR1_DIR) chEvtBroadcastFlagsI(&statemachine_event, 1 << (EVENT_FLAGS_OFFSET + EW_ENCODER_CHANGED) | 1 << EW_ENCODER_CHANGED);
+    else chEvtBroadcastFlagsI(&statemachine_event, 1 << EW_ENCODER_CHANGED);
     chSysUnlockFromISR();
  
     CH_IRQ_EPILOGUE();  
@@ -202,15 +213,6 @@ CH_IRQ_HANDLER(STM32_TIM4_HANDLER) {
 //===========================================================================
 
 int main(void) {
-    // event listeners for main thread -> events processed by statemachine
-    event_listener_t    el_toggle, 
-                        el_lever_down,
-                        el_lever_up,
-                        el_encoder_button,
-                        el_encoder,
-                        el_proximity,
-                        el_user_alarm;
-
     // System initialization
     // initializes GPIOs by calling __early_init() from board file
     halInit();
@@ -221,7 +223,8 @@ int main(void) {
     PWR->CR |= PWR_CR_CSBF;                                         // clear standby flag
 
     // init all event sources, also the ones not processed by main thread
-    chEvtObjectInit(&toggle_changed_event);
+    chEvtObjectInit(&statemachine_event);
+    /*
     chEvtObjectInit(&lever_down_event);
     chEvtObjectInit(&lever_up_event);
     chEvtObjectInit(&encoder_changed_event);
@@ -230,15 +233,18 @@ int main(void) {
     chEvtObjectInit(&user_alarm_event);
     chEvtObjectInit(&display_update_event);
     chEvtObjectInit(&play_audio_event);
+    */
 
-    // hook up only the event listeners, that get processed by main thread
-    chEvtRegister(&toggle_changed_event, &el_toggle, EW_TOGGLE_CHANGE_EVENT);
+    // hook up the event listener, that get processed by main thread statemachine
+    chEvtRegister(&statemachine_event, &el_statemachine, 0);
+    /*
     chEvtRegister(&lever_down_event, &el_toggle, EW_LEVER_DOWN_EVENT);
     chEvtRegister(&lever_up_event, &el_toggle, EW_LEVER_UP_EVENT);
     chEvtRegister(&encoder_changed_event, &el_toggle, EW_ENCODER_CHANGED_EVENT);
     chEvtRegister(&encoder_button_event, &el_toggle, EW_ENCODER_BUTTON_EVENT);
     chEvtRegister(&proximity_event, &el_toggle, EW_LEVER_DOWN_EVENT);       // for now, either get own event id later or merge into one callback function for both pins
     chEvtRegister(&el_user_alarm, &el_toggle, EW_RTC_USER_ALARM_EVENT);
+    */
 
     // retrieve device status from eeprom
     retrieveDeviceStatus();
@@ -277,11 +283,10 @@ int main(void) {
     palEnableLineEvent(LINE_LEVER, PAL_EVENT_MODE_BOTH_EDGES);
     palSetLineCallback(LINE_LEVER, lever_cb, NULL);
 
+    /*
     palEnableLineEvent(LINE_I2C_INT, PAL_EVENT_MODE_FALLING_EDGE);
     palSetLineCallback(LINE_I2C_INT, proximity_interrupt_cb, NULL);
-
-    // activate event listeners for main thread
-
+    */
 
     while (1) {
         thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO + 1, shellThread, (void *)&shell_cfg);
@@ -293,11 +298,16 @@ int main(void) {
     uint16_t alarm_flags = (RTC->ISR & (RTC_ISR_ALRAF | RTC_ISR_ALRBF)) >> RTC_ISR_ALRAF_Pos;   // yields 1 for alarm A flag, 2 for alarm B flag, 3 for both
     if (alarm_flags > 0) current_state = enterAlarmRinging(alarm_flags);
     else current_state = enterIdle();
+*/
 
     while (true) {
-        eventmask_t new_event = chEvtWaitOne(ALL_EVENTS);
-        current_state = handleEvent(new_event, current_state);
+        eventmask_t new_event = chEvtWaitAny(0);
+        // get event flags - lower 16 bits determine which event took place, upper 16 bits contain additional flags for this event
+        // using events this way is not the recommended way. actually, for each event there should be seperate event_source and event_listener objects.
+        // however, because the flags wouldn't get much use, we can get away with a single event_source and event_listener,
+        // decoding the actual event inside the event flags.
+        eventflags_t flags = chEvtGetAndClearFlags(&el_statemachine);
+        handleEvent((uint16_t)(flags & 0xffff), (uint16_t)(flags >> EVENT_FLAGS_OFFSET));
     }
-    */
 
 }  // end of main()

@@ -55,4 +55,6 @@ typedef struct {                        // Value after reset or standby:
     bool dst_enabled;                   // restored from RTC configuration backup bit
 } ew_device_status_t;
 
+extern ew_device_status_t device_status;    // defined in main.c
+
 #endif /* DEVICE_STATUS_H */

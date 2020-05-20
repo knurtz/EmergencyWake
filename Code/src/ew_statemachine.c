@@ -19,8 +19,7 @@ typedef enum ew_togglevalue {
     EW_TOGGLE_ALARM_B,
 } ew_togglevalue_t;
 
-extern ew_device_status_t device_status;    
-
+static systime_t lever_down_time;                   // used to store systime when lever gets pulled down
 
 //===========================================================================
 // helper functions to get or set specific values
@@ -101,18 +100,21 @@ ew_state_t enterStandby() {
 // main state machine handler
 //===========================================================================
 
-ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
+ew_state_t handleEvent(uint16_t new_event, uint16_t flags) {
 
-    static systime_t lever_down_time;                   // used to store systime when lever gets pulled down
+    ew_state_t old_state = device_status.state;
+    ew_state_t new_state = EW_IDLE;
+
     ew_togglevalue_t toggle_value = getToggleValue();   // determines whether one of the two alarms or the current time is selected
-    uint8_t encoder_diff = getEncoderDifference();
 
     chprintf((BaseSequentialStream*)&SD1, "Handling event: 0x%x\r\n", new_event);
 
-    if (new_event & EVENT_MASK(EW_RTC_USER_ALARM_EVENT))
+    if (new_event & EVENT_MASK(EW_USER_ALARM))
+        // user alarm event: flag carries alarm identifier
+
         return(enterAlarmRinging());
 
-    if (new_event & EVENT_MASK(EW_LEVER_DOWN_EVENT)) {
+    if (new_event & EVENT_MASK(EW_LEVER_DOWN)) {
         switch (old_state) {
             case EW_ALARM_RINGING:
                 stopRingtone();
@@ -129,7 +131,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
         return(old_state);
     }
 
-    if (new_event & EVENT_MASK(EW_LEVER_UP_EVENT)) {
+    if (new_event & EVENT_MASK(EW_LEVER_UP)) {
         switch (old_state) {
             case EW_IDLE:
                 return(enterStandby());
@@ -149,7 +151,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
         return(old_state);
     }
 
-    if (new_event & EVENT_MASK(EW_TOGGLE_CHANGE_EVENT)) {
+    if (new_event & EVENT_MASK(EW_TOGGLE_CHANGE_)) {
         // when an alarm is ringing, toggle input is ignored
         if (old_state == EW_ALARM_RINGING) return(old_state);
         // when returning to homescreen, save any changes done to alarms so far
@@ -161,7 +163,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
         return(enterShowAlarm(toggle_value));
     }
 
-    if (new_event & EVENT_MASK(EW_ENCODER_BUTTON_EVENT)) {
+    if (new_event & EVENT_MASK(EW_ENCODER_BUTTON)) {
         switch (old_state) {
             case EW_IDLE:
                 return(enterSetHours(toggle_value));
@@ -178,7 +180,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
         return(old_state);
     }
 
-    if (new_event & EVENT_MASK(EW_ENCODER_CHANGED_EVENT)) {
+    if (new_event & EVENT_MASK(EW_ENCODER_CHANGED)) {
         switch(old_state) {
             case EW_SET_HOURS:
                 // set new hour value for alarm or current time
@@ -190,7 +192,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
         return(old_state);
     }
 
-    if (new_event & EVENT_MASK(EW_SNOOZE_TIMER_EVENT)) {
+    if (new_event & EVENT_MASK(EW_SNOOZE_TIMER)) {
         // disable alarm automatically after some time
         stopRingtone();
         toggleAlarmEnable(device_status.active_alarm);       // alarms that were ignored once will be turned off to prevent this in the future
@@ -199,7 +201,7 @@ ew_state_t handleEvent(eventmask_t new_event, ew_state_t old_state) {
         return(enterIdle(EW_TIMEOUT_SHORT));
     }
 
-    if (new_event & EVENT_MASK(EW_STANDBY_TIMER_EVENT))
+    if (new_event & EVENT_MASK(EW_STANDBY_TIMER))
         return(enterStandby());
 
 }

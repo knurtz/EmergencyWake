@@ -6,7 +6,7 @@
 #define EW_TIMEOUT_LONG             300U     // long timeout, after showing current time
 
 // main state machine handler
-ew_state_t handleEvent(eventmask_t new_event, ew_state_t current_state);
+ew_state_t handleEvent(uint16_t new_event, uint16_t flags);
 
 
 #endif /* STATEMACHINE_H */
