@@ -14,27 +14,26 @@
 
 #define EVENT_FLAGS_OFFSET  16
 
-// Project wide event sources. These all get defined and initialized in main.c
-// They might be subscribed and broadcasted to by many different threads within the project.
+// Project wide event sources.
+// They might be subscribed and broadcasted to by many different threads within the project. All event sources are definced and init
+
+// Usually in ChibiOS events are used differently. Each event (e.g. toggle change or lever down) should normally get a seperate event source.
+// Therefore, there should be an equal amount of specific event listeners for each event source.
+// In this project there are only three event sources. One for the main statemachine, one for the display thread and one for the audio thread.
+// This means, there only have to be 3 event listeners instead of 10.
+// Additionaly the option to pass flags together with an event is used, to further specify which type of event occured.
+// For example, a statemachine event only tells the main statemachine, that something UI related happened (for example a button was pressed or an alarm went off).
+// What exactly happened will be encoded in the event flags. These are 32 bit values. 
+// The lower 16 bits are used to identify the exact type of event. The upper 16 bits can be used as an additional binary flag for each event type.
+// This additional flag is not used often, currently only to specify the direction (up / down) for the encoder value changed event.
 
 // UI related, processed by statemachine
 extern event_source_t statemachine_event;
-/*
-extern event_source_t toggle_changed_event;
-extern event_source_t lever_down_event;
-extern event_source_t lever_up_event;
-extern event_source_t encoder_changed_event;
-extern event_source_t encoder_button_event;
-extern event_source_t proximity_event;
 
-// RTC related, also processed by statemachine
-extern event_source_t user_alarm_event;     // whether alarm A or alarm B can be deducted by next_alarm value in device status
-*/
+// Display related: defined, initialized and processed by display thread
+extern event_source_t display_event;
 
-// Display related, processed by display thread
-extern event_source_t display_event;  // which part of the information inside "device_status" to display is encoded in event flags
-
-// Audio related, processed by audio thread
-extern event_source_t audio_event;  // which sound or whether to stop audio is encoded in event flags
+// Audio related: defined, initialized and processed by audio thread
+extern event_source_t audio_event;
 
 #endif /* EW_EVENTS_H */
