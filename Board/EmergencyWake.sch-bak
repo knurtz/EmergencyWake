@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:EmergencyWake-cache
 EELAYER 30 0
 EELAYER END
 $Descr A2 23386 16535
@@ -288,8 +287,6 @@ F 4 "C15850" H 4400 2150 50  0001 C CNN "LCSC"
 	1    0    0    -1  
 $EndComp
 Connection ~ 4400 2000
-Wire Wire Line
-	4400 2000 4850 2000
 Text Notes 5850 2600 0    50   ~ 0
 For more information on backup battery circuit:\nhttps://www.st.com/resource/en/application_note/dm00206898.pdf
 $Comp
@@ -4087,7 +4084,8 @@ P 10100 12800
 F 0 "U5" H 11250 11200 50  0000 C CNN
 F 1 "WM8960" H 11250 11300 50  0000 C CNN
 F 2 "Package_DFN_QFN:QFN-32-1EP_5x5mm_P0.5mm_EP3.45x3.45mm" H 10100 14750 50  0001 C CNN
-F 3 "" H 9550 12450 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Wolfson-Microelectronics-PLC-WM8960CGEFL-RV_C18752.pdf" H 9550 12450 50  0001 C CNN
+F 4 "C18752" H 10100 12800 50  0001 C CNN "LCSC"
 	1    10100 12800
 	1    0    0    -1  
 $EndComp
@@ -4523,4 +4521,20 @@ F 3 "~" H 9350 15100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9150 15100 10550 15100
+$Comp
+L Device:D_Schottky D?
+U 1 1 5EF5DA09
+P 4650 2000
+F 0 "D?" H 4650 2216 50  0000 C CNN
+F 1 "SS54" H 4650 2125 50  0000 C CNN
+F 2 "Diode_SMD:D_SMA" H 4650 2000 50  0001 C CNN
+F 3 "~" H 4650 2000 50  0001 C CNN
+F 4 "C22452" H 4650 2000 50  0001 C CNN "LCSC"
+	1    4650 2000
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	4400 2000 4500 2000
+Wire Wire Line
+	4800 2000 4850 2000
 $EndSCHEMATC

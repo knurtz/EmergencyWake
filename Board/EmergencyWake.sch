@@ -287,8 +287,6 @@ F 4 "C15850" H 4400 2150 50  0001 C CNN "LCSC"
 	1    0    0    -1  
 $EndComp
 Connection ~ 4400 2000
-Wire Wire Line
-	4400 2000 4850 2000
 Text Notes 5850 2600 0    50   ~ 0
 For more information on backup battery circuit:\nhttps://www.st.com/resource/en/application_note/dm00206898.pdf
 $Comp
@@ -4523,4 +4521,20 @@ F 3 "~" H 9350 15100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9150 15100 10550 15100
+$Comp
+L Device:D_Schottky D7
+U 1 1 5EF5DA09
+P 4650 2000
+F 0 "D7" H 4650 2216 50  0000 C CNN
+F 1 "SS54" H 4650 2125 50  0000 C CNN
+F 2 "Diode_SMD:D_SMA" H 4650 2000 50  0001 C CNN
+F 3 "~" H 4650 2000 50  0001 C CNN
+F 4 "C22452" H 4650 2000 50  0001 C CNN "LCSC"
+	1    4650 2000
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	4400 2000 4500 2000
+Wire Wire Line
+	4800 2000 4850 2000
 $EndSCHEMATC
