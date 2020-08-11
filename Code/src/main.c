@@ -117,14 +117,15 @@ static const I2CConfig i2ccfg = {
     STD_DUTY_CYCLE,
 };
 
-static uint8_t sd_scratchpad[512];  // Working area for SDC driver
+//static uint8_t sd_scratchpad[512];  // Working area for SDC driver
 static const SDCConfig sdccfg = {
-    sd_scratchpad,
-    SDC_MODE_1BIT};
+    SDC_MODE_1BIT
+};
 
 static const ShellConfig shell_cfg = {
     (BaseSequentialStream *)&SD1,
-    commands};
+    commands
+};
 
 //===========================================================================
 // Events and their callbacks

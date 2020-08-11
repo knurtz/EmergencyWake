@@ -136,7 +136,7 @@ CSRC = $(ALLCSRC) \
        src/ew_audio.c \
        src/ew_proximity.c \
        src/ew_display.c \
-#      src/ew_statemachine.c \
+       src/ew_statemachine.c \
 #	     src/usbcfg.c \
 #      $(TESTSRC) \
 
@@ -154,7 +154,10 @@ ASMXSRC = $(ALLXASMSRC)
 INCDIR = $(CONFDIR) $(ALLINC) $(TESTINC) inc
 
 # Define C warning options here.
-CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
+CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes -Wno-implicit-fallthrough -Wno-switch
+
+# for testing:
+CWARN += -Wno-unused-variable -Wno-unused-function -Wno-unused-parameter -Wno-unused-but-set-variable
 
 # Define C++ warning options here.
 CPPWARN = -Wall -Wextra -Wundef

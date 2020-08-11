@@ -49,7 +49,7 @@ ew_time_t findNextAlarmTime(void);
 // functions for entering a new state
 //===========================================================================
 
-ew_state_t enterIdle(uint8_t display_timeout){
+ew_state_t enterIdle(int display_timeout){
     // tell display thread to show current time and activated alarms, enable second blink
     // start standby timer depending on value of display_timeout
 };
