@@ -1,7 +1,11 @@
 #include <string.h>
 
 #include "ch.h"
+#include "hal.h"
+
 #include "chprintf.h"
+#include "shell.h"
+
 #include "device_status.h"
 #include "ew_audio.h"
 #include "ew_display.h"
@@ -9,8 +13,6 @@
 #include "ew_shell.h"
 #include "ew_statemachine.h"
 #include "ew_time.h"
-#include "hal.h"
-#include "shell.h"
 
 //===========================================================================
 // Variables and local functions
