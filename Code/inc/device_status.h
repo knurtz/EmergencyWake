@@ -33,28 +33,29 @@ typedef struct {
 } ew_time_t;
 
 typedef struct {
-        ew_time_t saved_time;           // alarm as it is stored in eeprom (updated after user modifies and saves alarm)
-        ew_time_t modified_time;        // this value is used while the user sets up a new alarm time (before saving)
-        uint8_t snooze_timer;           // indicates how many minutes to add to original alarm time due to a snoozing user
-        ew_alarmstate_t state;          // 
+        ew_time_t saved_time;           // alarm as it is set up by the user
+        ew_time_t modified_time;        // used while the user sets up a new alarm time (before saving)
+        uint8_t snooze_timer;           // how many minutes to add to original alarm time due to a snoozing user
+        ew_alarmstate_t state;          // alarm state
 } ew_alarm_t;
 
+typedef struct {
+    ew_state_t state;                   // current state determines what's shown on screen
+    ew_alarmnumber_t active_alarm;      // which alarm is currently ringing
 
-typedef struct {                        // Default values after full reset or standby:
-    ew_state_t state;                   // set to EW_STARTUP
-    ew_alarmnumber_t active_alarm;      // set to EW_ALARM_NONE
+    ew_alarm_t alarms[2];               // two user definable alarms
 
-    ew_alarm_t alarms[2];               // saved_time: restored from EEPROM, modified_time: reset to 0:00, snooze_timer and state: restored from RTC backup register
+    ew_alarmnumber_t next_alarm;        // which alarm is going to fire next (taking snoozing into consideration). Value is calculated by findNextAlarm().
+    ew_time_t next_alarm_time;          // time at which the next alarm fires. Value is calculated by findNextAlarmTime().
 
-    ew_alarmnumber_t next_alarm;        // calculated by findNextAlarm() in main.c
-    ew_time_t next_alarm_time;          // calculated by findNextAlarmTime() depending on result from the linve above
+    uint8_t alarm_volume;               // user settings
+    uint8_t snooze_time;
 
-    uint8_t alarm_volume;               // restored from EEPROM
-    uint8_t snooze_time;                // restored from EEPROM
-
-    bool dst_enabled;                   // restored from RTC configuration backup bit
+    bool dst_enabled;                   // daylight savings time
 } ew_device_status_t;
 
-extern ew_device_status_t device_status;    // defined in main.c
+
+extern ew_device_status_t device_status;    // global variable defined in main.c
+
 
 #endif /* DEVICE_STATUS_H */

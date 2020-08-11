@@ -3,17 +3,6 @@
 
 #include "ch.h"
 
-#define EW_USER_ALARM       0
-#define EW_LEVER_DOWN       1
-#define EW_LEVER_UP         2
-#define EW_TOGGLE_CHANGE    3
-#define EW_ENCODER_BUTTON   4
-#define EW_ENCODER_CHANGED  5
-#define EW_SNOOZE_TIMER     6
-#define EW_STANDBY_TIMER    7
-
-#define EVENT_FLAGS_OFFSET  16
-
 // Project wide event sources.
 // They might be subscribed and broadcasted to by many different threads within the project. All event sources are definced and init
 
@@ -27,13 +16,24 @@
 // The lower 16 bits are used to identify the exact type of event. The upper 16 bits can be used as an additional binary flag for each event type.
 // This additional flag is not used often, currently only to specify the direction (up / down) for the encoder value changed event.
 
-// UI related, processed by statemachine
+#define EW_USER_ALARM       0
+#define EW_LEVER_DOWN       1
+#define EW_LEVER_UP         2
+#define EW_TOGGLE_CHANGE    3
+#define EW_ENCODER_BUTTON   4
+#define EW_ENCODER_CHANGED  5
+#define EW_SNOOZE_TIMER     6
+#define EW_STANDBY_TIMER    7
+
+#define EVENT_FLAGS_OFFSET  16
+
+// UI related events
 extern event_source_t statemachine_event;
 
-// Display related: defined, initialized and processed by display thread
+// Display related events (update screen content, turn on /off, ...)
 extern event_source_t display_event;
 
-// Audio related: defined, initialized and processed by audio thread
+// Audio related events (play certain audio file, set volume, pause, ...)
 extern event_source_t audio_event;
 
 #endif /* EW_EVENTS_H */
