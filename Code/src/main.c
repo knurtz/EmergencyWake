@@ -52,12 +52,12 @@ static void retrieveDeviceStatus(void) {
     device_status.alarms[EW_ALARM_ONE].saved_time.hours = 6;
     device_status.alarms[EW_ALARM_ONE].saved_time.minutes = 23;
     device_status.alarms[EW_ALARM_ONE].snooze_timer = RTC->BKP0R & 0xffff;
-    device_status.alarms[EW_ALARM_ONE].state = RTC->BKP0R >> 16 & 0x11;
+    device_status.alarms[EW_ALARM_ONE].state = RTC->BKP0R >> 16 & 0b11;
 
     device_status.alarms[EW_ALARM_TWO].saved_time.hours = 8;
     device_status.alarms[EW_ALARM_TWO].saved_time.minutes = 41;
     device_status.alarms[EW_ALARM_TWO].snooze_timer = RTC->BKP1R & 0xffff;
-    device_status.alarms[EW_ALARM_TWO].state = RTC->BKP1R >> 16 & 0x11;
+    device_status.alarms[EW_ALARM_TWO].state = RTC->BKP1R >> 16 & 0b11;
 
     device_status.next_alarm = findNextAlarm();
     device_status.next_alarm_time = findNextAlarmTime();
