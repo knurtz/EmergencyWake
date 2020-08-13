@@ -64,6 +64,7 @@ static void retrieveDeviceStatus(void) {
 
     device_status.alarm_volume = 120;  // get these two from eeprom
     device_status.snooze_time = 10;
+    device_status.unsaved_changes = false;
 
     device_status.dst_enabled = false;  // get this from RTC module
 }
@@ -236,8 +237,8 @@ int main(void) {
 
     // start threads
     chThdCreateStatic(blinker_wa, sizeof(blinker_wa), NORMALPRIO - 1, blinkerThd, NULL);
-    chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
-    chThdCreateStatic(display_wa, sizeof(display_wa), NORMALPRIO, displayThd, NULL);
+    //chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
+    //chThdCreateStatic(display_wa, sizeof(display_wa), NORMALPRIO, displayThd, NULL);
     thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO, shellThread, (void *)&shell_cfg);
 
     // initialize timer for rotary encoder and assign callback function
@@ -286,7 +287,7 @@ int main(void) {
         eventmask_t new_event = chEvtWaitAny(0);
         // retrieve event flags - check ew_event.h for more information on how events and event flags are used in this project.
         eventflags_t flags = chEvtGetAndClearFlags(&el_statemachine);
-        handleEvent((uint16_t)(flags & 0xffff), (uint16_t)(flags >> EVENT_FLAGS_OFFSET));
+        handleEvent((uint16_t)(flags & 0xffff), (uint16_t)((flags >> EVENT_FLAGS_OFFSET) & 0xffff));
     }    
 
 }  // end of main()

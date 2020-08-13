@@ -18,7 +18,7 @@ typedef enum {
 typedef enum {
     EW_ALARM_DISABLED,
     EW_ALARM_ENABLED,
-    EW_ALARM_SNOOZING
+    EW_ALARM_SNOOZED
 } ew_alarmstate_t;
 
 typedef enum {
@@ -50,6 +50,8 @@ typedef struct {
 
     uint8_t alarm_volume;               // user settings
     uint8_t snooze_time;
+    bool unsaved_changes;               // unsaved changes to configuration that needs to be saved to eeprom before going into deep sleep 
+                                        // (i.e. alarm times and state, snooze time and volume)
 
     bool dst_enabled;                   // daylight savings time
 } ew_device_status_t;
