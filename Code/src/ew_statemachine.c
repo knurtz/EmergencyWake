@@ -89,27 +89,27 @@ static ew_state_t enterIdle(int display_timeout) {
     // start standby timer depending on value of display_timeout
 
     return EW_IDLE;
-};
+}
 
 static ew_state_t enterShowAlarm(ew_alarmnumber_t toggle_pos) {
     // tell display thread to show alarm a or b, no second blink, highlight selected alarm number
 
     return EW_SHOW_ALARM;
-};
+}
 
 static ew_state_t enterSetHours(ew_alarmnumber_t toggle_pos) {
     // tell display thread to only display hours of current time or selected alarm (maybe display minutes in lower brightness)
 
     return EW_SET_HOURS;
-};
+}
 
 static ew_state_t enterSetMinutes(ew_alarmnumber_t toggle_pos) {
     // tell display thread to only display minutes of current time or selected alarm
 
     return EW_SET_MINUTES;
-};
+}
 
-static ew_state_t enterAlarmRinging() {
+static ew_state_t enterAlarmRinging(void) {
     // tell display thread to display the corresponding alarm, blinking alarm number
     // tell audio thread to start playing alarm sound
     device_status.active_alarm = device_status.next_alarm;
@@ -117,9 +117,9 @@ static ew_state_t enterAlarmRinging() {
     chEvtBroadcastFlags(&audio_event, EW_AUDIO_PLAY_ALARM);
     // start timeout timer to stop alarm after x minutes if no one pays attention
     return EW_ALARM_RINGING;
-};
+}
 
-static ew_state_t enterStandby() {
+static ew_state_t enterStandby(void) {
     // tell display thread to shut down DCDC converter and display driver IC
     chEvtBroadcastFlags(&display_event, 1);
     // wait for display thread to terminate
@@ -145,7 +145,7 @@ static ew_state_t enterStandby() {
     __WFI();
 
     return EW_STANDBY;
-};
+}
 
 //===========================================================================
 // main state machine handler
@@ -168,10 +168,11 @@ ew_state_t handleEvent(uint16_t new_event, uint16_t flags) {
     // The order of checks should make sure they still yield the correct result.
     // Most checks keep the device in the same state. If not, this is indicated by assigning a new value to the variable new_state.
 
-    if (new_event & EVENT_MASK(EW_USER_ALARM))
+    if (new_event & EVENT_MASK(EW_USER_ALARM)) {
         // user alarm
         chprintf((BaseSequentialStream*)&SD1, "User alarm\n");
         new_state = enterAlarmRinging();
+    }
 
     if (new_event & EVENT_MASK(EW_LEVER_DOWN)) {
         // lever pulled down
@@ -230,7 +231,7 @@ ew_state_t handleEvent(uint16_t new_event, uint16_t flags) {
         // while an alarm is ringing, toggle input is ignored
         if (old_state != EW_ALARM_RINGING) {
             // when changing toggle while setting up hours or minutes, save any changes done so far
-            // if (old_state == EW_SET_HOURS || old_state == EW_SET_MINUTES) saveTime(toggle_value);     // skip this, that way the user can cancel setup without saving
+            // if (old_state == EW_SET_HOURS || old_state == EW_SET_MINUTES) saveChanges(toggle_value);     // skip this, that way the user can cancel setup without saving
             if (toggle_value == EW_ALARM_NONE) new_state = enterIdle(EW_TIMEOUT_LONG);
             else new_state = enterShowAlarm(toggle_value);
         }
@@ -252,7 +253,7 @@ ew_state_t handleEvent(uint16_t new_event, uint16_t flags) {
                 new_state = enterSetMinutes(toggle_value);
                 break;
             case EW_SET_MINUTES:
-                saveTime(toggle_value);
+                saveChanges(toggle_value);
                 if (toggle_value == 0) new_state = enterIdle(EW_TIMEOUT_LONG);
                 new_state = enterShowAlarm(toggle_value);
                 break;

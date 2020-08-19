@@ -37,6 +37,8 @@ static uint32_t bytes_to_play;
 static event_source_t audio_dma_tc_event;
 static event_source_t audio_dma_ht_event;
 
+event_source_t audio_event;
+
 extern ew_device_status_t device_status;
 
 
@@ -228,6 +230,8 @@ THD_FUNCTION(audioThd, arg) {
     pbuffer = dac_buffer;
 
     chRegSetThreadName("audio");
+    
+    chEvtObjectInit(&audio_event);
     
     i2sStart(&I2SD3, &i2scfg);              // setup I2S module
     wm8960Init();                           // setup audio IC

@@ -34,6 +34,8 @@ typedef union {
 
 static DigitData digits[4];
 
+event_source_t display_event;
+
 extern ew_device_status_t device_status;            // global device status, defined in main.c
 
 
@@ -205,6 +207,8 @@ static const PWMConfig pwmcfg = {
 
 THD_FUNCTION(displayThd, arg) {
     (void)arg;
+    
+    chEvtObjectInit(&display_event);
 
     chThdSleepMilliseconds(500);
 
