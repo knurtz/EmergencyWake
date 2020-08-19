@@ -39,6 +39,11 @@ ew_time_t findNextAlarmTime(void) {
     return ret;
 }
 
+// initialize RTC module and reset to given time
+void initRTC(ew_time_t time) {
+
+}
+
 // Retrieves device status from EEPROM and backup registers of the RTC unit after waking up from deep sleep.
 // Hard coded values for now.
 // RTC register map:
@@ -144,7 +149,6 @@ event_source_t statemachine_event;
 static void toggle_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
-    // Toggle switch has no flags. New position of toggle switch is read inside statemachine handler.
     chEvtBroadcastFlagsI(&statemachine_event, EVENT_MASK(EW_TOGGLE_CHANGE));
     chSysUnlockFromISR();
 }
@@ -152,7 +156,7 @@ static void toggle_cb(void *arg) {
 static void lever_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
-    // Lever has no flags, but two seperate events for falling / rising edge. This could technically be handled by two seperate callback functions.
+    // Lever event has two seperate events for falling / rising edge. This could technically be handled by two seperate callback functions.
     if (palReadLine(LINE_LEVER) == LEVER_DOWN)
         chEvtBroadcastFlagsI(&statemachine_event, EVENT_MASK(EW_LEVER_DOWN));
     else
@@ -163,7 +167,6 @@ static void lever_cb(void *arg) {
 static void encoder_button_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
-    // Encoder center button has no flags.
     chEvtBroadcastFlagsI(&statemachine_event, EVENT_MASK(EW_ENCODER_BUTTON));
     chSysUnlockFromISR();
 }
@@ -181,9 +184,8 @@ static void proximity_interrupt_cb(void *arg) {
 static void rtc_alarm_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
-    // RTC alarm has no flags, but two seperate events depending on alarm A or alarm B
-    // if RTC alarm a (minute interrupt)
-    chEvtBroadcastFlagsI(&display_event, 0);  // set flags to signal minute interrupt to display thread
+    // if RTC alarm A (minute interrupt)
+    chEvtBroadcastFlagsI(&display_event, EW_DISPLAY_REFRESH);       // signal minute interrupt to display thread
     // else (user alarm)
     chEvtBroadcastFlagsI(&statemachine_event, EVENT_MASK(EW_USER_ALARM));
     chSysUnlockFromISR();
@@ -274,12 +276,15 @@ int main(void) {
     // if woken up from standby, this might be because of a user alarm. if this is the case, immediately enter alarm ringing state
     if (restart_after_standby) {
         /*
-        // yields 1 for alarm A, 2 for alarm B, 3 for both.
-        // after standby only 0 or 2 are valid, since alarm A is used for minute interrupt, which is disabled before going to sleep
         uint16_t alarm_flags = (RTC->ISR & (RTC_ISR_ALRAF | RTC_ISR_ALRBF)) >> RTC_ISR_ALRAF_Pos;
         if (alarm_flags > 0) current_state = 
         enterAlarmRinging(alarm_flags);
         */
+    }
+    // if not restarting from standby, power was gone so RTC unit needs to be re-initialized
+    else {
+        ew_time_t temp = {0, 0};
+        initRTC(temp);
     }
 
     // wait for an event to occur

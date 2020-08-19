@@ -50,12 +50,12 @@ typedef struct {
 
     uint8_t alarm_volume;               // user settings
     uint8_t snooze_time;
-    bool unsaved_changes;               // unsaved changes to configuration that needs to be saved to eeprom before going into deep sleep 
-                                        // (i.e. alarm times and state, snooze time and volume)
-
+    ew_time_t modified_time;            // used while user sets up a new time
     bool dst_enabled;                   // daylight savings time
-} ew_device_status_t;
 
+    bool unsaved_changes;               // unsaved changes that needs to be saved to eeprom before going into deep sleep 
+                                        // (i.e. alarm times and state, snooze time and volume)
+} ew_device_status_t;
 
 extern ew_device_status_t device_status;    // global variable defined in main.c
 

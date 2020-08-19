@@ -16,24 +16,32 @@
 // The lower 16 bits are used to identify the exact type of event. The upper 16 bits can be used as an additional binary flag for each event type.
 // This additional flag is not used often, currently only to specify the direction (up / down) for the encoder value changed event.
 
-#define EW_USER_ALARM       0
-#define EW_LEVER_DOWN       1
-#define EW_LEVER_UP         2
-#define EW_TOGGLE_CHANGE    3
-#define EW_ENCODER_BUTTON   4
-#define EW_ENCODER_CHANGED  5
-#define EW_SNOOZE_TIMER     6
-#define EW_STANDBY_TIMER    7
+// event flags for statemachine
+#define EW_USER_ALARM           0
+#define EW_LEVER_DOWN           1
+#define EW_LEVER_UP             2
+#define EW_TOGGLE_CHANGE        3
+#define EW_ENCODER_BUTTON       4
+#define EW_ENCODER_CHANGED      5
+#define EW_SNOOZE_TIMER         6
+#define EW_STANDBY_TIMER        7
 
-#define EVENT_FLAGS_OFFSET  16
+#define EVENT_FLAGS_OFFSET      16
 
-// UI related events
-extern event_source_t statemachine_event;
+// event flags for display thread
+#define EW_DISPLAY_REFRESH      0
+#define EW_DISPLAY_TURNON       1
+#define EW_DISPLAY_TURNOFF      2
 
-// Display related events (update screen content, turn on /off, ...)
-extern event_source_t display_event;
+// event flags for audio thread
+#define EW_AUDIO_PLAY_ALARM     0
+#define EW_AUDIO_STOP_ALARM     1
+#define EW_AUDIO_SNOOZE_ALARM   2
+#define EW_AUDIO_UPDATE_VOLUME  3
 
-// Audio related events (play certain audio file, set volume, pause, ...)
-extern event_source_t audio_event;
+// Event source objects
+extern event_source_t statemachine_event;   // Main statemachine events (update current UI screen)
+extern event_source_t display_event;        // Display related events (update screen content, turn on /off, ...)
+extern event_source_t audio_event;          // Audio related events (play certain audio file, set volume, pause, ...)
 
 #endif /* EW_EVENTS_H */
