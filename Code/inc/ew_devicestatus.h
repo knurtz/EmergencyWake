@@ -2,6 +2,7 @@
 #define DEVICE_STATUS_H
 
 #include "ch.h"
+#include "ew_time.h"
 
 typedef enum {
     EW_STARTUP,
@@ -15,32 +16,9 @@ typedef enum {
     EW_ERROR,
 } ew_state_t;
 
-typedef enum {
-    EW_ALARM_DISABLED,
-    EW_ALARM_ENABLED,
-    EW_ALARM_SNOOZED
-} ew_alarmstate_t;
-
-typedef enum {
-    EW_ALARM_ONE,
-    EW_ALARM_TWO,
-    EW_ALARM_NONE
-} ew_alarmnumber_t;
-
 typedef struct {
-    uint8_t hours;
-    uint8_t minutes;
-} ew_time_t;
-
-typedef struct {
-        ew_time_t saved_time;           // alarm as it is set up by the user
-        ew_time_t modified_time;        // used while the user sets up a new alarm time (before saving)
-        uint8_t snooze_timer;           // how many minutes to add to original alarm time due to a snoozing user
-        ew_alarmstate_t state;          // alarm state
-} ew_alarm_t;
-
-typedef struct {
-    ew_state_t state;                   // current state determines what's shown on screen
+    ew_state_t state;                   // current device state and ...
+    ew_alarmnumber_t toggle_state;      // ... state of toggle switch determine what is shown on screen
     ew_alarmnumber_t active_alarm;      // which alarm is currently ringing
 
     ew_alarm_t alarms[2];               // two user definable alarms
@@ -57,7 +35,14 @@ typedef struct {
                                         // (i.e. alarm times and state, snooze time and volume)
 } ew_device_status_t;
 
-extern ew_device_status_t device_status;    // global variable defined in main.c
+
+extern ew_device_status_t device_status;    // global variable defined in device_status.c
+
+
+ew_alarmnumber_t findNextAlarm(void);
+ew_time_t findNextAlarmTime(void);
+bool isAlarmEnabled(ew_alarmnumber_t alarm);
+
 
 
 #endif /* DEVICE_STATUS_H */

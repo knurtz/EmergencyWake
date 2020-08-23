@@ -39,6 +39,7 @@
                 "../../../Programmierung/ChibiOS/os/common/ports/ARMCMx/compilers/GCC",
                 "../../../Programmierung/ChibiOS/os/hal/lib/streams",
                 "../../../Programmierung/ChibiOS/os/various/shell",
+                "../../../Programmierung/ChibiOS/os/various",
                 "../../../Programmierung/ChibiOS/ext/fatfs/source"
             ],
             "defines": [],

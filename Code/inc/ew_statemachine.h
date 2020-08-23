@@ -6,7 +6,11 @@
 #define EW_TIMEOUT_LONG             300U     // long timeout, after showing current time
 
 // main state machine handler
-ew_state_t handleEvent(uint16_t new_event, uint16_t flags);
+void handleEvent(uint16_t new_event, uint16_t flags);
 
+ew_alarmnumber_t updateToggleState(void);
+
+ew_state_t enterAlarmRinging(void);
+ew_state_t enterIdle(int display_timeout);
 
 #endif /* STATEMACHINE_H */

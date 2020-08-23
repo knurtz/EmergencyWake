@@ -31,8 +31,6 @@
 #define _CHIBIOS_RT_CONF_
 #define _CHIBIOS_RT_CONF_VER_6_1_
 
-#define SHELL_CMD_TEST_ENABLED              FALSE
-
 /*===========================================================================*/
 /**
  * @name System timers settings

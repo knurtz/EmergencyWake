@@ -6,7 +6,7 @@
 #include "chprintf.h"
 #include "shell.h"
 
-#include "device_status.h"
+#include "ew_devicestatus.h"
 #include "ew_audio.h"
 #include "ew_display.h"
 #include "ew_events.h"
@@ -18,64 +18,12 @@
 // Variables and local functions
 //===========================================================================
 
-// Global variable for device status. Accessed by audio and display thread.
-ew_device_status_t device_status;
-
 // Event listener for main thread statemachine.
+event_source_t statemachine_event;
 event_listener_t el_statemachine;
 
-// Calculates upcoming alarm depending on current time and enabled alarms.
-// static response for now
-ew_alarmnumber_t findNextAlarm(void) {
-    return EW_ALARM_ONE;
-}
-
-// Get the time of the upcoming alarm from device status.
-ew_time_t findNextAlarmTime(void) {
-    ew_alarmnumber_t next_alarm = findNextAlarm();
-    ew_time_t ret = {
-        device_status.alarms[next_alarm - 1].saved_time.hours,
-        device_status.alarms[next_alarm - 1].saved_time.minutes};
-    return ret;
-}
-
-// initialize RTC module and reset to given time
-void initRTC(ew_time_t time) {
-
-}
-
-// Retrieves device status from EEPROM and backup registers of the RTC unit after waking up from deep sleep.
-// Hard coded values for now.
-// RTC register map:
-// BKP0R - snooze timer and state for alarm one
-// BKP1R - snooze timer and state for alarm two
-// bits 0-15 for snooze timer, bits 16 and 17 for alarm state
-static void retrieveDeviceStatus(void) {
-    device_status.state = EW_STARTUP;
-    device_status.active_alarm = EW_ALARM_NONE;
-
-    device_status.alarms[EW_ALARM_ONE].saved_time.hours = 6;
-    device_status.alarms[EW_ALARM_ONE].saved_time.minutes = 23;
-    device_status.alarms[EW_ALARM_ONE].snooze_timer = RTC->BKP0R & 0xffff;
-    device_status.alarms[EW_ALARM_ONE].state = RTC->BKP0R >> 16 & 0b11;
-
-    device_status.alarms[EW_ALARM_TWO].saved_time.hours = 8;
-    device_status.alarms[EW_ALARM_TWO].saved_time.minutes = 41;
-    device_status.alarms[EW_ALARM_TWO].snooze_timer = RTC->BKP1R & 0xffff;
-    device_status.alarms[EW_ALARM_TWO].state = RTC->BKP1R >> 16 & 0b11;
-
-    device_status.next_alarm = findNextAlarm();
-    device_status.next_alarm_time = findNextAlarmTime();
-
-    device_status.alarm_volume = 120;  // get these two from eeprom
-    device_status.snooze_time = 10;
-    device_status.unsaved_changes = false;
-
-    device_status.dst_enabled = false;  // get this from RTC module
-}
-
 // Short startup beep
-static void confirmationBuzzer(void) {
+static void startupBuzzer(void) {
     palSetLine(LINE_BUZZER);
     chThdSleepMilliseconds(100);
     palClearLine(LINE_BUZZER);
@@ -106,7 +54,7 @@ static THD_FUNCTION(blinkerThd, arg) {
 }
 
 //===========================================================================
-// Command line related
+// Command line configuration
 //===========================================================================
 
 #define SHELL_WA_SIZE THD_WORKING_AREA_SIZE(2048)
@@ -119,7 +67,7 @@ static const ShellCommand commands[] = {
 };
 
 //===========================================================================
-// Driver configs
+// Global driver configuration (drivers that are used in multiple threads
 //===========================================================================
 
 static const I2CConfig i2ccfg = {
@@ -143,8 +91,6 @@ static const ShellConfig shell_cfg = {
 // check ew_events.h for further explanation of how events are used in this project.
 // Debouncing all these external interrupts should be done by hardware (low pass filter on every input).
 //===========================================================================
-
-event_source_t statemachine_event;
 
 static void toggle_cb(void *arg) {
     (void)arg;
@@ -185,7 +131,7 @@ static void rtc_alarm_cb(void *arg) {
     (void)arg;
     chSysLockFromISR();
     // if RTC alarm A (minute interrupt)
-    chEvtBroadcastFlagsI(&display_event, EW_DISPLAY_REFRESH);       // signal minute interrupt to display thread
+    chEvtBroadcastFlagsI(&display_event, EVENT_MASK(EW_DISPLAY_REFRESH));       // signal minute interrupt to display thread
     // else (user alarm)
     chEvtBroadcastFlagsI(&statemachine_event, EVENT_MASK(EW_USER_ALARM));
     chSysUnlockFromISR();
@@ -200,7 +146,7 @@ CH_IRQ_HANDLER(STM32_TIM4_HANDLER) {
     STM32_TIM4->SR = 0;  // clear all pending TIM4 interrupts
     // encoder changed event has an additional flag, indicating the direction (flag set for positive direction)
     if (STM32_TIM4->CR1 & TIM_CR1_DIR)
-        chEvtBroadcastFlagsI(&statemachine_event, 1 << (EVENT_FLAGS_OFFSET + EW_ENCODER_CHANGED) | EVENT_MASK(EW_ENCODER_CHANGED));
+        chEvtBroadcastFlagsI(&statemachine_event, EVENT_MASK(EVENT_FLAGS_OFFSET + EW_ENCODER_CHANGED) | EVENT_MASK(EW_ENCODER_CHANGED));
     else
         chEvtBroadcastFlagsI(&statemachine_event, EVENT_MASK(EW_ENCODER_CHANGED));
     chSysUnlockFromISR();
@@ -216,7 +162,7 @@ int main(void) {
     // System initialization
     halInit();
     chSysInit();
-    confirmationBuzzer();
+    startupBuzzer();
 
     bool restart_after_standby = PWR->CSR & PWR_CSR_SBF;     // did the device just wake up from standby?
     PWR->CR |= PWR_CR_CSBF;                                     // clear standby flag
@@ -230,7 +176,7 @@ int main(void) {
     // retrieve device status from eeprom and RTC backup registers
     retrieveDeviceStatus();
 
-    // initialize RTC unit and assign callback functions (next alarm and minute wakeup).
+    // initialize RTC unit and assign callback functions (next alarm and minute wakeup)
 
     // start all peripheral drivers that are used in multiple threads (project wide)
     i2cStart(&I2CD2, &i2ccfg);
@@ -239,8 +185,8 @@ int main(void) {
 
     // start threads
     chThdCreateStatic(blinker_wa, sizeof(blinker_wa), NORMALPRIO - 1, blinkerThd, NULL);
-    //chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
-    //chThdCreateStatic(display_wa, sizeof(display_wa), NORMALPRIO, displayThd, NULL);
+    chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
+    chThdCreateStatic(display_wa, sizeof(display_wa), NORMALPRIO, displayThd, NULL);
     thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO, shellThread, (void *)&shell_cfg);
 
     // initialize timer for rotary encoder and assign callback function
@@ -278,13 +224,14 @@ int main(void) {
         /*
         uint16_t alarm_flags = (RTC->ISR & (RTC_ISR_ALRAF | RTC_ISR_ALRBF)) >> RTC_ISR_ALRAF_Pos;
         if (alarm_flags > 0) current_state = 
-        enterAlarmRinging(alarm_flags);
+        device_status.state = enterAlarmRinging();
         */
     }
     // if not restarting from standby, power was gone so RTC unit needs to be re-initialized
     else {
         ew_time_t temp = {0, 0};
         initRTC(temp);
+        device_status.state = enterIdle(EW_TIMEOUT_LONG);
     }
 
     // wait for an event to occur

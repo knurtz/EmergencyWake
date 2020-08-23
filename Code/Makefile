@@ -137,6 +137,9 @@ CSRC = $(ALLCSRC) \
        src/ew_proximity.c \
        src/ew_display.c \
        src/ew_statemachine.c \
+       src/ew_device_status.c \
+       src/ew_eeprom.c \
+       $(CHIBIOS)/os/various/evtimer.c \
 #	     src/usbcfg.c \
 #      $(TESTSRC) \
 
@@ -171,7 +174,7 @@ CPPWARN = -Wall -Wextra -Wundef
 #
 
 # List all user C define here, like -D_DEBUG=1
-UDEFS =
+UDEFS = -DSHELL_CMD_TEST_ENABLED=FALSE
 
 # Define ASM defines here
 UADEFS =

@@ -1,5 +1,5 @@
-#ifndef WAVE_HEADER_H
-#define WAVE_HEADER_H
+#ifndef WAVE_H
+#define WAVE_H
 
 #include "ch.h"
 
@@ -37,4 +37,4 @@ typedef struct _DATAHeader
 	chunk       descriptor;     // "data"
 } DATAHeader;
 
-#endif /* WAVE_HEADER_H */
+#endif /* WAVE_H */

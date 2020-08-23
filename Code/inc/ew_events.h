@@ -38,10 +38,11 @@
 #define EW_AUDIO_STOP_ALARM     1
 #define EW_AUDIO_SNOOZE_ALARM   2
 #define EW_AUDIO_UPDATE_VOLUME  3
+#define EW_AUDIO_TURNOFF        4
 
 // Event source objects
-extern event_source_t statemachine_event;   // Main statemachine events (update current UI screen)
-extern event_source_t display_event;        // Display related events (update screen content, turn on /off, ...)
-extern event_source_t audio_event;          // Audio related events (play certain audio file, set volume, pause, ...)
+extern event_source_t statemachine_event;   // Main statemachine event (update current UI screen), defined in main.c
+extern event_source_t display_event;        // Display related events (update screen content, turn on /off, ...), defined in ew_display.c
+extern event_source_t audio_event;          // Audio related events (play certain audio file, set volume, pause, ...), defined in ew_audio.c
 
 #endif /* EW_EVENTS_H */
