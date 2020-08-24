@@ -109,7 +109,7 @@ BOARDSRC = board/board.c
 BOARDINC = board
 # Shared variables
 ALLCSRC += $(BOARDSRC)
-ALLINC  += $(BOARDINC)
+ALLINC  += $(BOARDINC) $(CHIBIOS)/os/various
 
 include $(CHIBIOS)/os/hal/osal/rt-nil/osal.mk
 # RTOS files (optional).
@@ -137,8 +137,9 @@ CSRC = $(ALLCSRC) \
        src/ew_proximity.c \
        src/ew_display.c \
        src/ew_statemachine.c \
-       src/ew_device_status.c \
+       src/ew_devicestatus.c \
        src/ew_eeprom.c \
+       src/ew_time.c \
        $(CHIBIOS)/os/various/evtimer.c \
 #	     src/usbcfg.c \
 #      $(TESTSRC) \

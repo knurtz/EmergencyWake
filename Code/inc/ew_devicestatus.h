@@ -42,7 +42,8 @@ extern ew_device_status_t device_status;    // global variable defined in device
 ew_alarmnumber_t findNextAlarm(void);
 ew_time_t findNextAlarmTime(void);
 bool isAlarmEnabled(ew_alarmnumber_t alarm);
-
+void updateToggleState(void);
+void retrieveDeviceStatus(void);
 
 
 #endif /* DEVICE_STATUS_H */

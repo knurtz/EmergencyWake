@@ -26,6 +26,33 @@ event_source_t display_event;
 static event_timer_t periodic_event;
 
 //===========================================================================
+// Driver configs and callbacks
+//===========================================================================
+
+static const SPIConfig spicfg = {
+  false,                    // no circular mode
+  NULL,                     // end callback
+  GPIOB,                    // chip select port
+  GPIOB_SPI_STB,            // chip select pin
+  SPI_CR1_MSTR | SPI_CR1_LSBFIRST | 0b101 << SPI_CR1_BR_Pos | SPI_CR1_CPOL | SPI_CR1_CPHA,      // SPI CR1 register
+  0                         // SPI CR2 register
+};
+
+static const PWMConfig pwmcfg = {
+  100000,                           // 100 kHz PWM clock frequency
+  1000,                             // Initial PWM period 1000 ms -> 100 Hz
+  NULL,                             // no callback for timer update interrupt
+  {
+   {PWM_OUTPUT_ACTIVE_HIGH, NULL},  // channel 1 = PC6 = filament A line
+   {PWM_OUTPUT_ACTIVE_LOW, NULL},   // channel 2 = PC7 = filament B line -> inverted
+   {PWM_OUTPUT_DISABLED, NULL},
+   {PWM_OUTPUT_DISABLED, NULL}
+  },
+  0,
+  0
+};
+
+//===========================================================================
 // Modify display content
 //===========================================================================
 
@@ -111,24 +138,6 @@ static void setFanIcon(bool enabled) {
 // Display IC communication
 //===========================================================================
 
-static void pt6312Startup(void) {
-    // power up dcdc converter
-    palClearLine(LINE_DCDC_EN);
-
-    // configure timer 8 to provide pwm signal on filament pins
-    pwmStart(&PWMD8, &pwmcfg);
-    pwmEnableChannel(&PWMD8, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
-    pwmEnableChannel(&PWMD8, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
-	
-    // start SPI2 driver
-    spiStart(&SPID2, &spicfg);
-
-    // init display driver IC
-    pt6312SendCompleteDigitData();
-    pt6312SendCommand(PT6312_COMMAND_1, PT6312_MODE_4DIGITS);
-    pt6312SendCommand(PT6312_COMMAND_4, PT6312_DISPLAY_ON | PT6312_PULSEWIDTH_MAX);
-}
-
 static void pt6312SendCommand(uint8_t command, uint8_t options) {
     uint8_t txbuf[1] = {command | options};
 
@@ -181,32 +190,23 @@ static void pt6312SendSingleDigitData(uint8_t digit) {
     chThdSleepMicroseconds(1);  // PW_STB on page 13 of PT6312 datasheet
 }
 
-//===========================================================================
-// Driver configs and callbacks
-//===========================================================================
+static void pt6312Startup(void) {
+    // power up dcdc converter
+    palClearLine(LINE_DCDC_EN);
 
-static const SPIConfig spicfg = {
-  false,                    // no circular mode
-  NULL,                     // end callback
-  GPIOB,                    // chip select port
-  GPIOB_SPI_STB,            // chip select pin
-  SPI_CR1_MSTR | SPI_CR1_LSBFIRST | 0b101 << SPI_CR1_BR_Pos | SPI_CR1_CPOL | SPI_CR1_CPHA,      // SPI CR1 register
-  0                         // SPI CR2 register
-};
+    // configure timer 8 to provide pwm signal on filament pins
+    pwmStart(&PWMD8, &pwmcfg);
+    pwmEnableChannel(&PWMD8, 0, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
+    pwmEnableChannel(&PWMD8, 1, PWM_PERCENTAGE_TO_WIDTH(&PWMD8, 5000));
+	
+    // start SPI2 driver
+    spiStart(&SPID2, &spicfg);
 
-static const PWMConfig pwmcfg = {
-  100000,                           // 100 kHz PWM clock frequency
-  1000,                             // Initial PWM period 1000 ms -> 100 Hz
-  NULL,                             // no callback for timer update interrupt
-  {
-   {PWM_OUTPUT_ACTIVE_HIGH, NULL},  // channel 1 = PC6 = filament A line
-   {PWM_OUTPUT_ACTIVE_LOW, NULL},   // channel 2 = PC7 = filament B line -> inverted
-   {PWM_OUTPUT_DISABLED, NULL},
-   {PWM_OUTPUT_DISABLED, NULL}
-  },
-  0,
-  0
-};
+    // init display driver IC
+    pt6312SendCompleteDigitData();
+    pt6312SendCommand(PT6312_COMMAND_1, PT6312_MODE_4DIGITS);
+    pt6312SendCommand(PT6312_COMMAND_4, PT6312_DISPLAY_ON | PT6312_PULSEWIDTH_MAX);
+}
 
 //===========================================================================
 // UI generation
@@ -221,6 +221,7 @@ EW_ALARM_RINGING    -   show stored time for corresponding alarm, blink alarm nu
 EW_STANDBY          -   clear display
 */
 static void rebuildUI(void) {
+    uint8_t temp;
 
     switch (device_status.state) {
 
@@ -241,27 +242,25 @@ static void rebuildUI(void) {
             break;
 
         case EW_SET_HOURS:
-            uint8_t hours;
             digits[0].complete = digits[1].complete = 0;        // turn off minutes segments
             setAlarmNumber(0b1111, false);                      // turn off alarm numbers
-            if (device_status.toggle_state == EW_ALARM_NONE) hours = device_status.modified_time.hours;
+            if (device_status.toggle_state == EW_ALARM_NONE) temp = device_status.modified_time.hours;
             else {
-                hours = device_status.alarms[device_status.toggle_state].modified_time.hours;
+                temp = device_status.alarms[device_status.toggle_state].modified_time.hours;
                 setAlarmNumber(ALARM_NUMBER_MASK(device_status.toggle_state), true);
             }
-            setHours(hours);
+            setHours(temp);
             break;
 
         case EW_SET_MINUTES:
-            uint8_t minutes;
             digits[2].complete = digits[3].complete = 0;        // turn off hours segments
             setAlarmNumber(0b1111, false);                      // turn off alarm numbers
-            if (device_status.toggle_state == EW_ALARM_NONE) minutes = device_status.modified_time.minutes;
+            if (device_status.toggle_state == EW_ALARM_NONE) temp = device_status.modified_time.minutes;
             else {
-                minutes = device_status.alarms[device_status.toggle_state].modified_time.minutes;
+                temp = device_status.alarms[device_status.toggle_state].modified_time.minutes;
                 setAlarmNumber(ALARM_NUMBER_MASK(device_status.toggle_state), true);
             }
-            setMinutes(minutes);
+            setMinutes(temp);
             break;
 
         case EW_STANDBY:
@@ -285,7 +284,7 @@ THD_FUNCTION(displayThd, arg) {
     chEvtRegister(&display_event, &el_display, EVT_DISPLAY_EXT);
 
     evtObjectInit(&periodic_event, TIME_MS2I(200));
-    chEvtRegister(&periodic_event, &el_display, EVT_DISPLAY_PERIODIC);
+    chEvtRegister(&periodic_event.et_es, &el_display, EVT_DISPLAY_PERIODIC);
 
     evtStart(&periodic_event);
 

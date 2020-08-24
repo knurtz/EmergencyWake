@@ -34,10 +34,13 @@ static void startupBuzzer(void) {
 }
 
 //===========================================================================
-// Blinker thread
+// Threads and working areas
 //===========================================================================
 
+THD_WORKING_AREA(audio_wa, 1024);
+THD_WORKING_AREA(display_wa, 128);
 static THD_WORKING_AREA(blinker_wa, 128);
+
 static THD_FUNCTION(blinkerThd, arg) {
     (void)arg;
     chRegSetThreadName("blinker");
@@ -187,6 +190,7 @@ int main(void) {
     chThdCreateStatic(blinker_wa, sizeof(blinker_wa), NORMALPRIO - 1, blinkerThd, NULL);
     chThdCreateStatic(audio_wa, sizeof(audio_wa), NORMALPRIO + 1, audioThd, NULL);
     chThdCreateStatic(display_wa, sizeof(display_wa), NORMALPRIO, displayThd, NULL);
+    
     thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE, "shell", NORMALPRIO, shellThread, (void *)&shell_cfg);
 
     // initialize timer for rotary encoder and assign callback function

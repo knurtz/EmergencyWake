@@ -26,7 +26,7 @@ bool isAlarmEnabled(ew_alarmnumber_t alarm) {
     return !(device_status.alarms[alarm].state == EW_ALARM_DISABLED);
 }
 
-ew_alarmnumber_t updateToggleState(void) {
+void updateToggleState(void) {
     if (palReadLine(LINE_TOGGLE_UP)) device_status.toggle_state =  EW_ALARM_ONE;
     else if (palReadLine(LINE_TOGGLE_DN)) device_status.toggle_state = EW_ALARM_TWO;
     else device_status.toggle_state = EW_ALARM_NONE;
@@ -37,9 +37,9 @@ ew_alarmnumber_t updateToggleState(void) {
 // BKP0R - snooze timer and state for alarm one
 // BKP1R - snooze timer and state for alarm two
 // bits 0 - 15 for snooze timer, bits 16 + 17 for alarm state
-static void retrieveDeviceStatus(void) {
+void retrieveDeviceStatus(void) {
     device_status.state = EW_STARTUP;
-    updateToggleValue();
+    updateToggleState();
     device_status.active_alarm = EW_ALARM_NONE;
 
     device_status.alarms[EW_ALARM_ONE].saved_time.hours = 6;

@@ -13,6 +13,7 @@
 #include "ew_events.h"
 #include "ew_time.h"
 #include "ew_devicestatus.h"
+#include "ew_eeprom.h"
 
 //===========================================================================
 // Variables and local functions
@@ -91,7 +92,7 @@ void handleEvent(uint16_t new_event, uint16_t flags) {
     ew_state_t new_state = old_state;
 
     // as long as the lever is held down (and hasn't just been pulled down), don't process any new events
-    if (palReadLine(LINE_LEVER) == LEVER_DOWN && !(new_event & EVENT_MASK(EW_LEVER_DOWN))) return new_state;
+    if (palReadLine(LINE_LEVER) == LEVER_DOWN && !(new_event & EVENT_MASK(EW_LEVER_DOWN))) return;
 
     // get current state of toggle.
     // It determines which screen is displayed and what value all user actions like changing hours or minutes apply to (system time or user alarm one or two)

@@ -3,7 +3,6 @@
 
 #include "ch.h"
 
-THD_WORKING_AREA(display_wa, 128);
 THD_FUNCTION(displayThd, arg);
 
 #define ALARM_NUMBER_MASK(n)    (1 << n)

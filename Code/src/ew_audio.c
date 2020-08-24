@@ -14,6 +14,7 @@ reading files from the SD card, and providing functions for other threads to sta
 #include "wm8960.h"
 #include "wave.h"
 
+#include "ew_audio.h"
 #include "ew_devicestatus.h"
 #include "ew_events.h"
 
